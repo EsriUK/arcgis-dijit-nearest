@@ -50,7 +50,7 @@ function (
             //    Overrides method of same name in dijit._Widget.
             // tags:
             //    private
-            console.log('app.Nearest::postCreate', arguments);
+            //console.log('app.Nearest::postCreate', arguments);
 
             this.setupConnections();
 
@@ -62,7 +62,7 @@ function (
             // summary:
             //    wire events, and such
             //
-            console.log('app.Nearest::setupConnections', arguments);
+            //console.log('app.Nearest::setupConnections', arguments);
 
         }
     });
