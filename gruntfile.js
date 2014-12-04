@@ -15,12 +15,24 @@ module.exports = function(grunt) {
       			open: true // do not open node-inspector in Chrome automatically
 	        }
       	},
-		jasmine : {
-      		src : './js/Nearest.js',
-      		options : {
-        		specs : './js/tests/spec/**/*.js'
-      		}
-    	}
+        jasmine: {
+            test: {
+                options: {
+                    specs: './js/tests/spec/*.js',
+                    template: require('grunt-template-jasmine-dojo'),
+                    templateOptions: {
+                        dojoConfig: {
+                            async: true,
+                            has: { 'native-xhr2': false },
+                            paths: {
+                                app: '/../js'
+                            }
+                        },
+                        dojoFile: 'http://js.arcgis.com/3.11/'
+                    }
+                }
+            }
+        }
     };
 
 
