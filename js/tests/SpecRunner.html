@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Jasmine Spec Runner v2.1.2</title>
+
+    <link rel="shortcut icon" type="image/png" href="lib/jasmine-2.1.2/jasmine_favicon.png">
+    <link rel="stylesheet" href="lib/jasmine-2.1.2/jasmine.css">
+
+    <script>
+      var dojoConfig = {
+          async: true,          
+          has: { "native-xhr2": false },
+          paths: {
+            "app": location.pathname.replace(/\/[^/]+$/, "") + "/../../app"
+          }
+      };
+
+    </script>
+
+    <script src="lib/jasmine-2.1.2/jasmine.js"></script>
+    <script src="lib/jasmine-2.1.2/jasmine-html.js"></script>
+    <script src="lib/jasmine-2.1.2/console.js"></script>
+    <script src="lib/jasmine-2.1.2/boot.js"></script>
+
+    <!-- include source files here... -->
+    <script src="//js.arcgis.com/3.11/"></script>
+   
+    
+
+    <!-- include spec files here... -->
+    <script src="spec/NearestSpec.js"></script>
+
+  </head>
+
+  <body>
+      <div id="widgetNode"></div>
+  </body>
+
+</html>
