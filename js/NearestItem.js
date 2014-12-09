@@ -19,7 +19,7 @@ function (
         //    Find the nearest features around a point
 
         templateString: template,
-        baseClass: 'nearest',
+        baseClass: 'nearestItem',
         widgetsInTemplate: true,
 
         // Properties to be sent into constructor
@@ -30,14 +30,12 @@ function (
                 distanceUnits: "miles", // The units the distance is in.
                 distance: 999, // The distance the feature is from the location.
                 featureDetails: "Some details", // The details to display for the feature.
-                featureTitle: "Feature Title" // The title of the feature
+                featureTitle: "Feature Title", // The title of the feature
+                featureNumber: 0 // The index or number this feature is in the list
             };
 
             // mix in settings and defaults
             var defaults = lang.mixin({}, this.options, options);
-
-            this.featureCount = 0;
-
 
             // Set properties
             this.set("featureId", defaults.featureId);
@@ -45,6 +43,7 @@ function (
             this.set("distance", defaults.distance);
             this.set("featureDetails", defaults.featureDetails);
             this.set("featureTitle", defaults.featureTitle);
+            this.set("featureNumber", defaults.featureNumber);
 
             // widget node
             this.domNode = srcRefNode;

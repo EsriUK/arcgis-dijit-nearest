@@ -95,6 +95,8 @@ function (
         _createList: function() {
             // clear node
             this._features.innerHTML = '';
+
+            // For each feature add it to the list using the NearestItem widget 
         },
 
         _init: function () {
