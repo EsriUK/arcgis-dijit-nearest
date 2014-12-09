@@ -1,0 +1,23 @@
+﻿<div id="${featureId}-feature-container" class="">
+    <!--container for feature row-->
+    <div class="search-features col-sm-12">
+        <!--Actual feature row-->
+        <div id="search-features-inner-${featureId}" class="search-features-inner">
+            <!--Make whole row clickable-->
+            <a href="#" title="Toggles the display of the feature fields" class="col-md-12 text-place-summary-details show ">
+                <!--index-->
+                <span class="label pull-left feature-marker">${featureCount}</span>
+                <!--div for infor-->
+                <div class="text-place-details">
+                    <!--feature name-->
+                    <h3 id="${featureId}-feature-name" class="text-place-title">${featureTitle}</h3>
+                    ${distance}&nbsp;${distanceUnits}
+				    <!-- other fields-->
+                    <div id="Metropolitan-0-Tube2_1799-field-values" class="text-place-basic-details" style="display: none;">
+                        <div class="col-md-12">${featureDetails}</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

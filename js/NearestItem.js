@@ -1,8 +1,8 @@
-/*global define, console*/
+﻿/*global define, console*/
 
 
 define([
-    'dojo/text!./templates/Nearest.html',
+    'dojo/text!./templates/NearestItem.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
     "dojo/_base/Deferred",
@@ -26,20 +26,25 @@ function (
 
         constructor: function (options, srcRefNode) {
             this.options = {
-                webmapId: "", // The id of the webmap to use.
-                maxResults: 10, // The maximum number of features to return.
-                searchRadius: 5, // The search radius in miles.
-                display: "expandable" // Howw to display the results. Expandable or fixed.
+                featureId: dijit.registry.getUniqueId(this.declaredClass), // The id of the feature.
+                distanceUnits: "miles", // The units the distance is in.
+                distance: 999, // The distance the feature is from the location.
+                featureDetails: "Some details", // The details to display for the feature.
+                featureTitle: "Feature Title" // The title of the feature
             };
 
             // mix in settings and defaults
             var defaults = lang.mixin({}, this.options, options);
 
+            this.featureCount = 0;
+
+
             // Set properties
-            this.set("webmapId", defaults.webmapId);
-            this.set("maxResults", defaults.maxResults);
-            this.set("searchRadius", defaults.searchRadius);
-            this.set("display", defaults.display);
+            this.set("featureId", defaults.featureId);
+            this.set("distanceUnits", defaults.distanceUnits);
+            this.set("distance", defaults.distance);
+            this.set("featureDetails", defaults.featureDetails);
+            this.set("featureTitle", defaults.featureTitle);
 
             // widget node
             this.domNode = srcRefNode;
@@ -51,7 +56,7 @@ function (
         },
 
 
-        postCreate: function() {
+        postCreate: function () {
             // summary:
             //    Overrides method of same name in dijit._Widget.
             // tags:
@@ -74,7 +79,7 @@ function (
             this.inherited(arguments);
         },
 
-        setupConnections: function() {
+        setupConnections: function () {
             // summary:
             //    wire events, and such
             //
@@ -92,10 +97,7 @@ function (
         /* Private Functions */
         /* ---------------- */
 
-        _createList: function() {
-            // clear node
-            this._features.innerHTML = '';
-        },
+
 
         _init: function () {
             // Do query and build results
