@@ -2,6 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Nearest Widget</title>
+        <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.11/esri/css/esri.css">
+        <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.11/dojo/dijit/themes/claro/claro.css">
+        <link rel="stylesheet" type="text/css" href="js/resources/NearestItem.css">
+        <link rel="stylesheet" type="text/css" href="js/resources/Nearest.css">
 
         <script>
             var dojoConfig = {
@@ -16,15 +20,19 @@
         <script src="//js.arcgis.com/3.11/"></script>
 
         <script type="text/javascript">
-            require(["app/Nearest"], function (Nearest) {
-                var widget = new Nearest({}, 'nearestWidget');
+            require(["app/Nearest", "app/NearestItem"], function (Nearest, NearestItem) {
+                var nearest = new Nearest({}, "nearestWidget"),
+                    item = new NearestItem({}, "nearestItem");
 
-                widget.startup();
+                nearest.startup();
+                item.startup();
             });
 
         </script>
     </head>
     <body>
         <div id="nearestWidget"></div>
+
+        <div id="nearestItem"></div>
     </body>
 </html>
