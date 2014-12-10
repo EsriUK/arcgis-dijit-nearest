@@ -31,7 +31,9 @@ function (
                 distance: 999, // The distance the feature is from the location.
                 featureDetails: "Some details", // The details to display for the feature.
                 featureTitle: "Feature Title", // The title of the feature
-                featureNumber: 0 // The index or number this feature is in the list
+                featureNumber: 0, // The index or number this feature is in the list
+                showOnMap: false, // Show / hide the link for showing on a map
+                showOnMapLinktext: "Show on map" // The text to use for the link
             };
 
             // mix in settings and defaults
@@ -44,6 +46,8 @@ function (
             this.set("featureDetails", defaults.featureDetails);
             this.set("featureTitle", defaults.featureTitle);
             this.set("featureNumber", defaults.featureNumber);
+            this.set("showOnMap", defaults.showOnMap);
+            this.set("showOnMapLinktext", defaults.showOnMapLinktext);
 
             // widget node
             this.domNode = srcRefNode;

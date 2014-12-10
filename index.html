@@ -22,7 +22,14 @@
         <script type="text/javascript">
             require(["app/Nearest", "app/NearestItem"], function (Nearest, NearestItem) {
                 var nearest = new Nearest({}, "nearestWidget"),
-                    item = new NearestItem({}, "nearestItem");
+                    item = new NearestItem({
+                        featureId: "asdr34ff4ff4",
+                        distanceUnits: "miles",
+                        distance: 1.34,
+                        featureDetails: "Details <p>More</p>",
+                        featureTitle: "Im a title",
+                        featureNumber: 12
+                    }, "nearestItem");
 
                 nearest.startup();
                 item.startup();

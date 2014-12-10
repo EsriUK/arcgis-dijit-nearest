@@ -8,11 +8,11 @@ define([
     "dojo/_base/Deferred",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
-    'dijit/_WidgetsInTemplateMixin'
+    'dijit/_WidgetsInTemplateMixin',
+    './FindNearestTask'
 ],
 function (
-    template, declare, lang, Deferred,
-    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin) {
+    template, declare, lang, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, FindNearestTask) {
 
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
