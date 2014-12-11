@@ -3,7 +3,6 @@
     <head>
         <title>Nearest Widget</title>
         <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.11/esri/css/esri.css">
-        <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.11/dojo/dijit/themes/claro/claro.css">
         <link rel="stylesheet" type="text/css" href="js/resources/NearestItem.css">
         <link rel="stylesheet" type="text/css" href="js/resources/Nearest.css">
 
@@ -21,7 +20,9 @@
 
         <script type="text/javascript">
             require(["app/Nearest", "app/NearestItem"], function (Nearest, NearestItem) {
-                var nearest = new Nearest({}, "nearestWidget"),
+                var nearest = new Nearest({
+                    webmapId: "0713c71403f94013a399ab54910ec8bf"
+                }, "nearestWidget"),
                     item = new NearestItem({
                         featureId: "asdr34ff4ff4",
                         distanceUnits: "miles",
