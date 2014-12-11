@@ -77,7 +77,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     // Add default task(s)
-    grunt.registerTask('default', ['jasmine']);
+    grunt.registerTask('default', ['jasmine:test']);
 
     grunt.registerTask('test', ['jasmine:test']);
     grunt.registerTask('cover', ['copy:toobj', 'jasmine:coverage']);
