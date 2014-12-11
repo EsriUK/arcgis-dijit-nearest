@@ -10,10 +10,11 @@ define([
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     "esri/request",
-    './FindNearestTask'
+    './tasks/FindNearestTask',
+    './tasks/QueryLayerTask'
 ],
 function (
-    template, declare, lang, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, esriRequest, FindNearestTask) {
+    template, declare, lang, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, esriRequest, FindNearestTask, QueryLayerTask) {
 
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -111,10 +112,31 @@ function (
             // Do query and build results
             if (!this._isNullOrEmpty(this.webmapId)) {
                 this._getItemData(this.webmapId, this.token).then(function (webMap) {
+                    var queryTasks = [], i = 0, iL = 0, task = null, opLayers;
+
                     if (webMap) {
                         _this.webMap = webMap;
+                        opLayers = webMap.operationalLayers;
 
-                        _this._getLayerDetails(webMap.operationalLayers);
+                        // Get the details and pop up information for each layer
+                        _this._getLayerDetails(opLayers);
+
+                        // Run a query to get the features
+                        // Go through operational layers and query each one
+                        for (i = 0, iL = opLayers.length; i < iL; i++) {
+
+                            // check if layer has a url to be able to perform a query
+                            if (!_this._isNullOrEmpty(opLayers[i].url)) {
+                                task = new QueryLayerTask({
+                                    currentPoint: _this.location,
+                                    searchRadius: _this.searchRadius,
+                                    serviceUrl: opLayers[i].url,
+                                    layerId: opLayers[i].id
+                                });
+
+                                queryTasks.push(task.execute());
+                            }
+                        }
                     }
                 });
             }
