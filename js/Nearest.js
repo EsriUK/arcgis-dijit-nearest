@@ -6,15 +6,20 @@ define([
     'dojo/_base/declare',
     "dojo/_base/lang",
     "dojo/_base/Deferred",
+    "dojo/promise/all",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
+    "dojo/dom-class",
+    "dojo/dom-style",
+    "dojo/dom-construct",
     "esri/request",
-    './tasks/FindNearestTask',
-    './tasks/QueryLayerTask'
+    "esri/dijit/PopupTemplate",
+    "./tasks/QueryLayerTask",
+    "./tasks/ClientNearestTask"
 ],
 function (
-    template, declare, lang, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, esriRequest, FindNearestTask, QueryLayerTask) {
+    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domClass, domStyle, domConstruct, esriRequest, PopupTemplate, QueryLayerTask, ClientNearestTask) {
 
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -112,7 +117,7 @@ function (
             // Do query and build results
             if (!this._isNullOrEmpty(this.webmapId)) {
                 this._getItemData(this.webmapId, this.token).then(function (webMap) {
-                    var queryTasks = [], i = 0, iL = 0, task = null, opLayers;
+                    var queryTasks = [], nearestTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers;
 
                     if (webMap) {
                         _this.webMap = webMap;
@@ -137,10 +142,123 @@ function (
                                 queryTasks.push(task.execute());
                             }
                         }
+
+                        // Once all queries have finished do the find nearest
+                        all(queryTasks).then(function (queryResults) {
+                            var j = 0, jL = queryResults.length, nearestTask = null, nearestTasks = [];
+
+                            for (j = 0; j < jL; j++) {
+                                // Perform find nearest on each set of features
+                                if ((queryResults[j].error === null) && (queryResults[j].results.features.length > 0)) {
+
+                                    /* 
+                                    In future we will choose the type of nearest task to run. E.g.
+                                    if this.nearestType == "client" use AF FindNearest
+                                    if this.nearestType == "agol" use AGOL Nearest GP task
+                                    */
+                                    nearestTask = new ClientNearestTask({
+                                        maxResults: _this.maxResults,
+                                        layerId: queryResults[j].id
+                                    });
+
+                                    nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results));
+                                }
+                            }
+
+                            // Once all of the find nearest tasks have finished display the results
+                            all(nearestTasks).then(function (nearestResults) {
+                                var k = 0, kL = nearestResults.length;
+
+                                // nearestResults is an array of arrays of the results
+                                // So an array of layers, each layer has a set of results
+
+                                for (k = 0; k < kL; k++) {
+                                    if (nearestResults[k].error === null && nearestResults[k].result !== null) {
+                                        if (nearestResults[k].result.limitExceeded) {
+
+                                            var layerName = "";
+                                            for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
+                                                if (_this.layerPopUpFields[lpInd].id === nearestResults[k].id) {
+                                                    layerName = _this.layerPopUpFields[lpInd].layerName;
+                                                    break;
+                                                }
+                                            }
+
+                                            break;
+                                        }
+                                        _this._displayResults(nearestResults[k]);
+                                    }
+                                }
+                                //displayResults
+                            }, function (err) {
+
+                            });
+                        });
                     }
                 });
             }
             // Output events
+        },
+
+        _displayResults: function(results) {
+            var titleField = [];
+            this._features.innerHTML = "";
+
+            // Make sure there are some results
+            if (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result)) {
+
+                for (lpInd = 0; lpInd < this.layerPopUpFields.length; lpInd++) {
+                    if (this.layerPopUpFields[lpInd].id === results.id) {
+                        currentLayerInd = lpInd;
+                        break;
+                    }
+                }
+
+                layerInfo = this.layerPopUpFields[currentLayerInd];
+                layerPopupInfo = layerInfo.popupInfo;
+                template = new PopupTemplate(layerPopupInfo);
+                titleText = template.info.title.toString();
+                layerName = layerInfo.layerName;
+                layerItemId = results.id.replace(/ /g, '-');
+
+                // Check the title to see if it contains a field
+                var titleTextSplit = titleText.split('}');
+                for (indT = 0; indT < titleTextSplit.length; indT++) {
+                    if (titleTextSplit[indT].indexOf('{') > -1) {
+                        titleField.push(titleTextSplit[indT].substr(titleTextSplit[indT].indexOf('{') + 1));
+                    }
+                }
+
+                if (titleField.length === 0) {
+                    titleField.push(template.info.fieldInfos[0].fieldName);
+                }
+
+                // For each layer in the results add a row to the list
+                layerNameEle = results.id.replace(/ /g, '-');
+
+                // Remove any special characters that may cause element name errors
+                layerNameEle = layerNameEle.replace(/[^\w\s-]/gi, '');
+
+                // Add in item id
+                layerNameEle = layerNameEle + "-" + layerItemId;
+
+
+                // layer node
+                var layerDiv = domConstruct.create("div", {
+                    className: "panel-body"
+                });
+                domConstruct.place(layerDiv, this._features, "first");
+                // title of layer
+                var titleDiv = domConstruct.create("p", {
+                    className: "results",
+                    innerHTML: 'Closest 10 <span class="feature-name">' + layerName || results.id + '</span> within 50 miles'
+                });
+                domConstruct.place(titleDiv, layerDiv, "last");
+
+            }
+
+            
+
         },
 
         _getItem: function (itemId, token, isDataItem) {

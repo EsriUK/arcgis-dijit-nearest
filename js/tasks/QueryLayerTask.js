@@ -26,16 +26,15 @@ define(["dojo/Deferred"], function (Deferred) {
                     query.outFields = ["*"];         
                     query.returnGeometry = true;
 
-                    esriRequest.setRequestPreCallback(function (args) {
-                        if (args.url.indexOf(_this.properties.serviceUrl) > -1) {
-                            //console.log("Found url, adding token");
-                            
-                            if (esri.id.credentials && esri.id.credentials.length > 0) {
-                                args.url += "?token=" + esri.id.credentials[0].token;
-                            }
-                        }
-                        return args;
-                    });
+                    //esriRequest.setRequestPreCallback(function (args) {
+                    //    if (args.url.indexOf(_this.properties.serviceUrl) > -1) {
+
+                    //        if (esri.id.credentials && esri.id.credentials.length > 0) {
+                    //            args.url += "?token=" + esri.id.credentials[0].token;
+                    //        }
+                    //    }
+                    //    return args;
+                    //});
 
                     queryTask.execute(query, function (features) {
                         result.resolve({ error: null, id: _this.properties.layerId, results: features });
