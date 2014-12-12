@@ -31,7 +31,8 @@ function (
                 layerId: "",
                 maxFeatures: 5,
                 distance: 0,
-                distanceUnits: "miles"
+                distanceUnits: "miles",
+                features: null
             };
 
             // mix in settings and defaults
@@ -44,6 +45,7 @@ function (
             this.set("maxFeatures", defaults.maxFeatures);
             this.set("distance", defaults.distance);
             this.set("distanceUnits", defaults.distanceUnits);
+            this.set("features", defaults.features);
 
             // widget node
             this.domNode = srcRefNode;
@@ -69,7 +71,7 @@ function (
 
         // start widget. called by user
         startup: function () {
-
+            this._init();
         },
 
         // connections/subscriptions will be cleaned up during the destroy() lifecycle phase
@@ -95,7 +97,34 @@ function (
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
+        _init: function () {
+            if (this.features) {
 
+            }
+        },
+
+        _createFeaturesList: function () {
+            var _this = this, features, featureNameEle, featureElem,
+            featureInd = 0, fL = 0;
+
+            // For each feature and a sub row
+            for (featureInd = 0, fL = this.features.length; featureInd < fL; featureInd++) {
+                attributes = features[featureInd].feature.attributes;
+
+                if (!_isNullOrEmpty(attributes[titleField[0]])) {
+                    featureNameEle = attributes[titleField[0]];
+                    featureNameEle = featureNameEle.toString().replace(/ /g, '-');
+                }
+                else {
+                    // Crap data, null value so lets just make one up.
+                    featureNameEle = results.id + "-" + featureInd + "title";
+                }
+                // Remove any special characters that may cause element name errors
+                featureNameEle = featureNameEle.replace(/[^\w\s-]/gi, '');
+                featureNameEle = featureNameEle + "-" + featureInd + "-" + layerItemId;
+
+            }
+        }
 
     });
 });

@@ -10,6 +10,7 @@ define([
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
+    './_NearestBase',
     "dojo/dom-class",
     "dojo/dom-style",
     "dojo/dom-construct",
@@ -20,9 +21,9 @@ define([
     "./NearestLayer"
 ],
 function (
-    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domClass, domStyle, domConstruct, esriRequest, PopupTemplate, QueryLayerTask, ClientNearestTask, NearestLayer) {
+    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domClass, domStyle, domConstruct, esriRequest, PopupTemplate, QueryLayerTask, ClientNearestTask, NearestLayer) {
 
-    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
         //    Find the nearest features around a point
 
@@ -203,8 +204,7 @@ function (
 
         _displayResults: function(results) {
             var titleField = [];
-            //this._layers.innerHTML = "";
-
+         
             // Make sure there are some results
             if (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result)) {
 
@@ -256,7 +256,8 @@ function (
                     layerId: layerNameEle,
                     maxFeatures: this.maxResults,
                     distance: this.searchRadius,
-                    distanceUnits: "miles"
+                    distanceUnits: "miles",
+                    features: results.result
                 }, layerDiv);
 
                 layer.startup();
@@ -284,9 +285,7 @@ function (
             return this._getItem(itemId, token, true);
         },
 
-        _isNullOrEmpty: function (obj) {
-            return (obj === undefined || obj === null || obj === '');
-        },
+        
 
         _getLayerDetails: function (layers) {
             var i = 0, iL = 0, popupInfo = null, fields = [], j = 0, jL = 0, layerFields = null;
