@@ -43,3 +43,15 @@ Set your dojo config to load the module.
 Include the module for the Nearest.
 
 	require(["application/Nearest", ... ], function(Nearest, ... ){ ... });
+
+## Constructor
+
+TableOfContents(options, srcNode);
+
+### Options (Object)
+|property|required|type|value|description|
+|---|---|---|---|---|
+|webmapId|x|string|null|The id of the webmap that contains the layers to use for the nearest.|
+|location|x|Point|null|The point|
+|searchRadius|x|Integer|10|The radius to search within, in miles|
+|maxResults||Integer|5|The number of features to show|
