@@ -25,7 +25,7 @@ The details shown replicate those that are setup in the popup within your webmap
  [New to Github? Get started here.](https://github.com/)
 
 
- ## Setup
+## Setup
 Set your dojo config to load the module.
 
 	var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
@@ -39,7 +39,7 @@ Set your dojo config to load the module.
 	};
 
 
- ## Require module
+## Require module
 Include the module for the Nearest.
 
 	require(["application/Nearest", ... ], function(Nearest, ... ){ ... });
