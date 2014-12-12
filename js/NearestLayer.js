@@ -8,52 +8,88 @@ define([
     "dojo/_base/Deferred",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
-    'dijit/_WidgetsInTemplateMixin'
+    'dijit/_WidgetsInTemplateMixin',
+    'dojo/dom-construct',
+    './_NearestBase',
+    './NearestItem',
+    "esri/dijit/PopupTemplate"
 ],
 function (
-    template, declare, lang, Deferred,
-    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin) {
+    template, declare, lang, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate) {
 
-    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
         //    Find the nearest features around a point
 
         templateString: template,
         baseClass: 'nearestLayer',
         widgetsInTemplate: true,
+        titleText: "",
+        titleField: [],
 
         // Properties to be sent into constructor
 
         constructor: function (options, srcRefNode) {
             this.options = {
-                numberOfFeatures: 0,
-                layerName: "",
-                layerId: "",
+                results: null,
+                layerInfo: null,
                 maxFeatures: 5,
                 distance: 0,
-                distanceUnits: "miles",
-                features: null
+                distanceUnits: "miles"
             };
 
             // mix in settings and defaults
             var defaults = lang.mixin({}, this.options, options);
 
             // Set properties
-            this.set("numberOfFeatures", defaults.numberOfFeatures);
-            this.set("layerName", defaults.layerName);
-            this.set("layerId", defaults.layerId);
+            this.set("results", defaults.results);
+            this.set("layerInfo", defaults.layerInfo);
             this.set("maxFeatures", defaults.maxFeatures);
             this.set("distance", defaults.distance);
             this.set("distanceUnits", defaults.distanceUnits);
-            this.set("features", defaults.features);
 
             // widget node
             this.domNode = srcRefNode;
         },
 
-        buildRendering: function () {
+
+        postMixInProperties: function () {
+            var result = this.results.result,
+                layerPopupInfo = this.layerInfo.popupInfo,
+                template = new PopupTemplate(this.layerInfo.popupInfo),
+                layerName = layerInfo.layerName,
+                layerItemId = this.results.id.replace(/ /g, '-');
+
+            this.titleText = template.info.title.toString();
+
+            // Check the title to see if it contains a field
+            var titleTextSplit = this.titleText.split('}');
+            for (indT = 0; indT < titleTextSplit.length; indT++) {
+                if (titleTextSplit[indT].indexOf('{') > -1) {
+                    this.titleField.push(titleTextSplit[indT].substr(titleTextSplit[indT].indexOf('{') + 1));
+                }
+            }
+
+            if (this.titleField.length === 0) {
+                this.titleField.push(template.info.fieldInfos[0].fieldName);
+            }
+
+            // For each layer in the results add a row to the list
+            layerNameEle = this.results.id.replace(/ /g, '-');
+
+            // Remove any special characters that may cause element name errors
+            layerNameEle = layerNameEle.replace(/[^\w\s-]/gi, '');
+
+            // Add in item id
+            layerNameEle = layerNameEle + "-" + layerItemId;
+
+            this.set("layerName", layerName || this.results.id);
+            this.set("layerId", layerNameEle);
+            this.set("numberOfFeatures", result.length);
+
             this.inherited(arguments);
 
+            
         },
 
 
@@ -66,12 +102,15 @@ function (
 
             this.setupConnections();
 
+            this._init();
+
             this.inherited(arguments);
+
         },
 
         // start widget. called by user
         startup: function () {
-            this._init();
+            
         },
 
         // connections/subscriptions will be cleaned up during the destroy() lifecycle phase
@@ -98,32 +137,89 @@ function (
         /* Private Functions */
         /* ---------------- */
         _init: function () {
-            if (this.features) {
-
+            if (this.results.result) {
+                this._createFeaturesList();
             }
         },
 
         _createFeaturesList: function () {
-            var _this = this, features, featureNameEle, featureElem,
-            featureInd = 0, fL = 0;
+            var _this = this, features, featureNameEle, featureElem, attributes,
+            featureInd = 0, fL = 0, description = null, nameVals = [],
+            template = new PopupTemplate(this.layerInfo.popupInfo);
 
             // For each feature and a sub row
-            for (featureInd = 0, fL = this.features.length; featureInd < fL; featureInd++) {
-                attributes = features[featureInd].feature.attributes;
+            for (featureInd = 0, fL = this.results.result.length; featureInd < fL; featureInd++) {
+                feature = this.results.result[featureInd];
+                attributes = feature.feature.attributes;
 
-                if (!_isNullOrEmpty(attributes[titleField[0]])) {
-                    featureNameEle = attributes[titleField[0]];
-                    featureNameEle = featureNameEle.toString().replace(/ /g, '-');
+                // Need to check if we have a configured popup or if we are just listing the fields.
+                if (!this._isNullOrEmpty(this.layerInfo.popupInfo.description) && this.layerInfo.popupInfo.description.length > 0) {
+                    // We have a configured pop up description so lets use that
+                    description = this._getDescription(template.info.description, attributes)
                 }
                 else {
-                    // Crap data, null value so lets just make one up.
-                    featureNameEle = results.id + "-" + featureInd + "title";
+                    // Not configured, just list the fields
+                    var fieldArray = this.layerInfo.fields,
+                        nameVals = [];
+
+                    for (field in attributes) {
+                        // check if the current field is in the layerPopUpFields array before adding to the list
+                        if (fieldArray.indexOf(field) > -1) {
+                            nameVals.push({
+                                fieldName: template._fieldsMap[field].label,
+                                fieldValue: attributes[field]
+                            });
+                        }
+                    }
                 }
-                // Remove any special characters that may cause element name errors
-                featureNameEle = featureNameEle.replace(/[^\w\s-]/gi, '');
-                featureNameEle = featureNameEle + "-" + featureInd + "-" + layerItemId;
+
+                // layer node
+                var itemDiv = domConstruct.create("div", {});
+                domConstruct.place(itemDiv, this._features, "last");
+
+                var item = new NearestItem({
+                    feature: feature,
+                    distanceUnits: "miles",
+                    distance: this.results.result[featureInd].distance.toFixed(2),
+                    titleText: this.titleText,
+                    titleField: this.titleField,
+                    featureNumber: 1 + parseInt(featureInd, 10),
+                    description: description,
+                    fieldVlaues: nameVals
+                }, itemDiv);
+
+               
 
             }
+        },
+
+        _getFieldValues: function () {
+            // Not configured, just list the fields
+            var fieldArray = this.layerInfo.fields, nameVals = [];
+
+            for (field in attributes) {
+                // check if the current field is in the layerPopUpFields array before adding to the list
+                if (fieldArray.indexOf(field) > -1) {
+                    nameVals.push({
+                        fieldName: template._fieldsMap[field].label,
+                        fieldValue: attributes[field]
+                    });
+                }
+            }
+
+            return nameVals;
+        },
+
+        _getDescription: function (description, attributes) {
+            var desc = description, field;
+
+            for (field in attributes) {
+                if (description.indexOf(field) > -1) {
+                    desc = desc.replace('{' + field + '}', attributes[field]);
+                }
+            }
+
+            return desc;
         }
 
     });

@@ -8,13 +8,15 @@ define([
     "dojo/_base/Deferred",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
-    'dijit/_WidgetsInTemplateMixin'
+    'dijit/_WidgetsInTemplateMixin',
+    'dojo/dom-construct',
+    './_NearestBase'
 ],
 function (
     template, declare, lang, Deferred,
-    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin) {
+    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase) {
 
-    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
         //    Find the nearest features around a point
 
@@ -26,36 +28,73 @@ function (
 
         constructor: function (options, srcRefNode) {
             this.options = {
-                featureId: dijit.registry.getUniqueId(this.declaredClass), // The id of the feature.
+                feature: null,
+                layerItemId: "",
                 distanceUnits: "miles", // The units the distance is in.
                 distance: 999, // The distance the feature is from the location.
-                featureDetails: "Some details", // The details to display for the feature.
-                featureTitle: "Feature Title", // The title of the feature
                 featureNumber: 0, // The index or number this feature is in the list
                 showOnMap: false, // Show / hide the link for showing on a map
-                showOnMapLinktext: "Show on map" // The text to use for the link
+                showOnMapLinktext: "Show on map", // The text to use for the link
+                description: "",
+                fieldValues: null
             };
 
             // mix in settings and defaults
             var defaults = lang.mixin({}, this.options, options);
 
             // Set properties
-            this.set("featureId", defaults.featureId);
+            this.set("feature", defaults.feature);
+            this.set("layerItemId", defaults.layerItemId);
             this.set("distanceUnits", defaults.distanceUnits);
             this.set("distance", defaults.distance);
-            this.set("featureDetails", defaults.featureDetails);
-            this.set("featureTitle", defaults.featureTitle);
             this.set("featureNumber", defaults.featureNumber);
             this.set("showOnMap", defaults.showOnMap);
             this.set("showOnMapLinktext", defaults.showOnMapLinktext);
+            this.set("description", defaults.description);
+            this.set("fieldValues", defaults.fieldValues);
 
             // widget node
             this.domNode = srcRefNode;
         },
 
+        postMixInProperties: function () {
+            var featureNameEle, featureElem,
+                attributes = this.feature.feature.attributes;
+
+            if (!this._isNullOrEmpty(attributes[this.titleField[0]])) {
+                featureNameEle = attributes[this.titleField[0]];
+                featureNameEle = featureNameEle.toString().replace(/ /g, '-');
+            }
+            else {
+                // Crap data, null value so lets just make one up.
+                featureNameEle = results.id + "-" + this.featureNumber + "title";
+            }
+            // Remove any special characters that may cause element name errors
+            featureNameEle = featureNameEle.replace(/[^\w\s-]/gi, '');
+            featureNameEle = featureNameEle + "-" + this.featureNumber + "-" + this.layerItemId;
+
+            this.set("featureId", featureNameEle);
+            this.set("featureTitle", this._getTitle(this.titleText, this.titleField, attributes));
+
+
+            // Add the details of the feature required as specified by the Popup configuration
+            listFields = null;
+
+            if (!this._isNullOrEmpty(this.description)) {
+                var desc = domConstruct.create("div", { innerHTML: this.description });
+
+                // We have a configured pop up description so lets use that
+                this.set("featureDetails", this.description);
+            }
+            else {
+                // Build description from fields and values
+            }
+
+            this.inherited(arguments);
+        },
+
         buildRendering: function () {
             this.inherited(arguments);
-
         },
 
 
@@ -99,13 +138,17 @@ function (
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
+       
+        _getTitle: function (titleText, titleField, attributes) {
+            var ind;
 
-
-
-        _init: function () {
-            // Do query and build results
-
-            // Output events
-        }
+            if (titleField.length > 0) {
+                for (ind = 0; ind < titleField.length; ind++) {
+                    titleText = titleText.replace('{' + titleField[ind] + '}', attributes[titleField[ind]]);
+                }
+                return titleText;
+            }
+            return titleText;
+        }       
     });
 });

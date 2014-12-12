@@ -15,13 +15,12 @@ define([
     "dojo/dom-style",
     "dojo/dom-construct",
     "esri/request",
-    "esri/dijit/PopupTemplate",
     "./tasks/QueryLayerTask",
     "./tasks/ClientNearestTask",
     "./NearestLayer"
 ],
 function (
-    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domClass, domStyle, domConstruct, esriRequest, PopupTemplate, QueryLayerTask, ClientNearestTask, NearestLayer) {
+    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domClass, domStyle, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -216,48 +215,19 @@ function (
                 }
 
                 layerInfo = this.layerPopUpFields[currentLayerInd];
-                layerPopupInfo = layerInfo.popupInfo;
-                template = new PopupTemplate(layerPopupInfo);
-                titleText = template.info.title.toString();
-                layerName = layerInfo.layerName;
-                layerItemId = results.id.replace(/ /g, '-');
-
-                // Check the title to see if it contains a field
-                var titleTextSplit = titleText.split('}');
-                for (indT = 0; indT < titleTextSplit.length; indT++) {
-                    if (titleTextSplit[indT].indexOf('{') > -1) {
-                        titleField.push(titleTextSplit[indT].substr(titleTextSplit[indT].indexOf('{') + 1));
-                    }
-                }
-
-                if (titleField.length === 0) {
-                    titleField.push(template.info.fieldInfos[0].fieldName);
-                }
-
-                // For each layer in the results add a row to the list
-                layerNameEle = results.id.replace(/ /g, '-');
-
-                // Remove any special characters that may cause element name errors
-                layerNameEle = layerNameEle.replace(/[^\w\s-]/gi, '');
-
-                // Add in item id
-                layerNameEle = layerNameEle + "-" + layerItemId;
-
-
+                
                 // layer node
                 var layerDiv = domConstruct.create("div", {
                     className: "panel-body"
                 });
-                domConstruct.place(layerDiv, this._layers, "first");
+                domConstruct.place(layerDiv, this._layers, "last");
 
                 var layer = new NearestLayer({
-                    numberOfFeatures: results.result.length,
-                    layerName: layerName || results.id,
-                    layerId: layerNameEle,
+                    results: results,
+                    layerInfo: layerInfo,
                     maxFeatures: this.maxResults,
                     distance: this.searchRadius,
                     distanceUnits: "miles",
-                    features: results.result
                 }, layerDiv);
 
                 layer.startup();
