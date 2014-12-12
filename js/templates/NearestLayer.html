@@ -1,0 +1,20 @@
+﻿<div>
+    <!--Header row-->
+    <div class="panel-heading">
+        <!--Number of features-->
+        <span class="label pull-left" style="margin-right: 6px;">${numberOfFeatures}</span>
+        <!--Header-->
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#${layerId}">${layerName}</a>
+        </h4>
+    </div>
+    <div id='${layerId}' class='panel-collapse collapse '>
+        <div class='panel-body'>
+            <p class="results">Closest ${numberOfFeatures} <span class="feature-name">${layerName}</span> within ${distance} ${distanceUnits}</p>
+            <!-- Main section of row-->
+            <div data-dojo-attach-point="_features" class="panel-collapse collapse in" style="height: auto;">
+        
+            </div>
+        </div>
+    </div>
+</div>

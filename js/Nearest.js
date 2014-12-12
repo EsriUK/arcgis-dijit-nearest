@@ -16,10 +16,11 @@ define([
     "esri/request",
     "esri/dijit/PopupTemplate",
     "./tasks/QueryLayerTask",
-    "./tasks/ClientNearestTask"
+    "./tasks/ClientNearestTask",
+    "./NearestLayer"
 ],
 function (
-    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domClass, domStyle, domConstruct, esriRequest, PopupTemplate, QueryLayerTask, ClientNearestTask) {
+    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domClass, domStyle, domConstruct, esriRequest, PopupTemplate, QueryLayerTask, ClientNearestTask, NearestLayer) {
 
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -202,7 +203,7 @@ function (
 
         _displayResults: function(results) {
             var titleField = [];
-            this._features.innerHTML = "";
+            //this._layers.innerHTML = "";
 
             // Make sure there are some results
             if (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result)) {
@@ -247,18 +248,19 @@ function (
                 var layerDiv = domConstruct.create("div", {
                     className: "panel-body"
                 });
-                domConstruct.place(layerDiv, this._features, "first");
-                // title of layer
-                var titleDiv = domConstruct.create("p", {
-                    className: "results",
-                    innerHTML: 'Closest 10 <span class="feature-name">' + layerName || results.id + '</span> within 50 miles'
-                });
-                domConstruct.place(titleDiv, layerDiv, "last");
+                domConstruct.place(layerDiv, this._layers, "first");
 
+                var layer = new NearestLayer({
+                    numberOfFeatures: results.result.length,
+                    layerName: layerName || results.id,
+                    layerId: layerNameEle,
+                    maxFeatures: this.maxResults,
+                    distance: this.searchRadius,
+                    distanceUnits: "miles"
+                }, layerDiv);
+
+                layer.startup();
             }
-
-            
-
         },
 
         _getItem: function (itemId, token, isDataItem) {
