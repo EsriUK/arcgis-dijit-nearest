@@ -1,20 +1,20 @@
 ﻿<div id="${featureId}-feature-container" class="">
     <!--container for feature row-->
-    <div class="search-features col-sm-12">
+    <div class="${baseClass}-search-features">
         <!--Actual feature row-->
-        <div id="search-features-inner-${featureId}" class="search-features-inner">
+        <div id="search-features-inner-${featureId}" class="${baseClass}-search-features-inner">
             <!--Make whole row clickable-->
-            <a href="#" title="Toggles the display of the feature fields" class="col-md-12 text-place-summary-details show ">
+            <a href="#" title="Toggles the display of the feature fields" class="${baseClass}-text-place-summary-details">
                 <!--index-->
-                <span class="label pull-left feature-marker">${featureNumber}</span>
+                <span class="${baseClass}-feature-marker">${featureNumber}</span>
                 <!--div for infor-->
-                <div class="text-place-details">
+                <div class="${baseClass}-text-place-details">
                     <!--feature name-->
-                    <h3 id="${featureId}-feature-name" class="text-place-title">${featureTitle}</h3>
+                    <h3 id="${featureId}-feature-name" class="${baseClass}-text-place-title">${featureTitle}</h3>
                     ${distance}&nbsp;${distanceUnits}
 				    <!-- other fields-->
-                    <div id="${featureId}-field-values" class="text-place-basic-details" >
-                        <div class="col-md-12">${featureDetails}</div>
+                    <div id="${featureId}-field-values" class="${baseClass}-text-place-basic-details" >
+                        <div class="${baseClass}-details">${featureDetails}</div>
                     </div>
                 </div>
             </a>

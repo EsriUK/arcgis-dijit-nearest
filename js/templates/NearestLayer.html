@@ -1,18 +1,18 @@
 ﻿<div>
     <!--Header row-->
-    <div class="panel-heading">
+    <div class="${baseClass}-heading-container">
         <!--Number of features-->
-        <span class="label pull-left" style="margin-right: 6px;">${numberOfFeatures}</span>
+        <span class="${baseClass}-feature-count" style="margin-right: 6px;">${numberOfFeatures}</span>
         <!--Header-->
-        <h4 class="panel-title">
+        <h4 class="${baseClass}-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#${layerId}">${layerName}</a>
         </h4>
     </div>
-    <div id='${layerId}' class='panel-collapse collapse '>
-        <div class='panel-body'>
-            <p class="results">Closest ${numberOfFeatures} <span class="feature-name">${layerName}</span> within ${distance} ${distanceUnits}</p>
+    <div id='${layerId}' class='${baseClass}-details-container'>
+        <div class='${baseClass}-details-body'>
+            <p class="${baseClass}-results">Closest ${numberOfFeatures} <span class="${baseClass}-layer-name">${layerName}</span> within ${distance} ${distanceUnits}</p>
             <!-- Main section of row-->
-            <div data-dojo-attach-point="_features" class="panel-collapse collapse in" style="height: auto;">
+            <div data-dojo-attach-point="_features" class="${baseClass}-features-list" style="height: auto;">
         
             </div>
         </div>

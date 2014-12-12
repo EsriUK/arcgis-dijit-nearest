@@ -5,7 +5,6 @@ define([
     'dojo/text!./templates/NearestItem.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
-    "dojo/_base/Deferred",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
@@ -13,7 +12,7 @@ define([
     './_NearestBase'
 ],
 function (
-    template, declare, lang, Deferred,
+    template, declare, lang, 
     _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -58,8 +57,7 @@ function (
         },
 
         postMixInProperties: function () {
-            var featureNameEle, featureElem,
-                attributes = this.feature.feature.attributes;
+            var featureNameEle, attributes = this.feature.feature.attributes, listFields;
 
             if (!this._isNullOrEmpty(attributes[this.titleField[0]])) {
                 featureNameEle = attributes[this.titleField[0]];
@@ -67,7 +65,7 @@ function (
             }
             else {
                 // Crap data, null value so lets just make one up.
-                featureNameEle = results.id + "-" + this.featureNumber + "title";
+                featureNameEle = this.layerItemId + "-" + this.featureNumber + "title";
             }
             // Remove any special characters that may cause element name errors
             featureNameEle = featureNameEle.replace(/[^\w\s-]/gi, '');
@@ -81,7 +79,7 @@ function (
             listFields = null;
 
             if (!this._isNullOrEmpty(this.description)) {
-                var desc = domConstruct.create("div", { innerHTML: this.description });
+                //var desc = domConstruct.create("div", { innerHTML: this.description });
 
                 // We have a configured pop up description so lets use that
                 this.set("featureDetails", this.description);

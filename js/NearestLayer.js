@@ -5,7 +5,6 @@ define([
     'dojo/text!./templates/NearestLayer.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
-    "dojo/_base/Deferred",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
@@ -15,7 +14,7 @@ define([
     "esri/dijit/PopupTemplate"
 ],
 function (
-    template, declare, lang, Deferred, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate) {
+    template, declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -55,15 +54,16 @@ function (
 
         postMixInProperties: function () {
             var result = this.results.result,
-                layerPopupInfo = this.layerInfo.popupInfo,
                 template = new PopupTemplate(this.layerInfo.popupInfo),
-                layerName = layerInfo.layerName,
-                layerItemId = this.results.id.replace(/ /g, '-');
+                layerName = this.layerInfo.layerName,
+                layerItemId = this.results.id.replace(/ /g, '-'),
+                titleTextSplit, indT = 0, layerNameEle;
 
             this.titleText = template.info.title.toString();
 
             // Check the title to see if it contains a field
-            var titleTextSplit = this.titleText.split('}');
+            titleTextSplit = this.titleText.split('}');
+
             for (indT = 0; indT < titleTextSplit.length; indT++) {
                 if (titleTextSplit[indT].indexOf('{') > -1) {
                     this.titleField.push(titleTextSplit[indT].substr(titleTextSplit[indT].indexOf('{') + 1));
@@ -143,9 +143,9 @@ function (
         },
 
         _createFeaturesList: function () {
-            var _this = this, features, featureNameEle, featureElem, attributes,
-            featureInd = 0, fL = 0, description = null, nameVals = [],
-            template = new PopupTemplate(this.layerInfo.popupInfo);
+            var attributes, item,
+            featureInd = 0, fL = 0, description = null, nameVals = [], feature, fieldArray, itemDiv,
+            template = new PopupTemplate(this.layerInfo.popupInfo), field;
 
             // For each feature and a sub row
             for (featureInd = 0, fL = this.results.result.length; featureInd < fL; featureInd++) {
@@ -155,30 +155,33 @@ function (
                 // Need to check if we have a configured popup or if we are just listing the fields.
                 if (!this._isNullOrEmpty(this.layerInfo.popupInfo.description) && this.layerInfo.popupInfo.description.length > 0) {
                     // We have a configured pop up description so lets use that
-                    description = this._getDescription(template.info.description, attributes)
+                    description = this._getDescription(template.info.description, attributes);
                 }
                 else {
                     // Not configured, just list the fields
-                    var fieldArray = this.layerInfo.fields,
-                        nameVals = [];
+                    fieldArray = this.layerInfo.fields;
+                    nameVals = [];
 
                     for (field in attributes) {
-                        // check if the current field is in the layerPopUpFields array before adding to the list
-                        if (fieldArray.indexOf(field) > -1) {
-                            nameVals.push({
-                                fieldName: template._fieldsMap[field].label,
-                                fieldValue: attributes[field]
-                            });
+                        if (attributes.hasOwnProperty(field)) {
+                            // check if the current field is in the layerPopUpFields array before adding to the list
+                            if (fieldArray.indexOf(field) > -1) {
+                                nameVals.push({
+                                    fieldName: template._fieldsMap[field].label,
+                                    fieldValue: attributes[field]
+                                });
+                            }
                         }
                     }
                 }
 
                 // layer node
-                var itemDiv = domConstruct.create("div", {});
+                itemDiv = domConstruct.create("div", {});
                 domConstruct.place(itemDiv, this._features, "last");
 
-                var item = new NearestItem({
+                item = new NearestItem({
                     feature: feature,
+                    layerItemId: this.layerId,
                     distanceUnits: "miles",
                     distance: this.results.result[featureInd].distance.toFixed(2),
                     titleText: this.titleText,
@@ -193,29 +196,15 @@ function (
             }
         },
 
-        _getFieldValues: function () {
-            // Not configured, just list the fields
-            var fieldArray = this.layerInfo.fields, nameVals = [];
-
-            for (field in attributes) {
-                // check if the current field is in the layerPopUpFields array before adding to the list
-                if (fieldArray.indexOf(field) > -1) {
-                    nameVals.push({
-                        fieldName: template._fieldsMap[field].label,
-                        fieldValue: attributes[field]
-                    });
-                }
-            }
-
-            return nameVals;
-        },
-
+       
         _getDescription: function (description, attributes) {
             var desc = description, field;
 
             for (field in attributes) {
-                if (description.indexOf(field) > -1) {
-                    desc = desc.replace('{' + field + '}', attributes[field]);
+                if (attributes.hasOwnProperty(field)) {
+                    if (description.indexOf(field) > -1) {
+                        desc = desc.replace('{' + field + '}', attributes[field]);
+                    }
                 }
             }
 

@@ -5,14 +5,11 @@ define([
     'dojo/text!./templates/Nearest.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
-    "dojo/_base/Deferred",
     "dojo/promise/all",
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     './_NearestBase',
-    "dojo/dom-class",
-    "dojo/dom-style",
     "dojo/dom-construct",
     "esri/request",
     "./tasks/QueryLayerTask",
@@ -20,7 +17,7 @@ define([
     "./NearestLayer"
 ],
 function (
-    template, declare, lang, Deferred, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domClass, domStyle, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer) {
+    template, declare, lang, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -118,7 +115,7 @@ function (
             // Do query and build results
             if (!this._isNullOrEmpty(this.webmapId)) {
                 this._getItemData(this.webmapId, this.token).then(function (webMap) {
-                    var queryTasks = [], nearestTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers;
+                    var queryTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers;
 
                     if (webMap) {
                         _this.webMap = webMap;
@@ -146,7 +143,7 @@ function (
 
                         // Once all queries have finished do the find nearest
                         all(queryTasks).then(function (queryResults) {
-                            var j = 0, jL = queryResults.length, nearestTask = null, nearestTasks = [];
+                            var j = 0, jL = queryResults.length, nearestTask = null, nearestTasks = [], layerName = "";
 
                             for (j = 0; j < jL; j++) {
                                 // Perform find nearest on each set of features
@@ -177,7 +174,7 @@ function (
                                     if (nearestResults[k].error === null && nearestResults[k].result !== null) {
                                         if (nearestResults[k].result.limitExceeded) {
 
-                                            var layerName = "";
+                                            layerName = "";
                                             for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
                                                 if (_this.layerPopUpFields[lpInd].id === nearestResults[k].id) {
                                                     layerName = _this.layerPopUpFields[lpInd].layerName;
@@ -202,7 +199,7 @@ function (
         },
 
         _displayResults: function(results) {
-            var titleField = [];
+            var lpInd = 0, currentLayerInd, layerInfo, layerDiv, layer;
          
             // Make sure there are some results
             if (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result)) {
@@ -217,17 +214,17 @@ function (
                 layerInfo = this.layerPopUpFields[currentLayerInd];
                 
                 // layer node
-                var layerDiv = domConstruct.create("div", {
+                layerDiv = domConstruct.create("div", {
                     className: "panel-body"
                 });
                 domConstruct.place(layerDiv, this._layers, "last");
 
-                var layer = new NearestLayer({
+                layer = new NearestLayer({
                     results: results,
                     layerInfo: layerInfo,
                     maxFeatures: this.maxResults,
                     distance: this.searchRadius,
-                    distanceUnits: "miles",
+                    distanceUnits: "miles"
                 }, layerDiv);
 
                 layer.startup();
