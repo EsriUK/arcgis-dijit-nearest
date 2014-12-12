@@ -46,7 +46,7 @@ Include the module for the Nearest.
 
 ## Constructor
 
-TableOfContents(options, srcNode);
+Nearest(options, srcNode);
 
 ### Options (Object)
 |property|required|type|value|description|
