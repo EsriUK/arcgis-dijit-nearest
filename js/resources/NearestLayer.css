@@ -1,6 +1,16 @@
 .nearestLayer {
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    border-color: #ddd;
 
 }
+
 
 
 .nearestLayer-heading-container {
@@ -8,11 +18,25 @@
 }
 
 .nearestLayer-feature-count {
-
+    display: inline;
+    padding: .2em .6em .3em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+    float: left!important;
+    background-color: #5cb85c;
+    font-size: 100%;
+    color: #fff;
 }
 
 .nearestLayer-title {
-
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
 }
 
 .nearestLayer-details-container {
@@ -24,7 +48,9 @@
 }
 
 .nearestLayer-results {
-
+    font-style: italic;
+    color: #888;
+    font-size: .85em;
 }
 
 .nearestLayer-layer-name {

@@ -2,17 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Nearest Widget</title>
-        <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.11/esri/css/esri.css" />
-        <link rel="stylesheet" type="text/css" href="js/resources/NearestItem.css" />
+        <link rel="stylesheet" href="//js.arcgis.com/3.11/dijit/themes/claro/claro.css">
+        <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11/esri/css/esri.css" />
         <link rel="stylesheet" type="text/css" href="js/resources/Nearest.css" />
+        <link rel="stylesheet" type="text/css" href="js/resources/NearestLayer.css" />
+        <link rel="stylesheet" type="text/css" href="js/resources/NearestItem.css" />
 
         <script>
+            var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
             var dojoConfig = {
                 async: true,
                 has: { "native-xhr2": false },
-                paths: {
-                    "app": location.pathname.replace(/\/[^/]+$/, "") + "../../js"
-                }
+                packages: [{
+                    name: "app",
+                    location: package_path + '/js'
+                }]
             };
         </script>
 
@@ -31,9 +35,7 @@
 
         </script>
     </head>
-    <body>
+    <body class="claro">
         <div id="nearestWidget"></div>
-
-        <div id="nearestItem"></div>
     </body>
 </html>

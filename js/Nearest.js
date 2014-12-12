@@ -14,10 +14,13 @@ define([
     "esri/request",
     "./tasks/QueryLayerTask",
     "./tasks/ClientNearestTask",
-    "./NearestLayer"
+    "./NearestLayer",
+    "dojo/parser",
+    "dijit/layout/AccordionContainer",
+    "dijit/layout/ContentPane"
 ],
 function (
-    template, declare, lang, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer) {
+    template, declare, lang, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer, AccordionContainer, ContentPane) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:

@@ -1,19 +1,21 @@
-﻿<div>
-    <!--Header row-->
-    <div class="${baseClass}-heading-container">
-        <!--Number of features-->
-        <span class="${baseClass}-feature-count" style="margin-right: 6px;">${numberOfFeatures}</span>
-        <!--Header-->
-        <h4 class="${baseClass}-title">
-            <a data-toggle="collapse" data-parent="#accordion" href="#${layerId}">${layerName}</a>
-        </h4>
-    </div>
-    <div id='${layerId}' class='${baseClass}-details-container'>
-        <div class='${baseClass}-details-body'>
-            <p class="${baseClass}-results">Closest ${numberOfFeatures} <span class="${baseClass}-layer-name">${layerName}</span> within ${distance} ${distanceUnits}</p>
-            <!-- Main section of row-->
-            <div data-dojo-attach-point="_features" class="${baseClass}-features-list" style="height: auto;">
+﻿<div >
+    <div data-dojo-type="dijit/layout/ContentPane" title="${layerName}">
+        <!--Header row-->
+        <div class="${baseClass}-heading-container">
+            <!--Number of features-->
+            <span class="${baseClass}-feature-count" style="margin-right: 6px;">${numberOfFeatures}</span>
+            <!--Header-->
+            <h4 class="${baseClass}-title">
+                <a data-toggle="collapse" href="#${layerId}">${layerName}</a>
+            </h4>
+        </div>
+        <div id='${layerId}' class='${baseClass}-details-container'>
+            <div class='${baseClass}-details-body'>
+                <p class="${baseClass}-results">Closest ${numberOfFeatures} <span class="${baseClass}-layer-name">${layerName}</span> within ${distance} ${distanceUnits}</p>
+                <!-- Main section of row-->
+                <div data-dojo-attach-point="_features" class="${baseClass}-features-list" style="height: auto;">
         
+                </div>
             </div>
         </div>
     </div>

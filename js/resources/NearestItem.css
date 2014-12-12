@@ -30,6 +30,18 @@
 .nearestItem-feature-marker {
     background-color: #5cb85c;
     font-size: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 24px;
+    left: 18px;
+    padding: .2em .6em .3em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
 }
 
 .nearestItem-text-place-details {
