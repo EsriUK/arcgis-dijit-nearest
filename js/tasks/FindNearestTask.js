@@ -1,5 +1,10 @@
 /*global pulse, app, jQuery, require, document, esri, esriuk, Handlebars, console, $, mynearest, window, alert, unescape, define */
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+/*  Latitude/longitude spherical geodesy formulae & scripts           (c) Chris Veness 2002-2014  */
+/*   - www.movable-type.co.uk/scripts/latlong.html                                   MIT Licence  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
+
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
