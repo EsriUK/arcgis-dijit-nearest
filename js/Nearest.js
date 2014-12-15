@@ -17,10 +17,10 @@ define([
     "./NearestLayer",
     "dojo/parser",
     "dijit/layout/AccordionContainer",
-    "dijit/layout/ContentPane"
+    "dijit/layout/AccordionPane"
 ],
 function (
-    template, declare, lang, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer, AccordionContainer, ContentPane) {
+    template, declare, lang, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer, AccordionContainer, AccordionPane) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:

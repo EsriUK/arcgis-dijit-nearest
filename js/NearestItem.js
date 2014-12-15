@@ -75,18 +75,7 @@ function (
             this.set("featureTitle", this._getTitle(this.titleText, this.titleField, attributes));
 
 
-            // Add the details of the feature required as specified by the Popup configuration
-            listFields = null;
-
-            if (!this._isNullOrEmpty(this.description)) {
-                //var desc = domConstruct.create("div", { innerHTML: this.description });
-
-                // We have a configured pop up description so lets use that
-                this.set("featureDetails", this.description);
-            }
-            else {
-                // Build description from fields and values
-            }
+            
 
             this.inherited(arguments);
         },
@@ -102,6 +91,19 @@ function (
             // tags:
             //    private
             //console.log('app.Nearest::postCreate', arguments);
+
+            // Add the details of the feature required as specified by the Popup configuration
+            listFields = null;
+
+            if (!this._isNullOrEmpty(this.description)) {
+                var desc = domConstruct.toDom(this.description);
+
+                domConstruct.place(desc, this.featureDetails, "last");
+            }
+            else {
+                // Build description from fields and values
+            }
+            
 
             this.setupConnections();
 
