@@ -40,9 +40,20 @@ function (
                 location: null, // The location to use as the centre point. 
                 maxResults: 10, // The maximum number of features to return.
                 searchRadius: 5, // The search radius in miles.
-                display: "expandable", // Howw to display the results. Expandable or fixed.
-                token: "" // The token to use for requests to AGOL
+                display: "expandable", // How to display the results. Expandable or fixed.
+                token: "", // The token to use for requests to AGOL
+                layerOptions: [] // Options for each layer. These override the default radius and max results
             };
+
+            /*
+                layerOptions:[
+                    {
+                        itemId: ""
+                        maxResults:
+                        searchRadius:
+                    }
+                ]
+            */
 
             // mix in settings and defaults
             var defaults = lang.mixin({}, this.options, options);
@@ -152,11 +163,6 @@ function (
                                 // Perform find nearest on each set of features
                                 if ((queryResults[j].error === null) && (queryResults[j].results.features.length > 0)) {
 
-                                    /* 
-                                    In future we will choose the type of nearest task to run. E.g.
-                                    if this.nearestType == "client" use AF FindNearest
-                                    if this.nearestType == "agol" use AGOL Nearest GP task
-                                    */
                                     nearestTask = new ClientNearestTask({
                                         maxResults: _this.maxResults,
                                         layerId: queryResults[j].id
@@ -227,7 +233,8 @@ function (
                     layerInfo: layerInfo,
                     maxFeatures: this.maxResults,
                     distance: this.searchRadius,
-                    distanceUnits: "miles"
+                    distanceUnits: "miles",
+                    display: this.display
                 }, layerDiv);
 
                 layer.startup();

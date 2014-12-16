@@ -1,23 +1,38 @@
 
 
 
+var featureProps = {
+    feature: {
+        feature: {
+            attributes: {
+                FID: 1,
+                LineName: "Victoria",
+                SHAPE_Leng: 34698.8106044
+            }
+        }
+    },
+    layerItemId: "asdr34ff4ff4",
+    distanceUnits: "miles",
+    distance: 1.34,
+    featureNumber: 12,
+    showOnMap: false,
+    showOnMapLinktext: "Show on map",
+    description: "",
+    fieldValues: null,
+    titleText: "",
+    titleField: []
+};
 
-describe("A set of tests to test the Nearest Item widget", function() {
+
+describe("A set of tests to test the Nearest Item widget", function () {
     var NearestItem, widget, loadWidget = function (done) {
         require(["app/NearestItem"], function (nearestItem) {
-            widget = new nearestItem({}, 'widgetItem');
+            widget = new nearestItem(featureProps, 'widgetItem');
             NearestItem = nearestItem;
 
             widget.startup();
             done();
         });
-    }, featureProps = {
-        featureId: "asdr34ff4ff4",
-        distanceUnits: "miles",
-        distance: 1.34,
-        featureDetails: "Details <p>More</p>",
-        featureTitle: "Im a title",
-        featureNumber: 12
     };
 
 
@@ -37,15 +52,7 @@ describe("A set of tests to test the Nearest Item widget", function() {
         done();
     });
 
-    it("should have default properties set", function (done) {
-        expect(widget.featureId).toEqual("dijit._WidgetsInTemplateMixin_1");
-        expect(widget.distanceUnits).toEqual("miles");
-        expect(widget.distance).toEqual(999);
-        expect(widget.featureDetails).toEqual("Some details");
-        expect(widget.featureTitle).toEqual("Feature Title");
-        expect(widget.featureNumber).toEqual(0);
-        done();
-    });
+
 
 
     it("should set the properties when passed in via the constructor", function (done) {
@@ -57,12 +64,12 @@ describe("A set of tests to test the Nearest Item widget", function() {
         widget.startup();
 
         expect(widget.distance).toEqual(featureProps.distance);
-        expect(widget.featureId).toEqual(featureProps.featureId);
+        expect(widget.layerItemId).toEqual(featureProps.layerItemId);
         expect(widget.distanceUnits).toEqual(featureProps.distanceUnits);
         expect(widget.distance).toEqual(featureProps.distance);
-        expect(widget.featureDetails).toEqual(featureProps.featureDetails);
-        expect(widget.featureTitle).toEqual(featureProps.featureTitle);
-        expect(widget.featureNumber).toEqual(featureProps.featureNumber);
+        expect(widget.showOnMap).toEqual(featureProps.showOnMap);
+        expect(widget.showOnMapLinktext).toEqual(featureProps.showOnMapLinktext);
+        expect(widget.description).toEqual(featureProps.description);
 
         done();
     });

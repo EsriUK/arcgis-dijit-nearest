@@ -35,7 +35,9 @@ function (
                 showOnMap: false, // Show / hide the link for showing on a map
                 showOnMapLinktext: "Show on map", // The text to use for the link
                 description: "",
-                fieldValues: null
+                fieldValues: null,
+                titleText: "",
+                titleField: ""
             };
 
             // mix in settings and defaults
@@ -51,6 +53,8 @@ function (
             this.set("showOnMapLinktext", defaults.showOnMapLinktext);
             this.set("description", defaults.description);
             this.set("fieldValues", defaults.fieldValues);
+            this.set("titleText", defaults.titleText);
+            this.set("titleField", defaults.titleField);
 
             // widget node
             this.domNode = srcRefNode;

@@ -34,7 +34,8 @@ function (
                 layerInfo: null,
                 maxFeatures: 5,
                 distance: 0,
-                distanceUnits: "miles"
+                distanceUnits: "miles",
+                display: "expandable"
             };
 
             // mix in settings and defaults
@@ -46,6 +47,7 @@ function (
             this.set("maxFeatures", defaults.maxFeatures);
             this.set("distance", defaults.distance);
             this.set("distanceUnits", defaults.distanceUnits);
+            this.set("display", defaults.display);
 
             // widget node
             this.domNode = srcRefNode;
@@ -86,6 +88,15 @@ function (
             this.set("layerName", layerName || this.results.id);
             this.set("layerId", layerNameEle);
             this.set("numberOfFeatures", result.length);
+
+            if (this.display === "fixed") {
+                this.set("expanded", true);
+                this.set("expandedClass", "in");
+            }
+            else {
+                this.set("expanded", false);
+                this.set("expandedClass", "");
+            }
 
             this.inherited(arguments);
 

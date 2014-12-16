@@ -2,11 +2,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>Nearest Widget</title>
-        <link rel="stylesheet" href="//js.arcgis.com/3.11/dijit/themes/claro/claro.css">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+        <!-- ESRI CSS -->
         <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11/esri/css/esri.css" />
+        
+        <!-- Nearest CSS -->
         <link rel="stylesheet" type="text/css" href="js/resources/Nearest.css" />
         <link rel="stylesheet" type="text/css" href="js/resources/NearestLayer.css" />
         <link rel="stylesheet" type="text/css" href="js/resources/NearestItem.css" />
+
+
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
         <script>
             var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
@@ -20,6 +36,12 @@
             };
         </script>
 
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
         <script src="//js.arcgis.com/3.11/"></script>
 
         <script type="text/javascript">
@@ -31,11 +53,50 @@
                 }, "nearestWidget");
                     
                 nearest.startup();
+
+                var nearestSingle = new Nearest({
+                    webmapId: "a33fdad34af2419dbdb378e156c333f2",
+                    location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
+                    searchRadius: 1,
+                    maxResults: 1,
+                    display: "fixed"
+                }, "singleNearest");
+
+                nearestSingle.startup();
             });
 
         </script>
     </head>
     <body class="claro">
-        <div id="nearestWidget"></div>
+        <div class="container">
+
+            <!-- Jumbotron -->
+            <div class="jumbotron">
+                <h1>Nearest Widget</h1>
+                <p class="lead">Some examples of using the Nearest widget with Bootstrap CSS for style.</p>
+            </div>
+
+            <!-- Example row of columns -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2>List with 3 layers</h2>
+                    <div id="nearestWidget"></div>
+                </div>
+
+                <div class="col-lg-4">
+                    <h2>Single layer</h2>
+                    <div id="singleNearest"></div>
+                </div>
+            </div>
+
+            <!-- Site footer -->
+            <footer class="footer">
+                <p>&copy; Company 2014</p>
+            </footer>
+
+        </div>
+        <!-- /container -->
+
+        
     </body>
 </html>
