@@ -4,13 +4,19 @@
 }
 
 .nearestItem-search-features {
+    /*position: relative;
+    z-index: 10;
+    overflow: hidden;
+    outline: none;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;*/
     position: relative;
     z-index: 10;
     overflow: hidden;
     outline: none;
     padding-left: 0;
     padding-right: 0;
-    text-align: left;
 }
 
 
@@ -19,18 +25,23 @@
 }
 
 .nearestItem-text-place-summary-details {
-    background: none repeat scroll 0 0 #FFFFFF;
+    /*background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #fff;
     display: block;
     margin: 0 0 2px;
     padding: 5px 10px 5px 10px;
     position: relative;
-    text-decoration: none;
+    text-decoration: none;*/
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #fff;
+    margin: 0 0 2px;
+    padding: 5px 10px 5px 10px;
+    position: relative;
+    float:left;
 }
 
 .nearestItem-feature-marker {
-    background-color: #5cb85c;
-    font-size: 100%;
+    /*
     display: inline-block;
     position: absolute;
     top: 24px;
@@ -42,7 +53,14 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: baseline;
-    border-radius: .25em;
+    border-radius: .25em;*/
+    float:left;
+    background-color: #5cb85c;
+    font-size: 100%;
+    display: inline-block;
+    position: absolute;
+    top: 24px;
+    left: 18px;
 }
 
 .nearestItem-text-place-details {
@@ -53,7 +71,7 @@
 }
 
 .nearestItem-text-place-title {
-
+    margin: 0px;
 }
 
 .nearestItem-text-place-basic-details {
