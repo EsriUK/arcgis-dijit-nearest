@@ -19,12 +19,12 @@ define(["dojo/Deferred"], function (Deferred) {
                 };
 
                 task.execute(params).then(function (results) {
-                    result.resolve({ id: _this.properties.layerId, result: results, error: null });
+                    result.resolve({ id: _this.properties.layerId, result: results, error: null, itemId: _this.properties.itemId });
                 }, function (err) {
-                    result.resolve({ id: _this.properties.layerId, result: null, error: err });
+                    result.resolve({ id: _this.properties.layerId, result: null, error: err, itemId: _this.properties.itemId });
                 }).otherwise(function (err) {
                     //console.error(err.message);
-                    result.resolve({ id: _this.properties.layerId, result: null, error: err });
+                    result.resolve({ id: _this.properties.layerId, result: null, error: err, itemId: _this.properties.itemId });
                 });
             });
 

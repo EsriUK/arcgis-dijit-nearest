@@ -50,7 +50,8 @@ function (
                     {
                         itemId: ""
                         maxResults:
-                        searchRadius:
+                        searchRadius:,
+                        showOnMap: 
                     }
                 ]
             */
@@ -64,6 +65,7 @@ function (
             this.set("maxResults", defaults.maxResults);
             this.set("searchRadius", defaults.searchRadius);
             this.set("display", defaults.display);
+            this.set("layerOptions", defaults.layerOptions);
 
             // widget node
             this.domNode = srcRefNode;
@@ -129,7 +131,7 @@ function (
             // Do query and build results
             if (!this._isNullOrEmpty(this.webmapId)) {
                 this._getItemData(this.webmapId, this.token).then(function (webMap) {
-                    var queryTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers;
+                    var queryTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers, layerOpts;
 
                     if (webMap) {
                         _this.webMap = webMap;
@@ -142,13 +144,16 @@ function (
                         // Go through operational layers and query each one
                         for (i = 0, iL = opLayers.length; i < iL; i++) {
 
+                            layerOpts = _this._getlayerOptions(opLayers[i].itemId);
+                            
                             // check if layer has a url to be able to perform a query
                             if (!_this._isNullOrEmpty(opLayers[i].url)) {
                                 task = new QueryLayerTask({
                                     currentPoint: _this.location,
-                                    searchRadius: _this.searchRadius,
+                                    searchRadius: layerOpts.searchRadius,
                                     serviceUrl: opLayers[i].url,
-                                    layerId: opLayers[i].id
+                                    layerId: opLayers[i].id,
+                                    itemId: opLayers[i].itemId
                                 });
 
                                 queryTasks.push(task.execute());
@@ -157,15 +162,18 @@ function (
 
                         // Once all queries have finished do the find nearest
                         all(queryTasks).then(function (queryResults) {
-                            var j = 0, jL = queryResults.length, nearestTask = null, nearestTasks = [], layerName = "";
+                            var j = 0, jL = queryResults.length, nearestTask = null, nearestTasks = [], layerName = "", layerOpts;
 
                             for (j = 0; j < jL; j++) {
+                                layerOpts = _this._getlayerOptions(queryResults[j].itemId);
+
                                 // Perform find nearest on each set of features
                                 if ((queryResults[j].error === null) && (queryResults[j].results.features.length > 0)) {
 
                                     nearestTask = new ClientNearestTask({
-                                        maxResults: _this.maxResults,
-                                        layerId: queryResults[j].id
+                                        maxResults: layerOpts.maxResults,
+                                        layerId: queryResults[j].id,
+                                        itemId: queryResults[j].itemId
                                     });
 
                                     nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results));
@@ -207,8 +215,24 @@ function (
             // Output events
         },
 
+        _getlayerOptions: function(itemId) {
+            var i = 0, iL = 0;
+
+            if(this.layerOptions) {
+                for (i = 0, iL = this.layerOptions.length; i < iL; i++) {
+                    if(this.layerOptions[i].itemId === itemId)
+                        return this.layerOptions[i];
+                    }
+            }
+            return {
+                maxResults: this.maxResults,
+                searchRadius: this.searchRadius,
+                showOnMap: false
+            };
+        },
+
         _displayResults: function(results) {
-            var lpInd = 0, currentLayerInd, layerInfo, layerDiv, layer;
+            var lpInd = 0, currentLayerInd, layerInfo, layerDiv, layer, layerOpts;
          
             // Make sure there are some results
             if (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result)) {
@@ -228,13 +252,16 @@ function (
                 });
                 domConstruct.place(layerDiv, this._layers, "last");
 
+                layerOpts = this._getlayerOptions(results.itemId);
+
                 layer = new NearestLayer({
                     results: results,
                     layerInfo: layerInfo,
-                    maxFeatures: this.maxResults,
-                    distance: this.searchRadius,
+                    maxFeatures: layerOpts.maxResults,
+                    distance: layerOpts.searchRadius,
                     distanceUnits: "miles",
-                    display: this.display
+                    display: this.display,
+                    showOnMap: layerOpts.showOnMap
                 }, layerDiv);
 
                 layer.startup();

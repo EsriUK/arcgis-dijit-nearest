@@ -35,7 +35,8 @@ function (
                 maxFeatures: 5,
                 distance: 0,
                 distanceUnits: "miles",
-                display: "expandable"
+                display: "expandable",
+                showOnMap: false
             };
 
             // mix in settings and defaults
@@ -48,6 +49,7 @@ function (
             this.set("distance", defaults.distance);
             this.set("distanceUnits", defaults.distanceUnits);
             this.set("display", defaults.display);
+            this.set("showOnMap", defaults.showOnMap);
 
             // widget node
             this.domNode = srcRefNode;
@@ -201,7 +203,8 @@ function (
                     titleField: this.titleField,
                     featureNumber: 1 + parseInt(featureInd, 10),
                     description: description,
-                    fieldVlaues: nameVals
+                    fieldVlaues: nameVals,
+                    showOnMap: this.showOnMap
                 }, itemDiv);
 
                

@@ -9,11 +9,13 @@ define([
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     'dojo/dom-construct',
+    'dojo/topic',
+    'dojo/on',
     './_NearestBase'
 ],
 function (
     template, declare, lang, 
-    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase) {
+    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, topic, on, _NearestBase) {
 
     return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -78,7 +80,12 @@ function (
             this.set("featureId", featureNameEle);
             this.set("featureTitle", this._getTitle(this.titleText, this.titleField, attributes));
 
-
+            if (this.showOnMap) {
+                this.set("showOnMapVisible", "block");
+            }
+            else {
+                this.set("showOnMapVisible", "none");
+            }
             
 
             this.inherited(arguments);
@@ -130,7 +137,11 @@ function (
             //    wire events, and such
             //
             //console.log('app.Nearest::setupConnections', arguments);
+            var _this = this;
 
+            on(this.mapButton, "onclick", function (evt) {
+                topic.publish("Nearest::showonmap", _this.feature);
+            });
         },
 
 

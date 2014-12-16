@@ -45,11 +45,34 @@
         <script src="//js.arcgis.com/3.11/"></script>
 
         <script type="text/javascript">
-            require(["esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "app/NearestItem"], function (Point, SpatialReference, Nearest, NearestItem) {
+            require([
+                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/symbols/SimpleFillSymbol",
+                "esri/symbols/SimpleLineSymbol", "esri/Color"],
+                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, SimpleFillSymbol, SimpleLineSymbol, Color) {
                 var nearest = new Nearest({
                     webmapId: "0713c71403f94013a399ab54910ec8bf",
                     location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
-                    searchRadius: 50
+                    searchRadius: 50,
+                    layerOptions: [
+                        {
+                            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+                            searchRadius: 50,
+                            maxResults: 5,
+                            showOnMap: false
+                        },
+                        {
+                            itemId: "7b9ddd9e54f5410eafbe9e3fc0ad8910",
+                            searchRadius: 50,
+                            maxResults: 3,
+                            showOnMap: true
+                        },
+                        {
+                            itemId: "ee34ad1a6d7a4069a4d65e4927528dd7",
+                            searchRadius: 50,
+                            maxResults: 1,
+                            showOnMap: false
+                        }
+                    ]
                 }, "nearestWidget");
                     
                 nearest.startup();
@@ -63,6 +86,24 @@
                 }, "singleNearest");
 
                 nearestSingle.startup();
+
+                map = new Map("map", {
+                    center: [-0.8055515, 51.8003171],
+                    zoom: 3,
+                    basemap: "topo"
+                });
+
+                topic.subscribe("Nearest::showonmap", function (feature) {
+                    var infoTemplate = new InfoTemplate();
+                    var symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+                        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+                        new Color([255, 255, 255, 0.35]), 1), new Color([125, 125, 125, 0.35]));
+
+                    feature.setSymbol(symbol);
+                    feature.setInfoTemplate(infoTemplate);
+
+                    map.graphics.add(feature);
+                });
             });
 
         </script>
@@ -79,13 +120,19 @@
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-lg-7">
-                    <h2>List with 3 layers</h2>
-                    <div id="nearestWidget"></div>
+                    <h2>A map</h2>
+                    <div id="map"></div>
                 </div>
 
                 <div class="col-lg-5">
                     <h2>Single layer</h2>
                     <div id="singleNearest"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>List with 3 layers</h2>
+                    <div id="nearestWidget"></div>
                 </div>
             </div>
 

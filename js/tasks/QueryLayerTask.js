@@ -37,10 +37,10 @@ define(["dojo/Deferred"], function (Deferred) {
                     //});
 
                     queryTask.execute(query, function (features) {
-                        result.resolve({ error: null, id: _this.properties.layerId, results: features });
+                        result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId });
                     },
                     function (error) {
-                        result.resolve({ error: error, id: _this.properties.layerId, results: null });
+                        result.resolve({ error: error, id: _this.properties.layerId, results: null, itemId: _this.properties.itemId });
                     });
                 });
 
