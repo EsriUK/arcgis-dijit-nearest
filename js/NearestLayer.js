@@ -92,10 +92,12 @@ function (
             if (this.display === "fixed") {
                 this.set("expanded", true);
                 this.set("expandedClass", "in");
+                this.set("collapseClass", "");
             }
             else {
                 this.set("expanded", false);
                 this.set("expandedClass", "");
+                this.set("collapseClass", "collapse");
             }
 
             this.inherited(arguments);

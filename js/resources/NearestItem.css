@@ -4,13 +4,6 @@
 }
 
 .nearestItem-search-features {
-    /*position: relative;
-    z-index: 10;
-    overflow: hidden;
-    outline: none;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;*/
     position: relative;
     z-index: 10;
     overflow: hidden;
@@ -25,13 +18,6 @@
 }
 
 .nearestItem-text-place-summary-details {
-    /*background: none repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #fff;
-    display: block;
-    margin: 0 0 2px;
-    padding: 5px 10px 5px 10px;
-    position: relative;
-    text-decoration: none;*/
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #fff;
     margin: 0 0 2px;
@@ -41,19 +27,6 @@
 }
 
 .nearestItem-feature-marker {
-    /*
-    display: inline-block;
-    position: absolute;
-    top: 24px;
-    left: 18px;
-    padding: .2em .6em .3em;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25em;*/
     float:left;
     background-color: #5cb85c;
     font-size: 100%;

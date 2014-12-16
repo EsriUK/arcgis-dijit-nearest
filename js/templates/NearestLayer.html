@@ -5,10 +5,10 @@
         <span class="${baseClass}-feature-count label pull-left" style="margin-right: 6px;">${numberOfFeatures}</span>
         <!--Header-->
         <h4 class="${baseClass}-title panel-title">
-            <a data-toggle="collapse" href="#${layerId}" aria-expanded="${expanded}">${layerName}</a>
+            <a data-toggle="${collapseClass}" href="#${layerId}" aria-expanded="${expanded}">${layerName}</a>
         </h4>
     </div>
-    <div id='${layerId}' class='${baseClass}-details-container panel-collapse collapse ${expandedClass}'>
+    <div id='${layerId}' class='${baseClass}-details-container panel-collapse ${collapseClass} ${expandedClass}'>
         <div class='${baseClass}-details-body panel-body'>
             <p class="${baseClass}-results">Closest ${numberOfFeatures} <span class="${baseClass}-layer-name">${layerName}</span> within ${distance} ${distanceUnits}</p>
             <!-- Main section of row-->
