@@ -5,7 +5,7 @@ define([
     'dojo/text!./templates/NearestLayer.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
-    'dijit/_WidgetBase',
+    'dijit/_Widget',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     'dojo/dom-construct',
@@ -14,9 +14,9 @@ define([
     "esri/dijit/PopupTemplate"
 ],
 function (
-    template, declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate) {
 
-    return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
         //    Find the nearest features around a point
 

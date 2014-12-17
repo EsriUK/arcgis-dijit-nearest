@@ -6,7 +6,7 @@ define([
     'dojo/_base/declare',
     "dojo/_base/lang",
     "dojo/promise/all",
-    'dijit/_WidgetBase',
+    'dijit/_Widget',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     './_NearestBase',
@@ -20,9 +20,9 @@ define([
     "dijit/layout/AccordionPane"
 ],
 function (
-    template, declare, lang, all, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer, AccordionContainer, AccordionPane) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer, AccordionContainer, AccordionPane) {
 
-    return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
         //    Find the nearest features around a point
 
@@ -158,6 +158,8 @@ function (
 
                                 queryTasks.push(task.execute());
                             }
+
+                            // Need to also get the symbology for each layer
                         }
 
                         // Once all queries have finished do the find nearest

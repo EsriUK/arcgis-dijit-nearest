@@ -5,7 +5,7 @@ define([
     'dojo/text!./templates/NearestItem.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
-    'dijit/_WidgetBase',
+    'dijit/_Widget',
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     'dojo/dom-construct',
@@ -15,9 +15,9 @@ define([
 ],
 function (
     template, declare, lang, 
-    _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, topic, on, _NearestBase) {
+    _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, topic, on, _NearestBase) {
 
-    return declare([_WidgetBase, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
         //    Find the nearest features around a point
 

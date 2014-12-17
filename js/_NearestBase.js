@@ -5,11 +5,11 @@ define([
     'dojo/_base/declare',
     'dijit/_WidgetBase'
 ],
-function (declare, _WidgetBase) {
+function (declare, _Widget) {
     // module:
     //      _NearestBase
 
-    return declare([_WidgetBase], {
+    return declare([_Widget], {
         // summary:
         //		Base class for the Nearest, NearstLayer and NearestItem widgets.
 
