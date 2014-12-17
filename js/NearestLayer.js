@@ -170,7 +170,7 @@ function (
                 // Need to check if we have a configured popup or if we are just listing the fields.
                 if (!this._isNullOrEmpty(this.layerInfo.popupInfo.description) && this.layerInfo.popupInfo.description.length > 0) {
                     // We have a configured pop up description so lets use that
-                    description = this._getDescription(template.info.description, attributes);
+                    description = this._fieldReplace(template.info.description, attributes);
                 }
                 else {
                     // Not configured, just list the fields
@@ -210,21 +210,6 @@ function (
                
 
             }
-        },
-
-       
-        _getDescription: function (description, attributes) {
-            var desc = description, field;
-
-            for (field in attributes) {
-                if (attributes.hasOwnProperty(field)) {
-                    if (description.indexOf(field) > -1) {
-                        desc = desc.replace('{' + field + '}', attributes[field]);
-                    }
-                }
-            }
-
-            return desc;
         }
 
     });

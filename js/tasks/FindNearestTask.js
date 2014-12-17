@@ -1,8 +1,10 @@
 /*global pulse, app, jQuery, require, document, esri, esriuk, Handlebars, console, $, mynearest, window, alert, unescape, define */
 
+/* This task uses code from www.movable-type.co.uk                                                */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  Latitude/longitude spherical geodesy formulae & scripts           (c) Chris Veness 2002-2014  */
 /*   - www.movable-type.co.uk/scripts/latlong.html                                   MIT Licence  */
+/*  https://github.com/chrisveness/geodesy/blob/master/LICENSE                                    */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
 define([

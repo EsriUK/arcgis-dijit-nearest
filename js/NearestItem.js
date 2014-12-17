@@ -139,10 +139,10 @@ function (
             //console.log('app.Nearest::setupConnections', arguments);
             var _this = this;
 
-            on(this.mapButton, "onclick", function (evt) {
+            on(this.mapButton, "click", function (evt) {
                 topic.publish("Nearest::showonmap", _this.feature);
             });
-        },
+        }
 
 
         /* ---------------- */
@@ -154,16 +154,6 @@ function (
         /* Private Functions */
         /* ---------------- */
        
-        _getTitle: function (titleText, titleField, attributes) {
-            var ind;
-
-            if (titleField.length > 0) {
-                for (ind = 0; ind < titleField.length; ind++) {
-                    titleText = titleText.replace('{' + titleField[ind] + '}', attributes[titleField[ind]]);
-                }
-                return titleText;
-            }
-            return titleText;
-        }       
+        
     });
 });
