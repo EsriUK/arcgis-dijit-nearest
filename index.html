@@ -46,9 +46,8 @@
 
         <script type="text/javascript">
             require([
-                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/symbols/SimpleFillSymbol",
-                "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/symbols/SimpleMarkerSymbol", "esri/symbols/CartographicLineSymbol", "esri/symbols/PictureFillSymbol", "esri/graphic"],
-                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, SimpleFillSymbol, SimpleLineSymbol, Color, SimpleMarkerSymbol, CartographicLineSymbol, PictureFillSymbol, Graphic) {
+                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/graphic"],
+                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, Graphic) {
                 var nearest = new Nearest({
                     webmapId: "0713c71403f94013a399ab54910ec8bf",
                     location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
@@ -58,7 +57,7 @@
                             itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
                             searchRadius: 50,
                             maxResults: 5,
-                            showOnMap: false
+                            showOnMap: true
                         },
                         {
                             itemId: "7b9ddd9e54f5410eafbe9e3fc0ad8910",
@@ -70,7 +69,7 @@
                             itemId: "ee34ad1a6d7a4069a4d65e4927528dd7",
                             searchRadius: 50,
                             maxResults: 1,
-                            showOnMap: false
+                            showOnMap: true
                         }
                     ]
                 }, "nearestWidget");
@@ -93,49 +92,21 @@
                     basemap: "topo"
                 });
 
-                topic.subscribe("Nearest::showonmap", function (feature) {
+                topic.subscribe("Nearest::showonmap", function (feature, renderer) {
                     var infoTemplate = new InfoTemplate();
-
-                    var markerSymbol = new SimpleMarkerSymbol();
-                    markerSymbol.setPath("M16,4.938c-7.732,0-14,4.701-14,10.5c0,1.981,0.741,3.833,2.016,5.414L2,25.272l5.613-1.44c2.339,1.316,5.237,2.106,8.387,2.106c7.732,0,14-4.701,14-10.5S23.732,4.938,16,4.938zM16.868,21.375h-1.969v-1.889h1.969V21.375zM16.772,18.094h-1.777l-0.176-8.083h2.113L16.772,18.094z");
-                    markerSymbol.setColor(new Color("#00FFFF"));
-
-                    // lineSymbol used for freehand polyline, polyline and line. 
-                    var lineSymbol = new CartographicLineSymbol(
-                      CartographicLineSymbol.STYLE_SOLID,
-                      new Color([255, 0, 0]), 10,
-                      CartographicLineSymbol.CAP_ROUND,
-                      CartographicLineSymbol.JOIN_MITER, 5
-                    );
-
-                    // fill symbol used for extent, polygon and freehand polygon, use a picture fill symbol
-                    // the images folder contains additional fill images, other options: sand.png, swamp.png or stiple.png
-                    var fillSymbol = new PictureFillSymbol(
-                      "images/mangrove.png",
-                      new SimpleLineSymbol(
-                        SimpleLineSymbol.STYLE_SOLID,
-                        new Color('#000'),
-                        1
-                      ),
-                      42,
-                      42
-                    );
-
-                    // figure out which symbol to use
-                    var symbol;
-                    if (feature.feature.geometry.type === "point" || feature.feature.geometry.type === "multipoint") {
-                        symbol = markerSymbol;
-                    } else if (feature.feature.geometry.type === "line" || feature.feature.geometry.type === "polyline") {
-                        symbol = lineSymbol;
-                    }
-                    else {
-                        symbol = fillSymbol;
-                    }
 
                     //feature.setSymbol(symbol);
                     //feature.setInfoTemplate(infoTemplate);
 
-                    map.graphics.add(new Graphic(feature.feature.geometry, symbol));
+                    map.graphics.clear();
+                    map.graphics.add(new Graphic(feature.feature.geometry, renderer.symbol));
+
+                    if (feature.feature.geometry.type === "point") {
+                        map.centerAndZoom(feature.feature.geometry, 11);
+                    }
+                    else {
+                        map.setExtent(feature.feature.geometry.getExtent().expand(0.75));
+                    }
                 });
             });
 

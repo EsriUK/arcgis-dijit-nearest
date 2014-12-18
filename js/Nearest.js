@@ -12,15 +12,12 @@ define([
     './_NearestBase',
     "dojo/dom-construct",
     "esri/request",
-    "./tasks/QueryLayerTask",
     "./tasks/ClientNearestTask",
-    "./NearestLayer",
-    "dojo/parser",
-    "dijit/layout/AccordionContainer",
-    "dijit/layout/AccordionPane"
+    "./tasks/LayerInfoTask",
+    "./NearestLayer"
 ],
 function (
-    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, QueryLayerTask, ClientNearestTask, NearestLayer, AccordionContainer, AccordionPane) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, ClientNearestTask, LayerInfoTask, NearestLayer) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -143,12 +140,11 @@ function (
                         // Run a query to get the features
                         // Go through operational layers and query each one
                         for (i = 0, iL = opLayers.length; i < iL; i++) {
-
                             layerOpts = _this._getlayerOptions(opLayers[i].itemId);
                             
                             // check if layer has a url to be able to perform a query
                             if (!_this._isNullOrEmpty(opLayers[i].url)) {
-                                task = new QueryLayerTask({
+                                task = new LayerInfoTask({
                                     currentPoint: _this.location,
                                     searchRadius: layerOpts.searchRadius,
                                     serviceUrl: opLayers[i].url,
@@ -157,9 +153,7 @@ function (
                                 });
 
                                 queryTasks.push(task.execute());
-                            }
-
-                            // Need to also get the symbology for each layer
+                            } 
                         }
 
                         // Once all queries have finished do the find nearest
@@ -178,7 +172,7 @@ function (
                                         itemId: queryResults[j].itemId
                                     });
 
-                                    nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results));
+                                    nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results, queryResults[j].layerInfo));
                                 }
                             }
 

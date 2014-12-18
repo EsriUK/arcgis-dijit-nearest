@@ -8,7 +8,7 @@ define(["dojo/Deferred"], function (Deferred) {
     var taskOutput = function ClientNearestTask(props) {
         this.properties = props;
 
-        this.findNearest = function (point, featureSet) {
+        this.findNearest = function (point, featureSet, layerInfo) {
             var _this = this, result = new Deferred();
 
             require(["app/tasks/FindNearestTask"],
@@ -19,12 +19,12 @@ define(["dojo/Deferred"], function (Deferred) {
                 };
 
                 task.execute(params).then(function (results) {
-                    result.resolve({ id: _this.properties.layerId, result: results, error: null, itemId: _this.properties.itemId });
+                    result.resolve({ id: _this.properties.layerId, result: results, layerInfo: layerInfo, error: null, itemId: _this.properties.itemId });
                 }, function (err) {
-                    result.resolve({ id: _this.properties.layerId, result: null, error: err, itemId: _this.properties.itemId });
+                    result.resolve({ id: _this.properties.layerId, result: null, layerInfo: null, error: err, itemId: _this.properties.itemId });
                 }).otherwise(function (err) {
                     //console.error(err.message);
-                    result.resolve({ id: _this.properties.layerId, result: null, error: err, itemId: _this.properties.itemId });
+                    result.resolve({ id: _this.properties.layerId, result: null, layerInfo: null, error: err, itemId: _this.properties.itemId });
                 });
             });
 
@@ -32,8 +32,8 @@ define(["dojo/Deferred"], function (Deferred) {
         };
 
 
-        this.execute = function (point, featureSet) {
-            return this.findNearest(point, featureSet);
+        this.execute = function (point, featureSet, layerInfo) {
+            return this.findNearest(point, featureSet, layerInfo);
         };
     };
 

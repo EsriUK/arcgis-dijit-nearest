@@ -39,7 +39,8 @@ function (
                 description: "",
                 fieldValues: null,
                 titleText: "",
-                titleField: ""
+                titleField: "",
+                renderer: null
             };
 
             // mix in settings and defaults
@@ -57,6 +58,7 @@ function (
             this.set("fieldValues", defaults.fieldValues);
             this.set("titleText", defaults.titleText);
             this.set("titleField", defaults.titleField);
+            this.set("renderer", defaults.renderer);
 
             // widget node
             this.domNode = srcRefNode;
@@ -140,7 +142,7 @@ function (
             var _this = this;
 
             on(this.mapButton, "click", function (evt) {
-                topic.publish("Nearest::showonmap", _this.feature);
+                topic.publish("Nearest::showonmap", _this.feature, _this.renderer);
             });
         }
 

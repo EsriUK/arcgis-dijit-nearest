@@ -204,7 +204,8 @@ function (
                     featureNumber: 1 + parseInt(featureInd, 10),
                     description: description,
                     fieldVlaues: nameVals,
-                    showOnMap: this.showOnMap
+                    showOnMap: this.showOnMap,
+                    renderer: this.results.layerInfo.renderer
                 }, itemDiv);
 
                
