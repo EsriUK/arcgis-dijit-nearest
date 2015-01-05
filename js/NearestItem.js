@@ -2,6 +2,7 @@
 
 
 define([
+    'dojo',
     'dojo/text!./templates/NearestItem.html',
     'dojo/_base/declare',
     "dojo/_base/lang",
@@ -11,10 +12,11 @@ define([
     'dojo/dom-construct',
     'dojo/topic',
     'dojo/on',
-    './_NearestBase'
+    './_NearestBase',
+    'dijit/layout/ContentPane'
 ],
 function (
-    template, declare, lang, 
+    dojo, template, declare, lang, 
     _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, topic, on, _NearestBase) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
@@ -65,7 +67,7 @@ function (
         },
 
         postMixInProperties: function () {
-            var featureNameEle, attributes = this.feature.feature.attributes, listFields;
+            var featureNameEle, attributes = this.feature.feature.attributes;
 
             if (!this._isNullOrEmpty(attributes[this.titleField[0]])) {
                 featureNameEle = attributes[this.titleField[0]];
@@ -80,8 +82,9 @@ function (
             featureNameEle = featureNameEle + "-" + this.featureNumber + "-" + this.layerItemId;
 
             this.set("featureId", featureNameEle);
-            this.set("featureTitle", this._getTitle(this.titleText, this.titleField, attributes));
+            this.set("featureTitle", this._fieldReplace(this.titleText, attributes));
 
+            // Show/Hide map link
             if (this.showOnMap) {
                 this.set("showOnMapVisible", "block");
             }
@@ -106,12 +109,13 @@ function (
             //console.log('app.Nearest::postCreate', arguments);
 
             // Add the details of the feature required as specified by the Popup configuration
-            listFields = null;
+            var listFields = null;
 
             if (!this._isNullOrEmpty(this.description)) {
-                var desc = domConstruct.toDom(this.description);
+                //var desc = domConstruct.toDom(this.description);
 
-                domConstruct.place(desc, this.featureDetails, "last");
+                //domConstruct.place(desc, this.featureDetails, "last");
+                this.featureDetails.set("content", this.description);
             }
             else {
                 // Build description from fields and values
@@ -138,12 +142,21 @@ function (
             // summary:
             //    wire events, and such
             //
-            //console.log('app.Nearest::setupConnections', arguments);
-            var _this = this;
+            var _this = this, item;
 
+            // Fire show on map click event
             on(this.mapButton, "click", function (evt) {
-                topic.publish("Nearest::showonmap", _this.feature, _this.renderer);
+                topic.publish("Nearest::show-onmap", _this.feature, _this.renderer);
             });
+
+            // Fire show item details click event
+            item = dojo.byId(this.featureId + "-feature-name");
+
+            if(item) {
+                on(item, "click", function (evt) {
+                    topic.publish("Nearest::show-item-detail", _this.feature, _this.featureId + "-field-values");
+                });
+            }
         }
 
 

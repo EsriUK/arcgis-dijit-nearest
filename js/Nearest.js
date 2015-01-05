@@ -216,9 +216,10 @@ function (
 
             if(this.layerOptions) {
                 for (i = 0, iL = this.layerOptions.length; i < iL; i++) {
-                    if(this.layerOptions[i].itemId === itemId)
+                    if (this.layerOptions[i].itemId === itemId) {
                         return this.layerOptions[i];
                     }
+                }
             }
             return {
                 maxResults: this.maxResults,

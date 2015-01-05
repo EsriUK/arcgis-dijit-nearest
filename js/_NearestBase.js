@@ -40,23 +40,6 @@ function (declare, _Widget) {
             }
 
             return desc;
-        },
-
-        _getTitle: function (titleText, titleField, attributes) {
-            // summary:
-            //		Replaces any fields in the text with the values for the fields.
-            // tags:
-            //		private
-
-            var ind;
-
-            if (titleField.length > 0) {
-                for (ind = 0; ind < titleField.length; ind++) {
-                    titleText = titleText.replace('{' + titleField[ind] + '}', attributes[titleField[ind]]);
-                }
-                return titleText;
-            }
-            return titleText;
         }
     });
 });

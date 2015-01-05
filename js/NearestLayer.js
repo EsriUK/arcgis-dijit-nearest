@@ -11,10 +11,11 @@ define([
     'dojo/dom-construct',
     './_NearestBase',
     './NearestItem',
-    "esri/dijit/PopupTemplate"
+    "esri/dijit/PopupTemplate",
+    "esri/graphic"
 ],
 function (
-    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, Graphic) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -166,6 +167,10 @@ function (
             for (featureInd = 0, fL = this.results.result.length; featureInd < fL; featureInd++) {
                 feature = this.results.result[featureInd];
                 attributes = feature.feature.attributes;
+
+                this.results.result[featureInd].feature.infoTemplate = template;
+                var g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
+
 
                 // Need to check if we have a configured popup or if we are just listing the fields.
                 if (!this._isNullOrEmpty(this.layerInfo.popupInfo.description) && this.layerInfo.popupInfo.description.length > 0) {

@@ -17,10 +17,11 @@ var featureProps = {
     featureNumber: 12,
     showOnMap: false,
     showOnMapLinktext: "Show on map",
-    description: "",
+    description: "hello there",
     fieldValues: null,
-    titleText: "",
-    titleField: []
+    titleText: "The title",
+    titleField: [],
+    renderer: { a: "im a renderer" }
 };
 
 
@@ -54,7 +55,6 @@ describe("A set of tests to test the Nearest Item widget", function () {
 
 
 
-
     it("should set the properties when passed in via the constructor", function (done) {
         if (widget) {
             widget.destroy();
@@ -63,6 +63,7 @@ describe("A set of tests to test the Nearest Item widget", function () {
         widget = new NearestItem(featureProps, 'widgetItem');
         widget.startup();
 
+        expect(widget.feature).toEqual(featureProps.feature);
         expect(widget.distance).toEqual(featureProps.distance);
         expect(widget.layerItemId).toEqual(featureProps.layerItemId);
         expect(widget.distanceUnits).toEqual(featureProps.distanceUnits);
@@ -70,6 +71,16 @@ describe("A set of tests to test the Nearest Item widget", function () {
         expect(widget.showOnMap).toEqual(featureProps.showOnMap);
         expect(widget.showOnMapLinktext).toEqual(featureProps.showOnMapLinktext);
         expect(widget.description).toEqual(featureProps.description);
+        expect(widget.featureNumber).toEqual(featureProps.featureNumber);
+        expect(widget.fieldValues).toEqual(featureProps.fieldValues);
+        expect(widget.titleField).toEqual(featureProps.titleField);
+        expect(widget.titleText).toEqual(featureProps.titleText);
+        expect(widget.renderer).toEqual(featureProps.renderer);
+
+        done();
+    });
+
+    it("should show the map link", function (done) {
 
         done();
     });
