@@ -2,10 +2,10 @@
     <!--Header row-->
     <div class="${baseClass}-heading-container panel-heading">
         <!--Number of features-->
-        <span class="${baseClass}-feature-count label pull-left" style="margin-right: 6px;">${numberOfFeatures}</span>
+        <span class="${baseClass}-feature-count label pull-left" style="margin-right: 6px; display: ${showCountersVisible}">${numberOfFeatures}</span>
         <!--Header-->
         <h4 class="${baseClass}-title panel-title">
-            <a data-toggle="${collapseClass}" href="#${layerId}" aria-expanded="${expanded}">${layerName}</a>
+            <a data-toggle="${collapseClass}" href="#${layerId}" aria-expanded="${expanded}" data-dojo-attach-point="showList">${layerName}</a>
         </h4>
     </div>
     <div id='${layerId}' class='${baseClass}-details-container panel-collapse ${collapseClass} ${expandedClass}'>

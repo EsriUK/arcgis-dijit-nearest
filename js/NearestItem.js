@@ -38,11 +38,14 @@ function (
                 featureNumber: 0, // The index or number this feature is in the list
                 showOnMap: false, // Show / hide the link for showing on a map
                 showOnMapLinktext: "Show on map", // The text to use for the link
+                showCounter: true,
                 description: "",
                 fieldValues: null,
                 titleText: "",
                 titleField: "",
-                renderer: null
+                renderer: null,
+                mediaInfos: null,
+                cont: null
             };
 
             // mix in settings and defaults
@@ -61,6 +64,8 @@ function (
             this.set("titleText", defaults.titleText);
             this.set("titleField", defaults.titleField);
             this.set("renderer", defaults.renderer);
+            this.set("cont", defaults.cont);
+            this.set("showCounter", defaults.showCounter);
 
             // widget node
             this.domNode = srcRefNode;
@@ -91,7 +96,12 @@ function (
             else {
                 this.set("showOnMapVisible", "none");
             }
-            
+            if (this.showCounters) {
+                this.set("showCountersVisible", "block");
+            }
+            else {
+                this.set("showCountersVisible", "none");
+            }
 
             this.inherited(arguments);
         },
@@ -121,7 +131,6 @@ function (
                 // Build description from fields and values
             }
             
-
             this.setupConnections();
 
             this.inherited(arguments);

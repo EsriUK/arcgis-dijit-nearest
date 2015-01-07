@@ -15,12 +15,12 @@ var featureProps = {
     distanceUnits: "miles",
     distance: 1.34,
     featureNumber: 12,
-    showOnMap: false,
+    showOnMap: true,
     showOnMapLinktext: "Show on map",
     description: "hello there",
     fieldValues: null,
     titleText: "The title",
-    titleField: [],
+    titleField: ["LineName"],
     renderer: { a: "im a renderer" }
 };
 
@@ -34,6 +34,15 @@ describe("A set of tests to test the Nearest Item widget", function () {
             widget.startup();
             done();
         });
+    },
+    createWidget = function (props) {
+        if (widget) {
+            widget.destroy();
+            widget = null;
+        }
+
+        widget = new NearestItem(props, 'widgetItem');
+        widget.startup();
     };
 
 
@@ -56,12 +65,7 @@ describe("A set of tests to test the Nearest Item widget", function () {
 
 
     it("should set the properties when passed in via the constructor", function (done) {
-        if (widget) {
-            widget.destroy();
-        }
-
-        widget = new NearestItem(featureProps, 'widgetItem');
-        widget.startup();
+        createWidget(featureProps);
 
         expect(widget.feature).toEqual(featureProps.feature);
         expect(widget.distance).toEqual(featureProps.distance);
@@ -81,10 +85,29 @@ describe("A set of tests to test the Nearest Item widget", function () {
     });
 
     it("should show the map link", function (done) {
-
+        expect(widget.showOnMapVisible).toEqual("block");
         done();
     });
 
 
+    it("should show the counters", function (done) {
+        var props = featureProps;
+        props.showCounters = true;
+
+        createWidget(props);
+
+        expect(widget.showCountersVisible).toEqual("block");
+        done();
+    });
+
+    it("should set the featureId", function (done) {
+        var props = featureProps;
+        props.showCounters = true;
+
+        createWidget(props);
+
+        expect(widget.featureId).toEqual(props.feature.feature.attributes[props.titleField[0]] + "-" + props.featureNumber + "-" + props.layerItemId);
+        done();
+    });
 
 });

@@ -38,7 +38,6 @@ function (
                 maxResults: 10, // The maximum number of features to return.
                 searchRadius: 5, // The search radius in miles.
                 display: "expandable", // How to display the results. Expandable or fixed.
-                token: "", // The token to use for requests to AGOL
                 layerOptions: [] // Options for each layer. These override the default radius and max results
             };
 
@@ -49,6 +48,7 @@ function (
                         maxResults:
                         searchRadius:,
                         showOnMap: 
+                        showCounters:
                     }
                 ]
             */
@@ -63,6 +63,7 @@ function (
             this.set("searchRadius", defaults.searchRadius);
             this.set("display", defaults.display);
             this.set("layerOptions", defaults.layerOptions);
+
 
             // widget node
             this.domNode = srcRefNode;
@@ -224,7 +225,8 @@ function (
             return {
                 maxResults: this.maxResults,
                 searchRadius: this.searchRadius,
-                showOnMap: false
+                showOnMap: false,
+                showCounters: true
             };
         },
 
@@ -258,7 +260,8 @@ function (
                     distance: layerOpts.searchRadius,
                     distanceUnits: "miles",
                     display: this.display,
-                    showOnMap: layerOpts.showOnMap
+                    showOnMap: layerOpts.showOnMap,
+                    showCounters: layerOpts.showCounters
                 }, layerDiv);
 
                 layer.startup();

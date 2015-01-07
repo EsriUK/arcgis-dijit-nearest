@@ -12,10 +12,13 @@ define([
     './_NearestBase',
     './NearestItem',
     "esri/dijit/PopupTemplate",
-    "esri/graphic"
+    "esri/graphic",
+    'dojo/topic',
+    'dojo/on',
+    "esri/dijit/Popup"
 ],
 function (
-    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, Graphic) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, Graphic, topic, on, Popup) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -37,7 +40,8 @@ function (
                 distance: 0,
                 distanceUnits: "miles",
                 display: "expandable",
-                showOnMap: false
+                showOnMap: false,
+                showCounters: true
             };
 
             // mix in settings and defaults
@@ -51,6 +55,7 @@ function (
             this.set("distanceUnits", defaults.distanceUnits);
             this.set("display", defaults.display);
             this.set("showOnMap", defaults.showOnMap);
+            this.set("showCounters", defaults.showCounters);
 
             // widget node
             this.domNode = srcRefNode;
@@ -103,6 +108,13 @@ function (
                 this.set("collapseClass", "collapse");
             }
 
+            if (this.showCounters) {
+                this.set("showCountersVisible", "block");
+            }
+            else {
+                this.set("showCountersVisible","none");
+            }
+
             this.inherited(arguments);
 
             
@@ -114,12 +126,9 @@ function (
             //    Overrides method of same name in dijit._Widget.
             // tags:
             //    private
-            //console.log('app.Nearest::postCreate', arguments);
-
-            this.setupConnections();
 
             this._init();
-
+            this.setupConnections();
             this.inherited(arguments);
 
         },
@@ -139,7 +148,12 @@ function (
             // summary:
             //    wire events, and such
             //
-            //console.log('app.Nearest::setupConnections', arguments);
+            var _this = this;
+
+            // Fire show on map click event for list of features
+            on(this.showList, "click", function (evt) {
+                topic.publish("Nearest::show-list-onmap", _this.results.result);
+            });
 
         },
 
@@ -169,8 +183,21 @@ function (
                 attributes = feature.feature.attributes;
 
                 this.results.result[featureInd].feature.infoTemplate = template;
+                this.results.result[featureInd].feature.setInfoTemplate(template);
                 var g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
 
+                var pDiv = domConstruct.create("div", {});
+                var p = new Popup({ features: [this.results.result[featureInd].feature] }, pDiv);
+                p.startup();
+                p.selectedIndex = 0;
+                p.setFeatures([this.results.result[featureInd].feature]);
+                
+                //p._featureSelected();
+
+                //infoWindow.setFeatures(result.features);
+
+                var fe = p.getSelectedFeature();
+                var content = fe.getContent();
 
                 // Need to check if we have a configured popup or if we are just listing the fields.
                 if (!this._isNullOrEmpty(this.layerInfo.popupInfo.description) && this.layerInfo.popupInfo.description.length > 0) {
@@ -195,6 +222,11 @@ function (
                     }
                 }
 
+                // See if we have some media info to create
+                if (!this._isNullOrEmpty(this.layerInfo.popupInfo.mediaInfos) && this.layerInfo.popupInfo.mediaInfos.length > 0) {
+
+                }
+
                 // layer node
                 itemDiv = domConstruct.create("div", {});
                 domConstruct.place(itemDiv, this._features, "last");
@@ -210,10 +242,11 @@ function (
                     description: description,
                     fieldVlaues: nameVals,
                     showOnMap: this.showOnMap,
-                    renderer: this.results.layerInfo.renderer
+                    renderer: this.results.layerInfo.renderer,
+                    cont: content
                 }, itemDiv);
 
-               
+                item.startup();
 
             }
         }
