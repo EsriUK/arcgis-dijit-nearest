@@ -81,6 +81,8 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['jasmine:test']);
     grunt.registerTask('cover', ['copy:toobj', 'jasmine:coverage']);
+
+    grunt.registerTask('travis', ['jasmine:test']);
 };
 
 
