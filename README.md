@@ -1,4 +1,4 @@
-arcgis-dijit-nearest
+arcgis-dijit-nearest [![Build Status](https://magnum.travis-ci.com/EsriUK/arcgis-dijit-nearest.svg?token=V92zP6znibt1RDMCNgRd)](https://magnum.travis-ci.com/EsriUK/arcgis-dijit-nearest)
 ====================
 
 Nearest widget for finding features near a location
