@@ -18,6 +18,7 @@
     "grunt-contrib-copy": "*",
     "grunt-contrib-jasmine": "0.8.1",
     "grunt-contrib-jshint": "~0.6.0",
+    "grunt-template-jasmine-dojo": "0.0.6",
     "grunt-template-jasmine-istanbul": "0.3.0",
     "sandboxed-module": "*"
   }
