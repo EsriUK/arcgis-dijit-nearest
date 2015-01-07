@@ -15,18 +15,10 @@
   ],
   "devDependencies": {
     "grunt": "0.4.5",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-compress": "0.9.1",
-    "grunt-contrib-concat": "*",
     "grunt-contrib-copy": "*",
-    "grunt-contrib-cssmin": "*",
     "grunt-contrib-jasmine": "0.8.1",
     "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-shell": "*",
-    "grunt-template-jasmine-dojo": "0.0.6",
     "grunt-template-jasmine-istanbul": "0.3.0",
-    "nock": "*",
     "sandboxed-module": "*"
   }
 }
