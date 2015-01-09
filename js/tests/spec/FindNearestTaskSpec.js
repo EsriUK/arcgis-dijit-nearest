@@ -7,7 +7,7 @@ var widgetOptions = {
 describe("A set of tests to test the FindNearest task", function () {
     var _NearestTask, task, Point, featureset = null,
         loadWidget = function (done) {
-            require(["dojo/json", "app/tasks/FindNearestTask", "esri/geometry/Point", "dojo/text!./featureSet.txt"], function (JSON, _nearestTask, _Point, featureSet) {
+            require(["dojo/json", "app/tasks/FindNearestTask", "esri/geometry/Point", "dojo/text!app/tests/featureSet.txt"], function (JSON, _nearestTask, _Point, featureSet) {
             task = new _nearestTask(widgetOptions);
 
             _NearestTask = _nearestTask;
