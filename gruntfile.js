@@ -43,9 +43,9 @@ module.exports = function(grunt) {
                 }
             },
             coverage: {
-                src: ['js/*.js'],
+                src: ['js/*.js', 'js/tasks/*.js'],
                 options: {
-                    specs: './js/tests/spec/*.js',
+                    specs: ['./js/tests/spec/NearestBaseSpec.js'],
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
                         coverage: 'coverage/coverage.json',
@@ -79,10 +79,9 @@ module.exports = function(grunt) {
     // Add default task(s)
     grunt.registerTask('default', ['jasmine:test']);
 
-    grunt.registerTask('test', ['jasmine:test']);
-    grunt.registerTask('cover', ['copy:toobj', 'jasmine:coverage']);
+    grunt.registerTask('cover', ['jasmine:coverage']);
 
-    grunt.registerTask('travis', ['jasmine:test']);
+    grunt.registerTask('travis', ['jasmine:test', 'jasmine:coverage']);
 };
 
 

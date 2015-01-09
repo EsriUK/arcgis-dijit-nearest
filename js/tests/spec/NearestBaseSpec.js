@@ -1,29 +1,5 @@
 ﻿
 
-
-var featureProps = {
-    feature: {
-        feature: {
-            attributes: {
-                FID: 1,
-                LineName: "Victoria",
-                SHAPE_Leng: 34698.8106044
-            }
-        }
-    },
-    layerItemId: "asdr34ff4ff4",
-    distanceUnits: "miles",
-    distance: 1.34,
-    featureNumber: 12,
-    showOnMap: false,
-    showOnMapLinktext: "Show on map",
-    description: "",
-    fieldValues: null,
-    titleText: "",
-    titleField: []
-};
-
-
 describe("A set of tests to test the Nearest base widget", function () {
     var _NearestBase, widget, loadWidget = function (done) {
         require(["app/_NearestBase"], function (_nearestBase) {

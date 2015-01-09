@@ -106,9 +106,6 @@ function (
             this.inherited(arguments);
         },
 
-        buildRendering: function () {
-            this.inherited(arguments);
-        },
 
 
         postCreate: function () {
@@ -116,7 +113,6 @@ function (
             //    Overrides method of same name in dijit._Widget.
             // tags:
             //    private
-            //console.log('app.Nearest::postCreate', arguments);
 
             // Add the details of the feature required as specified by the Popup configuration
             var listFields = null;

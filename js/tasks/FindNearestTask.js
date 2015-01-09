@@ -9,14 +9,13 @@
 
 define([
 	"dojo/_base/declare",
-	"dojo/_base/lang",
 	"dojo/_base/array",
 	"dojo/Deferred",
 	"esri/geometry/Point",
     "esri/geometry/Polygon",
     "esri/SpatialReference",
 	"esri/geometry/mathUtils"],
-	function (declare, lang, array, Deferred, Point, Polygon, SpatialReference, mathUtils) {
+	function (declare, array, Deferred, Point, Polygon, SpatialReference, mathUtils) {
 		"use strict";
 
 
@@ -39,9 +38,12 @@ define([
 		    },
 
 		    _getNearestResult : function(point, featureSet) {
-			    var features = featureSet.features,
+		        // summary:
+		        //		Calculates distances for features arounda point
+
+		        var features = featureSet.features,
 				    distance = this._mode === "geodesic" ? this._greatCircleDistance : this._euclidianDistance,
-				    candidates = [], geometry, result, _this = this;
+				    candidates = [], geometry, result, _this = this, polyCandidates = [], multiPCandidates = [];
 
 			    // Supported in 10.1 or greater
 			    if (featureSet.exceededTransferLimit && featureSet.exceededTransferLimit === true) {
@@ -63,7 +65,7 @@ define([
 				    result = this._getMin(candidates);
 			    }
 			    else if (featureSet.geometryType === "esriGeometryPolygon") {
-			        var polyCandidates = [];
+			        polyCandidates = [];
 				    array.forEach(features, function(feature) {
 					    geometry = feature.geometry;
 					    array.forEach(geometry.rings, function (ring) {
@@ -88,7 +90,7 @@ define([
 				    result = this._getMin(candidates);
 			    }
 			    else if (featureSet.geometryType === "esriGeometryPolyline") {
-			        var polyCandidates = [];
+			        polyCandidates = [];
 				    array.forEach(features, function(feature) {
 					    geometry = feature.geometry;
 					    array.forEach(geometry.paths, function(path) {
@@ -105,12 +107,12 @@ define([
 				    result = this._getMin(candidates);
 			    }
 			    else if (featureSet.geometryType === "esriGeometryMultipoint") {
-			        var multiPCandidates = [];
+			        multiPCandidates = [];
 			        array.forEach(features, function(feature) {
 			            geometry = feature.geometry;
 
                         // If the geometery is Multipoint but only has a single point in it
-			            if (geometry.points.length == 1) {
+			            if (geometry.points.length === 1) {
 			                multiPCandidates.push({
 			                    point: geometry.points[0],
 			                    feature: feature,
@@ -151,7 +153,10 @@ define([
 		    },
 		
 		    _getNearest: function (/*esri/geometry/Point*/point, /*esri/geometry/Geometry*/parentFeature, /*Number[]*/path) {
-			    var minDistance = null, from, to, x, y, dx, dy, i, a, b, distance, n, len,
+		        // summary:
+		        //		Finds the nearest feature around a point
+
+		        var minDistance = null, from, to, x, y, dx, dy, i, a, b, distance, n, len,
 				    pathPoints, fromPoint, toPoint, length2, toEnd2, toStart2, distance2, calcLength2;
 	
 			    function square(num) {
@@ -234,13 +239,15 @@ define([
 		    },
 
 		    _degToRad: function(deg) {
-                return (deg * Math.PI) / 180;
+		        // summary:
+		        //		Converts degrees to radians
+		        return (deg * Math.PI) / 180;
 	        },
 
-		    /**
-            * Returns the distance between two points in Km
-            */
-		    _greatCircleDistance : function(p1, p2) {
+		    _greatCircleDistance: function (p1, p2) {
+		        // summary:
+		        //		Returns the distance between two points in Km
+
 			    // Haversine formula (http://www.movable-type.co.uk/scripts/latlong.html)
 			    var toRad = this._toRad,
 				    radius = 6378.1, // Earth's mean radius in km
@@ -257,15 +264,16 @@ define([
 			    // Length in km
 		    },
 
-		    _toRad : function(number) {
+		    _toRad: function (number) {
+		        // summary:
+		        //		Converts a number to radians
 		        return this._degToRad(number);
-		        //return mathUtils.degToRad(number);
 		    },
 
-		    /**
-            *
-            */
 		    _convertDistanceTo: function (distanceUnits, distance) {
+		        // summary:
+		        //		Converts a distance from one unit type to another
+
 		        var convertedDistance = null;
 
 		        switch (distanceUnits) {
@@ -281,7 +289,9 @@ define([
 		        return convertedDistance;
 		    },
 
-		    _comparator : function(a, b) {
+		    _comparator: function (a, b) {
+		        // summary:
+		        //		Compares two numbers
 			    if (a.distance < b.distance) {
 				    return -1;
 			    }
