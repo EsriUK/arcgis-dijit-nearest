@@ -1,4 +1,4 @@
-﻿{
+﻿var pointFeatureSet = {
     "objectIdFieldName": "FID",
     "globalIdFieldName": "",
     "geometryType": "esriGeometryPoint",

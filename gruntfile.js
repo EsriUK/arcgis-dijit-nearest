@@ -29,6 +29,7 @@ module.exports = function(grunt) {
             test: {
                 options: {
                     specs: './js/tests/spec/*.js',
+                    helpers: ['./js/tests/helpers/*.js'],
                     template: require('grunt-template-jasmine-dojo'),
                     templateOptions: {
                         dojoConfig: {
@@ -45,7 +46,8 @@ module.exports = function(grunt) {
             coverage: {
                 src: ['js/*.js', 'js/tasks/*.js'],
                 options: {
-                    specs: ['./js/tests/spec/NearestBaseSpec.js'],
+                    specs: ['./js/tests/spec/NearestBaseSpec.js', './js/tests/spec/FindNearestTaskSpec.js'],
+                    helpers: ['./js/tests/helpers/*.js'],
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
                         coverage: 'coverage/coverage.json',

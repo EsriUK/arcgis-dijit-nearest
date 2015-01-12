@@ -5,14 +5,14 @@ var widgetOptions = {
 }
 
 describe("A set of tests to test the FindNearest task", function () {
-    var _NearestTask, task, Point, featureset = null,
+    var _NearestTask, task, Point, 
         loadWidget = function (done) {
-            require(["dojo/json", "app/tasks/FindNearestTask", "esri/geometry/Point", "dojo/text!app/tests/featureSet.txt"], function (JSON, _nearestTask, _Point, featureSet) {
+            require(["dojo/json", "app/tasks/FindNearestTask", "esri/geometry/Point"], function (JSON, _nearestTask, _Point) {
             task = new _nearestTask(widgetOptions);
 
             _NearestTask = _nearestTask;
             Point = _Point;
-            featureset = JSON.parse(featureSet);
+            //featureset = JSON.parse(featureSet);
             done();
         });
     },
@@ -139,17 +139,61 @@ describe("A set of tests to test the FindNearest task", function () {
         done();
     });
 
-    it("should return the first n features based on distance from a featureset", function (done) {
+    it("should return the first n features based on distance from a featureset - points", function (done) {
         var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
             results = null;
         
         createTask({ maxFeatures: 5, mode: "geodesic" });
 
-        results = task._getNearestResult(a, featureset);
+        results = task._getNearestResult(a, pointFeatureSet);
 
         expect(results.length).toBeGreaterThan(0);
         expect(results.length).toEqual(5);
         expect(results[2].distance).toEqual(33.12278529252344);
+
+        done();
+    });
+
+    it("should return the first n features based on distance from a featureset - polygons", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "geodesic" });
+
+        results = task._getNearestResult(a, polyFeatureSet);
+
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
+        expect(results[0].distance).toEqual(0);
+
+        done();
+    });
+
+    it("should return the first n features based on distance from a featureset - lines", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "geodesic" });
+
+        results = task._getNearestResult(a, lineFeatureSet);
+
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
+        expect(results[0].distance).toEqual(10.610664461018995);
+
+        done();
+    });
+
+
+    it("should return limit exceeded error", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "geodesic" });
+
+        results = task._getNearestResult(a, errorFeatureSet);
+
+        expect(results.limitExceeded).toEqual(true);
 
         done();
     });
