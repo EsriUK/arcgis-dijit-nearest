@@ -45,13 +45,15 @@ module.exports = function(grunt) {
             },
             coverage: {
                 src: ['js/*.js', 'js/tasks/*.js'],
+                
                 options: {
-                    specs: ['./js/tests/spec/NearestBaseSpec.js', './js/tests/spec/FindNearestTaskSpec.js'],
+                    specs: ['./js/tests/spec/*.js'],
                     helpers: ['./js/tests/helpers/*.js'],
                     template: require('grunt-template-jasmine-istanbul'),
                     templateOptions: {
                         coverage: 'coverage/coverage.json',
                         report: 'coverage',
+                        srcCopy: ['js/templates/Nearest.html', 'js/templates/NearestItem.html', 'js/templates/NearestLayer.html'],
                         template: require('grunt-template-jasmine-dojo'),
                         templateOptions: {
                             dojoConfig: {
@@ -77,6 +79,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+
+    // Debug task
+    grunt.loadNpmTasks('grunt-debug-task');
 
     // Add default task(s)
     grunt.registerTask('default', ['jasmine:test']);

@@ -4,7 +4,7 @@ var widgetOptions = {
     mode: "geodesic"
 }
 
-describe("A set of tests to test the FindNearest task", function () {
+describe("A set of tests for the FindNearest task", function () {
     var _NearestTask, task, Point, 
         loadWidget = function (done) {
             require(["dojo/json", "app/tasks/FindNearestTask", "esri/geometry/Point"], function (JSON, _nearestTask, _Point) {
@@ -198,4 +198,50 @@ describe("A set of tests to test the FindNearest task", function () {
         done();
     });
 
+    it("should return a deferred", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "geodesic" });
+
+        task.execute({
+            point: a,
+            featureSet: lineFeatureSet
+        }).then(function (results) {
+            expect(results.length).toBeGreaterThan(0);
+            expect(results.length).toEqual(1);
+            expect(results[0].distance).toEqual(10.610664461018995);
+            done();
+        });
+    });
+
+    it("should return the first n features based on distance from a featureset - polygons - planar", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "planar" });
+
+        results = task._getNearestResult(a, polyFeatureSet);
+
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
+        expect(results[0].distance).toEqual(0);
+
+        done();
+    });
+
+    it("should return the first n features based on distance from a featureset - multipoint", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "geodesic" });
+
+        results = task._getNearestResult(a, multipointFeatureSet);
+
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
+        expect(results[0].distance).toBeGreaterThan(0);
+
+        done();
+    });
 });
