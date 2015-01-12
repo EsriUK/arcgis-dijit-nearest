@@ -11,13 +11,12 @@ define([
     'dijit/_WidgetsInTemplateMixin',
     './_NearestBase',
     "dojo/dom-construct",
-    "esri/request",
     "./tasks/ClientNearestTask",
     "./tasks/LayerInfoTask",
     "./NearestLayer"
 ],
 function (
-    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, esriRequest, ClientNearestTask, LayerInfoTask, NearestLayer) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -26,7 +25,7 @@ function (
         templateString: template,
         baseClass: 'nearest',
         widgetsInTemplate: true,
-        itemUrl: "//www.arcgis.com/sharing/rest/content/items/",
+        
         layerPopUpFields: [],
 
         // Properties to be sent into constructor
@@ -268,26 +267,7 @@ function (
             }
         },
 
-        _getItem: function (itemId, token, isDataItem) {
-            var tokenPart = "", url = this.itemUrl + itemId;
-
-            if (!this._isNullOrEmpty(token)) { 
-                tokenPart = "&token=" + encodeURIComponent(token);
-            }
-
-            if (isDataItem) {
-                url = url + "/data/";
-            }
-
-            return esriRequest({
-                url: url + "?f=pjson" + tokenPart,
-                content: { f: "json" }
-            });
-        },
-
-        _getItemData: function (itemId, token) {
-            return this._getItem(itemId, token, true);
-        },
+        
 
         
 

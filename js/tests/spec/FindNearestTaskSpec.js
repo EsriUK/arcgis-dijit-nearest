@@ -184,6 +184,35 @@ describe("A set of tests for the FindNearest task", function () {
         done();
     });
 
+    it("should return the first n features based on distance from a featureset - polygons - planar", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "planar" });
+
+        results = task._getNearestResult(a, polyFeatureSet);
+
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
+        expect(results[0].distance).toEqual(0);
+
+        done();
+    });
+
+    it("should return the first n features based on distance from a featureset - multipoint", function (done) {
+        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
+            results = null;
+
+        createTask({ maxFeatures: 1, mode: "geodesic" });
+
+        results = task._getNearestResult(a, multipointFeatureSet);
+
+        expect(results.length).toBeGreaterThan(0);
+        expect(results.length).toEqual(1);
+        expect(results[0].distance).toBeGreaterThan(0);
+
+        done();
+    });
 
     it("should return limit exceeded error", function (done) {
         var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
@@ -215,33 +244,5 @@ describe("A set of tests for the FindNearest task", function () {
         });
     });
 
-    it("should return the first n features based on distance from a featureset - polygons - planar", function (done) {
-        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
-            results = null;
-
-        createTask({ maxFeatures: 1, mode: "planar" });
-
-        results = task._getNearestResult(a, polyFeatureSet);
-
-        expect(results.length).toBeGreaterThan(0);
-        expect(results.length).toEqual(1);
-        expect(results[0].distance).toEqual(0);
-
-        done();
-    });
-
-    it("should return the first n features based on distance from a featureset - multipoint", function (done) {
-        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
-            results = null;
-
-        createTask({ maxFeatures: 1, mode: "geodesic" });
-
-        results = task._getNearestResult(a, multipointFeatureSet);
-
-        expect(results.length).toBeGreaterThan(0);
-        expect(results.length).toEqual(1);
-        expect(results[0].distance).toBeGreaterThan(0);
-
-        done();
-    });
+    
 });

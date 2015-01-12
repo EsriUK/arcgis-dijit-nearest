@@ -2,7 +2,7 @@
 
 
 
-describe("A set of tests to test the Nearest widget", function() {
+describe("A set of tests for the Nearest widget", function() {
     var widget, loadWidget = function(done) {
         require(["app/Nearest"], function (Nearest) {
             widget = new Nearest({}, 'widgetNode');

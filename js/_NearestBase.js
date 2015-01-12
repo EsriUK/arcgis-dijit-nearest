@@ -3,9 +3,10 @@
 
 define([
     'dojo/_base/declare',
-    'dijit/_WidgetBase'
+    'dijit/_WidgetBase',
+    "esri/request"
 ],
-function (declare, _Widget) {
+function (declare, _Widget, esriRequest) {
     // module:
     //      _NearestBase
 
@@ -13,6 +14,36 @@ function (declare, _Widget) {
         // summary:
         //		Base class for the Nearest, NearstLayer and NearestItem widgets.
 
+        itemUrl: "//www.arcgis.com/sharing/rest/content/items/",
+
+        _getItem: function (itemId, token, isDataItem) {
+            // summary:
+            //		Gets an item or its data from AGOL
+            // tags:
+            //		private
+
+            var tokenPart = "", url = this.itemUrl + itemId;
+
+            if (!this._isNullOrEmpty(token)) {
+                tokenPart = "&token=" + encodeURIComponent(token);
+            }
+
+            if (isDataItem) {
+                url = url + "/data/";
+            }
+
+            return esriRequest({
+                url: url + "?f=pjson" + tokenPart
+            });
+        },
+
+        _getItemData: function (itemId, token) {
+            // summary:
+            //		Gets an items data from AGOL
+            // tags:
+            //		private
+            return this._getItem(itemId, token, true);
+        },
 
         _isNullOrEmpty: function (/*Anything*/ obj) {
             // summary:

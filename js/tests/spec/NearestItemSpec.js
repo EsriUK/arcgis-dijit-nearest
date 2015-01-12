@@ -25,7 +25,7 @@ var featureProps = {
 };
 
 
-describe("A set of tests to test the Nearest Item widget", function () {
+describe("A set of tests for the Nearest Item widget", function () {
     var NearestItem, widget, loadWidget = function (done) {
         require(["app/NearestItem"], function (nearestItem) {
             widget = new nearestItem(featureProps, 'widgetItem');
