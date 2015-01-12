@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             test: {
                 options: {
                     specs: './js/tests/spec/*.js',
-                    helpers: ['./js/tests/helpers/*.js'],
+                    helpers: ['./js/tests/helpers/*.js', './js/tests/lib/sinon/sinon.js'],
                     template: require('grunt-template-jasmine-dojo'),
                     templateOptions: {
                         dojoConfig: {
