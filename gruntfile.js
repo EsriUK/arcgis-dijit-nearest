@@ -15,16 +15,6 @@ module.exports = function(grunt) {
       			open: true // do not open node-inspector in Chrome automatically
 	        }
         },
-        copy: {
-            toobj: {
-                files: [{
-                    expand: true,
-                    cwd: './js/templates/',
-                    src: ['**'],
-                    dest: './.grunt/grunt-contrib-jasmine/js/templates'
-                }]
-            }
-        },
         jasmine: {
             test: {
                 options: {

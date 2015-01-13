@@ -12,8 +12,7 @@ define([
     'dojo/dom-construct',
     'dojo/topic',
     'dojo/on',
-    './_NearestBase',
-    'dijit/layout/ContentPane'
+    './_NearestBase'
 ],
 function (
     dojo, template, declare, lang, 
@@ -38,14 +37,13 @@ function (
                 featureNumber: 0, // The index or number this feature is in the list
                 showOnMap: false, // Show / hide the link for showing on a map
                 showOnMapLinktext: "Show on map", // The text to use for the link
-                showCounter: true,
+                showCounters: true,
                 description: "",
                 fieldValues: null,
                 titleText: "",
                 titleField: "",
                 renderer: null,
-                mediaInfos: null,
-                cont: null
+                mediaInfos: null
             };
 
             // mix in settings and defaults
@@ -64,8 +62,7 @@ function (
             this.set("titleText", defaults.titleText);
             this.set("titleField", defaults.titleField);
             this.set("renderer", defaults.renderer);
-            this.set("cont", defaults.cont);
-            this.set("showCounter", defaults.showCounter);
+            this.set("showCounters", defaults.showCounters);
 
             // widget node
             this.domNode = srcRefNode;
@@ -114,21 +111,11 @@ function (
             // tags:
             //    private
 
-            // Add the details of the feature required as specified by the Popup configuration
-            var listFields = null;
-
             if (!this._isNullOrEmpty(this.description)) {
-                //var desc = domConstruct.toDom(this.description);
-
-                //domConstruct.place(desc, this.featureDetails, "last");
-                this.featureDetails.set("content", this.description);
+                domConstruct.place(this.description, this.featureDetails, "last");
             }
-            else {
-                // Build description from fields and values
-            }
-            
+                        
             this.setupConnections();
-
             this.inherited(arguments);
         },
 

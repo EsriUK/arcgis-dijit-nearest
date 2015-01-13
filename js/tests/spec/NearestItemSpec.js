@@ -17,11 +17,12 @@ var featureProps = {
     featureNumber: 12,
     showOnMap: true,
     showOnMapLinktext: "Show on map",
-    description: "hello there",
+    description: "<div>hello there</div>",
     fieldValues: null,
     titleText: "The title",
     titleField: ["LineName"],
-    renderer: { a: "im a renderer" }
+    renderer: { a: "im a renderer" },
+    showCounters: true
 };
 
 
@@ -100,6 +101,27 @@ describe("A set of tests for the Nearest Item widget", function () {
         done();
     });
 
+    it("should hide the map link", function (done) {
+        var props = featureProps;
+        props.showOnMap = false;
+
+        createWidget(props);
+
+        expect(widget.showOnMapVisible).toEqual("none");
+        done();
+    });
+
+
+    it("should hide the counters", function (done) {
+        var props = featureProps;
+        props.showCounters = false;
+
+        createWidget(props);
+
+        expect(widget.showCountersVisible).toEqual("none");
+        done();
+    });
+
     it("should set the featureId", function (done) {
         var props = featureProps;
         props.showCounters = true;
@@ -107,6 +129,16 @@ describe("A set of tests for the Nearest Item widget", function () {
         createWidget(props);
 
         expect(widget.featureId).toEqual(props.feature.feature.attributes[props.titleField[0]] + "-" + props.featureNumber + "-" + props.layerItemId);
+        done();
+    });
+
+    it("should create a featureId", function (done) {
+        var props = featureProps;
+        props.showCounters = true;
+        props.feature.feature.attributes = {};
+        createWidget(props);
+
+        expect(widget.featureId).toEqual(props.layerItemId + "-" + props.featureNumber + "title-" + props.featureNumber + "-" + props.layerItemId);
         done();
     });
 

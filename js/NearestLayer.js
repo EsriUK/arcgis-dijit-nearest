@@ -11,14 +11,14 @@ define([
     'dojo/dom-construct',
     './_NearestBase',
     './NearestItem',
-    "esri/dijit/PopupTemplate",
-    "esri/graphic",
+    'esri/dijit/PopupTemplate',
     'dojo/topic',
     'dojo/on',
-    "esri/dijit/Popup"
+    'esri/dijit/PopupRenderer',
+    'esri/graphic'
 ],
 function (
-    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, Graphic, topic, on, Popup) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -70,6 +70,7 @@ function (
                 titleTextSplit, indT = 0, layerNameEle;
 
             this.titleText = template.info.title.toString();
+            this.titleField = [];
 
             // Check the title to see if it contains a field
             titleTextSplit = this.titleText.split('}');
@@ -152,7 +153,7 @@ function (
 
             // Fire show on map click event for list of features
             on(this.showList, "click", function (evt) {
-                topic.publish("Nearest::show-list-onmap", _this.results.result);
+                topic.publish("Nearest::show-list-onmap", _this.results.result, _this.results.layerInfo.renderer, this);
             });
 
         },
@@ -182,50 +183,10 @@ function (
                 feature = this.results.result[featureInd];
                 attributes = feature.feature.attributes;
 
-                this.results.result[featureInd].feature.infoTemplate = template;
-                this.results.result[featureInd].feature.setInfoTemplate(template);
                 var g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
 
-                var pDiv = domConstruct.create("div", {});
-                var p = new Popup({ features: [this.results.result[featureInd].feature] }, pDiv);
-                p.startup();
-                p.selectedIndex = 0;
-                p.setFeatures([this.results.result[featureInd].feature]);
-                
-                //p._featureSelected();
-
-                //infoWindow.setFeatures(result.features);
-
-                var fe = p.getSelectedFeature();
-                var content = fe.getContent();
-
-                // Need to check if we have a configured popup or if we are just listing the fields.
-                if (!this._isNullOrEmpty(this.layerInfo.popupInfo.description) && this.layerInfo.popupInfo.description.length > 0) {
-                    // We have a configured pop up description so lets use that
-                    description = this._fieldReplace(template.info.description, attributes);
-                }
-                else {
-                    // Not configured, just list the fields
-                    fieldArray = this.layerInfo.fields;
-                    nameVals = [];
-
-                    for (field in attributes) {
-                        if (attributes.hasOwnProperty(field)) {
-                            // check if the current field is in the layerPopUpFields array before adding to the list
-                            if (fieldArray.indexOf(field) > -1) {
-                                nameVals.push({
-                                    fieldName: template._fieldsMap[field].label,
-                                    fieldValue: attributes[field]
-                                });
-                            }
-                        }
-                    }
-                }
-
-                // See if we have some media info to create
-                if (!this._isNullOrEmpty(this.layerInfo.popupInfo.mediaInfos) && this.layerInfo.popupInfo.mediaInfos.length > 0) {
-
-                }
+                var rend = new PopupRenderer({ template: template, graphic: g });
+                rend.startup();
 
                 // layer node
                 itemDiv = domConstruct.create("div", {});
@@ -239,17 +200,16 @@ function (
                     titleText: this.titleText,
                     titleField: this.titleField,
                     featureNumber: 1 + parseInt(featureInd, 10),
-                    description: description,
+                    description: rend.domNode.innerHTML,
                     fieldVlaues: nameVals,
                     showOnMap: this.showOnMap,
                     renderer: this.results.layerInfo.renderer,
-                    cont: content
+                    showCounters: this.showCounters
                 }, itemDiv);
 
                 item.startup();
 
             }
         }
-
     });
 });

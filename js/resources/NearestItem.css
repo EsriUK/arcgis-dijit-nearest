@@ -3,6 +3,10 @@
 
 }
 
+.header {
+    font-weight: bold;
+}
+
 .nearestItem-search-features {
     position: relative;
     z-index: 10;
@@ -59,7 +63,9 @@
     margin-left: 40px;
 }
 
-
+.nearestItem-showonmap-link .btn {
+    padding: 10px;
+}
 
 
 

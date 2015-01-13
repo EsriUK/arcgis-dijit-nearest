@@ -51,79 +51,97 @@
 
         <script type="text/javascript">
             require([
-                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/graphic", "dojo/fx/Toggler"],
-                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, Graphic, Toggler) {
-                var nearest = new Nearest({
-                    webmapId: "0713c71403f94013a399ab54910ec8bf",
-                    location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
-                    searchRadius: 50,
-                    layerOptions: [
-                        {
-                            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
-                            searchRadius: 50,
-                            maxResults: 5,
-                            showOnMap: true,
-                            showCounters: true
-                        },
-                        {
-                            itemId: "7b9ddd9e54f5410eafbe9e3fc0ad8910",
-                            searchRadius: 50,
-                            maxResults: 3,
-                            showOnMap: true,
-                            showCounters: true
-                        },
-                        {
-                            itemId: "ee34ad1a6d7a4069a4d65e4927528dd7",
-                            searchRadius: 50,
-                            maxResults: 1,
-                            showOnMap: true,
-                            showCounters: true
-                        }
-                    ]
-                }, "nearestWidget");
+                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/graphic", "dojo/fx/Toggler", "esri/graphicsUtils"],
+                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, Graphic, Toggler, graphicsUtils) {
+                    var nearest = new Nearest({
+                        webmapId: "0713c71403f94013a399ab54910ec8bf",
+                        location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
+                        searchRadius: 50,
+                        layerOptions: [
+                            {
+                                itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+                                searchRadius: 50,
+                                maxResults: 5,
+                                showOnMap: true,
+                                showCounters: true
+                            },
+                            {
+                                itemId: "7b9ddd9e54f5410eafbe9e3fc0ad8910",
+                                searchRadius: 50,
+                                maxResults: 3,
+                                showOnMap: true,
+                                showCounters: true
+                            },
+                            {
+                                itemId: "ee34ad1a6d7a4069a4d65e4927528dd7",
+                                searchRadius: 50,
+                                maxResults: 1,
+                                showOnMap: true,
+                                showCounters: true
+                            }
+                        ]
+                    }, "nearestWidget");
                     
-                nearest.startup();
+                    nearest.startup();
 
-                var nearestSingle = new Nearest({
-                    webmapId: "a33fdad34af2419dbdb378e156c333f2",
-                    location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
-                    searchRadius: 1,
-                    maxResults: 1,
-                    display: "fixed",
-                    layerOptions: [
-                        {
-                            itemId: "51e2ddafa02c4a32bc32c4da978df046",
-                            searchRadius: 1,
-                            maxResults: 1,
-                            showOnMap: false,
-                            showCounters: false
+                    var nearestSingle = new Nearest({
+                        webmapId: "a33fdad34af2419dbdb378e156c333f2",
+                        location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
+                        searchRadius: 1,
+                        maxResults: 1,
+                        display: "fixed",
+                        layerOptions: [
+                            {
+                                itemId: "51e2ddafa02c4a32bc32c4da978df046",
+                                searchRadius: 1,
+                                maxResults: 1,
+                                showOnMap: false,
+                                showCounters: false
+                            }
+                        ]
+                    }, "singleNearest");
+
+                    nearestSingle.startup();
+
+                    map = new Map("map", {
+                        center: [-0.8055515, 51.8003171],
+                        zoom: 3,
+                        basemap: "topo"
+                    });
+
+                    topic.subscribe("Nearest::show-onmap", function (feature, renderer) {
+                        map.graphics.clear();
+                        map.graphics.add(new Graphic(feature.feature.geometry, renderer.symbol, feature.feature.attributes, feature.feature.infoTemplate));
+
+                        if (feature.feature.geometry.type === "point") {
+                            map.centerAndZoom(feature.feature.geometry, 11);
                         }
-                    ]
-                }, "singleNearest");
+                        else {
+                            map.setExtent(feature.feature.geometry.getExtent().expand(0.75));
+                        }
+                    });
 
-                nearestSingle.startup();
+                    topic.subscribe("Nearest::show-item-detail", function (feature, detailsId) {
 
-                map = new Map("map", {
-                    center: [-0.8055515, 51.8003171],
-                    zoom: 3,
-                    basemap: "topo"
-                });
+                    });
 
-                topic.subscribe("Nearest::show-onmap", function (feature, renderer) {
-                    map.graphics.clear();
-                    map.graphics.add(new Graphic(feature.feature.geometry, renderer.symbol, feature.feature.attributes, feature.feature.infoTemplate));
+                    topic.subscribe("Nearest::show-list-onmap", function (features, renderer, layerElem) {
+                        map.graphics.clear();
+                        if (layerElem.className !== "") {
 
-                    if (feature.feature.geometry.type === "point") {
-                        map.centerAndZoom(feature.feature.geometry, 11);
-                    }
-                    else {
-                        map.setExtent(feature.feature.geometry.getExtent().expand(0.75));
-                    }
-                });
+                            var i = 0, iL = features.length, geoms = [];
 
-                topic.subscribe("Nearest::show-item-detail", function (feature, detailsId) {
+                            for (i = 0; i < iL; i++) {
+                                map.graphics.add(new Graphic(features[i].feature.geometry, renderer.symbol, features[i].feature.attributes, features[i].feature.infoTemplate));
+                                geoms.push(features[i].feature);
+                            }
 
-                });
+                            var myFeatureExtent = graphicsUtils.graphicsExtent(geoms);
+                            map.setExtent(myFeatureExtent, true);
+                        }
+                    });
+
+
             });
 
         </script>

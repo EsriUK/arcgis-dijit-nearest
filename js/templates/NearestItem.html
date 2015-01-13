@@ -10,12 +10,13 @@
                 <!--div for infor-->
                 <div class="${baseClass}-text-place-details">
                     <!--feature name-->
-                    <h3 id="${featureId}-feature-name" class="${baseClass}-text-place-title">${featureTitle}</h3>
-                    ${distance}&nbsp;${distanceUnits}
+                    <!--<h3 id="${featureId}-feature-name" class="${baseClass}-text-place-title">${featureTitle}</h3>-->
+                    
 				    <!-- other fields-->
                     <div id="${featureId}-field-values" class="${baseClass}-text-place-basic-details" >
-                        <div class="${baseClass}-details" data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="featureDetails"></div>
+                        <div class="${baseClass}-details" data-dojo-attach-point="featureDetails"></div>
                     </div>
+                    ${distance}&nbsp;${distanceUnits}
                 </div>
                 <div class="${baseClass}-showonmap-link"  style="display: ${showOnMapVisible}">
                     <button data-dojo-attach-point="mapButton" type="button" class="btn btn-link">${showOnMapLinktext}</button>
