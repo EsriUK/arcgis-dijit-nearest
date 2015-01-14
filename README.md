@@ -17,7 +17,10 @@ The details shown replicate those that are setup in the popup within your webmap
 		webmapId: "0713c71403f94013a399ab54910ec8bf",
 		location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
         searchRadius: 50,
-		maxResults: 5
+		maxResults: 5,
+		display: "expandable",
+		showOnMap: true,
+		showCounters: true
     }, "NearestWidget");
 
     myWidget.startup();
@@ -52,6 +55,23 @@ Nearest(options, srcNode);
 |property|required|type|value|description|
 |---|---|---|---|---|
 |webmapId|x|string|null|The id of the webmap that contains the layers to use for the nearest.|
-|location|x|Point|null|The point|
-|searchRadius|x|Integer|10|The radius to search within, in miles|
-|maxResults||Integer|5|The number of features to show|
+|location|x|Point|null|The location to use for the query.|
+|searchRadius||Integer|10|The radius to search within, in miles.|
+|maxResults||Integer|5|The number of features to show.|
+|display||string|"expandable"|How to display the results. Expandable or fixed.|
+|showOnMap||Boolean|true|Display the 'Show On Map' link.|
+|showCounters||Boolean|true|Show the feature counts.|
+|layerOptions||Object Array|null|Options for each layer. These override the default options per layer in the web map.|
+
+
+### layerOptions
+This is an array of objects that contain overridden options per layer.
+
+	layerOptions: [{
+		itemId: '1234567'
+        maxResults: 3
+        searchRadius: 29,
+        showOnMap: false
+        showCounters: false
+        display: 'fixed'
+	}]
