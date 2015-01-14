@@ -141,15 +141,21 @@ describe("A set of tests for the Nearest widget", function() {
         setupSinon();
 
         nearestProps.location = location;
-        createWidget(nearestProps);
 
-        var opts = widget._getlayerOptions("12345");
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+            var handle = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                var opts = nearestWidget._getlayerOptions("12345");
 
-        expect(opts.webmapId).toEqual("12345");
-        expect(opts.maxResults).toEqual(4);
-        expect(opts.searchRadius).toEqual(23);
-   
-        done();
+                expect(opts.webmapId).toEqual("12345");
+                expect(opts.maxResults).toEqual(4);
+                expect(opts.searchRadius).toEqual(23);
+
+                connect.unsubscribe(handle);
+                done();
+            });
+
+            createWidget(nearestProps);
+        });
     });
 
     it("should get a mix of the default options and layer options", function (done) {

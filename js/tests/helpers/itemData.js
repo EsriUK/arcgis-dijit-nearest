@@ -328,15 +328,7 @@
                 "description": "<div>{ADDRESS}<br /></div><div>{PHONE}<br /></div><div><br /></div><div>{SCHOOL_URL}<br /></div><div><br /></div>",
                 "showAttachments": true,
                 "mediaInfos": [
-                    {
-                        "title": "Image 1",
-                        "type": "image",
-                        "caption": "",
-                        "value": {
-                            "sourceURL": "http://blog.gettyimages.com/wp-content/uploads/2013/01/Siberian-Tiger-Running-Through-Snow-Tom-Brakefield-Getty-Images-200353826-001.jpg",
-                            "linkURL": ""
-                        }
-                    }
+                    
                 ]
             }
         },
