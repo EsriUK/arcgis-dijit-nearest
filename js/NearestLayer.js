@@ -151,7 +151,7 @@ function (
 
             // Fire show on map click event for list of features
             on(this.showList, "click", function (evt) {
-                topic.publish("Nearest::show-list-onmap", _this.results.result, _this.results.layerInfo.renderer, this);
+                topic.publish("Nearest::show-layer", _this.results.result, _this.results.layerInfo.renderer, this);
             });
 
         },

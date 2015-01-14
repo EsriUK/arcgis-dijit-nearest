@@ -110,7 +110,7 @@
                         basemap: "topo"
                     });
 
-                    topic.subscribe("Nearest::show-onmap", function (feature, renderer) {
+                    topic.subscribe("Nearest::show-feature", function (feature, renderer) {
                         map.graphics.clear();
                         map.graphics.add(new Graphic(feature.feature.geometry, renderer.symbol, feature.feature.attributes, feature.feature.infoTemplate));
 
@@ -123,7 +123,7 @@
                     });
 
 
-                    topic.subscribe("Nearest::show-list-onmap", function (features, renderer, layerElem) {
+                    topic.subscribe("Nearest::show-layer", function (features, renderer, layerElem) {
                         map.graphics.clear();
                         if (layerElem.className !== "") {
 

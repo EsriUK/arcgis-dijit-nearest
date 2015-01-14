@@ -138,7 +138,7 @@ function (
 
             // Fire show on map click event
             on(this.mapButton, "click", function (evt) {
-                topic.publish("Nearest::show-onmap", _this.feature, _this.renderer);
+                topic.publish("Nearest::show-feature", _this.feature, _this.renderer);
             });
 
             // Fire show item details click event
@@ -146,7 +146,7 @@ function (
 
             if(item) {
                 on(item, "click", function (evt) {
-                    topic.publish("Nearest::show-item-detail", _this.feature, _this.featureId + "-field-values");
+                    topic.publish("Nearest::show-feature-detail", _this.feature, _this.featureId + "-field-values");
                 });
             }
         }

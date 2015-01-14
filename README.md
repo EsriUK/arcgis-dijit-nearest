@@ -80,3 +80,37 @@ This is an array of objects that contain overridden options per layer.
 
 
 ## Events
+The widget publishes events at various stages of its lifecycle.
+
+### data-loaded
+	topic.subscribe("Nearest::data-loaded", function (widget) {});
+
+
+### query-done
+	topic.subscribe("Nearest::query-done", function (widget, queryResults) {});
+
+
+### nearest-task-done
+	topic.subscribe("Nearest::nearest-task-done", function (widget, nearestResults) {});
+
+
+### loaded
+	topic.subscribe("Nearest::loaded", function (widget) {});
+
+
+### show-layer
+	topic.subscribe("Nearest::show-layer", function (results, renderer, widget) {});
+
+
+### show-feature
+	topic.subscribe("Nearest::show-feature", function (feature, renderer) {});
+
+
+
+## Issues
+
+Find a bug or want to request a new feature?  Please let us know by submitting an issue.
+
+## Contributing
+
+Anyone and everyone is welcome to contribute.
