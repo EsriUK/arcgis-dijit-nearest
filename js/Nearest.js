@@ -39,8 +39,8 @@ function (
                 searchRadius: 5, // The search radius in miles.
                 display: "expandable", // How to display the results. Expandable or fixed.
                 layerOptions: [], // Options for each layer. These override the default radius and max results
-                showOnMap: true,
-                showCounters: true
+                showOnMap: true, // Display the 'Show On Map' link
+                showCounters: true // Show the feature counts
             };
 
             /*
@@ -51,6 +51,7 @@ function (
                         searchRadius:,
                         showOnMap: 
                         showCounters:
+                        display:
                     }
                 ]
             */
@@ -129,6 +130,9 @@ function (
                     var queryTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers, layerOpts;
 
                     if (webMap) {
+                        topic.publish("Nearest::data-loaded", _this);
+
+
                         _this.webMap = webMap;
                         opLayers = webMap.operationalLayers;
 
@@ -158,6 +162,8 @@ function (
                         all(queryTasks).then(function (queryResults) {
                             var j = 0, jL = queryResults.length, nearestTask = null, nearestTasks = [], layerName = "", layerOpts;
 
+                            topic.publish("Nearest::query-done", _this, queryResults);
+
                             for (j = 0; j < jL; j++) {
                                 layerOpts = _this._getlayerOptions(queryResults[j].itemId);
 
@@ -177,6 +183,8 @@ function (
                             // Once all of the find nearest tasks have finished display the results
                             all(nearestTasks).then(function (nearestResults) {
                                 var k = 0, kL = nearestResults.length;
+
+                                topic.publish("Nearest::nearest-task-done", _this, nearestResults);
 
                                 // nearestResults is an array of arrays of the results
                                 // So an array of layers, each layer has a set of results
@@ -222,7 +230,8 @@ function (
                 maxResults: this.maxResults,
                 searchRadius: this.searchRadius,
                 showOnMap: this.showOnMap,
-                showCounters: this.showCounters
+                showCounters: this.showCounters,
+                display: this.display
             };
                 
 
@@ -265,7 +274,7 @@ function (
                     maxFeatures: layerOpts.maxResults,
                     distance: layerOpts.searchRadius,
                     distanceUnits: "miles",
-                    display: this.display,
+                    display: layerOpts.display,
                     showOnMap: layerOpts.showOnMap,
                     showCounters: layerOpts.showCounters
                 }, layerDiv);

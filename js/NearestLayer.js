@@ -117,8 +117,6 @@ function (
             }
 
             this.inherited(arguments);
-
-            
         },
 
 
@@ -175,17 +173,20 @@ function (
 
         _createFeaturesList: function () {
             var attributes, item,
-            featureInd = 0, fL = 0, description = null, nameVals = [], feature, fieldArray, itemDiv,
-            template = new PopupTemplate(this.layerInfo.popupInfo), field;
+            featureInd = 0, fL = 0, nameVals = [], feature, itemDiv,
+            template = new PopupTemplate(this.layerInfo.popupInfo), g, rend;
 
             // For each feature and a sub row
             for (featureInd = 0, fL = this.results.result.length; featureInd < fL; featureInd++) {
                 feature = this.results.result[featureInd];
                 attributes = feature.feature.attributes;
 
-                var g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
+                // Set the info template for the feature
+                this.results.result[featureInd].feature.infoTemplate = template;
 
-                var rend = new PopupRenderer({ template: template, graphic: g });
+                g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
+
+                rend = new PopupRenderer({ template: template, graphic: g });
                 rend.startup();
 
                 // layer node

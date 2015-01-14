@@ -240,4 +240,112 @@ describe("A set of tests for the Nearest widget", function() {
         });
     });
 
+    it("should fire the loaded event", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.webmapId = "0713c71403f94013a399ab54910ec8bf";
+        props.location = location;
+        props.layerOptions = [{
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+            var handleLoaded = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                expect(nearestWidget.webmapId).toEqual("0713c71403f94013a399ab54910ec8bf");
+                connect.unsubscribe(handleLoaded);
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
+
+    it("should fire the data loaded event", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.webmapId = "0713c71403f94013a399ab54910ec8bf";
+        props.location = location;
+        props.layerOptions = [{
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+            var handleDataLoaded = topic.subscribe("Nearest::data-loaded", function (nearestWidget) {
+                expect(nearestWidget.webmapId).toEqual("0713c71403f94013a399ab54910ec8bf");
+                connect.unsubscribe(handleDataLoaded);
+            });
+            var handleLoaded = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                connect.unsubscribe(handleLoaded);
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
+
+    it("should fire the query-done event", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.webmapId = "0713c71403f94013a399ab54910ec8bf";
+        props.location = location;
+        props.layerOptions = [{
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+
+            var handleQueryDone = topic.subscribe("Nearest::query-done", function (nearestWidget, queryResults) {
+                expect(queryResults.length).toBeGreaterThan(0);
+                connect.unsubscribe(handleQueryDone);
+            });
+            var handleLoaded = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                connect.unsubscribe(handleLoaded);
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
+
+    it("should fire the task-done event", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.webmapId = "0713c71403f94013a399ab54910ec8bf";
+        props.location = location;
+        props.layerOptions = [{
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+
+            var handleTaskDone = topic.subscribe("Nearest::nearest-task-done", function (nearestWidget, nearestResults) {
+                expect(nearestResults.length).toBeGreaterThan(0);
+                connect.unsubscribe(handleTaskDone);
+            });
+            var handleLoaded = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                connect.unsubscribe(handleLoaded);
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
+
+    
 });
