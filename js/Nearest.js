@@ -13,10 +13,11 @@ define([
     "dojo/dom-construct",
     "./tasks/ClientNearestTask",
     "./tasks/LayerInfoTask",
-    "./NearestLayer"
+    "./NearestLayer",
+    'dojo/topic'
 ],
 function (
-    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer, topic) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -37,7 +38,9 @@ function (
                 maxResults: 10, // The maximum number of features to return.
                 searchRadius: 5, // The search radius in miles.
                 display: "expandable", // How to display the results. Expandable or fixed.
-                layerOptions: [] // Options for each layer. These override the default radius and max results
+                layerOptions: [], // Options for each layer. These override the default radius and max results
+                showOnMap: true,
+                showCounters: true
             };
 
             /*
@@ -62,7 +65,8 @@ function (
             this.set("searchRadius", defaults.searchRadius);
             this.set("display", defaults.display);
             this.set("layerOptions", defaults.layerOptions);
-
+            this.set("showOnMap", defaults.showOnMap)
+            this.set("showCounters", defaults.showCounters)
 
             // widget node
             this.domNode = srcRefNode;
@@ -115,12 +119,6 @@ function (
         /* Private Functions */
         /* ---------------- */
 
-        _createList: function() {
-            // clear node
-            this._features.innerHTML = '';
-
-            // For each feature add it to the list using the NearestItem widget 
-        },
 
         _init: function () {
             var _this = this;
@@ -141,7 +139,7 @@ function (
                         // Go through operational layers and query each one
                         for (i = 0, iL = opLayers.length; i < iL; i++) {
                             layerOpts = _this._getlayerOptions(opLayers[i].itemId);
-                            
+
                             // check if layer has a url to be able to perform a query
                             if (!_this._isNullOrEmpty(opLayers[i].url)) {
                                 task = new LayerInfoTask({
@@ -153,7 +151,7 @@ function (
                                 });
 
                                 queryTasks.push(task.execute());
-                            } 
+                            }
                         }
 
                         // Once all queries have finished do the find nearest
@@ -187,19 +185,23 @@ function (
                                     if (nearestResults[k].error === null && nearestResults[k].result !== null) {
                                         if (nearestResults[k].result.limitExceeded) {
 
-                                            layerName = "";
-                                            for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
-                                                if (_this.layerPopUpFields[lpInd].id === nearestResults[k].id) {
-                                                    layerName = _this.layerPopUpFields[lpInd].layerName;
-                                                    break;
-                                                }
-                                            }
+                                            //layerName = "";
+                                            //for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
+                                            //    if (_this.layerPopUpFields[lpInd].id === nearestResults[k].id) {
+                                            //        layerName = _this.layerPopUpFields[lpInd].layerName;
+                                            //        break;
+                                            //    }
+                                            //}
 
-                                            break;
+                                            //break;
                                         }
                                         _this._displayResults(nearestResults[k]);
                                     }
                                 }
+
+                                // Finished
+                                topic.publish("Nearest::loaded", _this);
+
                                 //displayResults
                             }, function (err) {
 
@@ -208,25 +210,30 @@ function (
                     }
                 });
             }
+            else {
+                topic.publish("Nearest::loaded", this);
+            }
             // Output events
         },
 
         _getlayerOptions: function(itemId) {
-            var i = 0, iL = 0;
+            var i = 0, iL = 0, layerOpts = {
+                webmapId: this.webmapId,
+                maxResults: this.maxResults,
+                searchRadius: this.searchRadius,
+                showOnMap: this.showOnMap,
+                showCounters: this.showCounters
+            };
+                
 
             if(this.layerOptions) {
                 for (i = 0, iL = this.layerOptions.length; i < iL; i++) {
                     if (this.layerOptions[i].itemId === itemId) {
-                        return this.layerOptions[i];
+                        return lang.mixin({}, layerOpts, this.layerOptions[i]);
                     }
                 }
             }
-            return {
-                maxResults: this.maxResults,
-                searchRadius: this.searchRadius,
-                showOnMap: false,
-                showCounters: true
-            };
+            return layerOpts;
         },
 
         _displayResults: function(results) {
@@ -266,10 +273,6 @@ function (
                 layer.startup();
             }
         },
-
-        
-
-        
 
         _getLayerDetails: function (layers) {
             var i = 0, iL = 0, popupInfo = null, fields = [], j = 0, jL = 0, layerFields = null;
