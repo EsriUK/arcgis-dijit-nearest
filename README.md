@@ -58,7 +58,7 @@ Nearest(options, srcNode);
 |location|x|Point|null|The location to use for the query.|
 |searchRadius||Integer|10|The radius to search within, in miles.|
 |maxResults||Integer|5|The number of features to show.|
-|display||string|"expandable"|How to display the results. Expandable or fixed.|
+|display||string|'expandable'|How to display the results. Expandable or fixed.|
 |showOnMap||Boolean|true|Display the 'Show On Map' link.|
 |showCounters||Boolean|true|Show the feature counts.|
 |layerOptions||Object Array|null|Options for each layer. These override the default options per layer in the web map.|
@@ -74,4 +74,9 @@ This is an array of objects that contain overridden options per layer.
         showOnMap: false
         showCounters: false
         display: 'fixed'
+	}, {
+		...
 	}]
+
+
+## Events
