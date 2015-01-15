@@ -82,7 +82,7 @@ function (declare, _Widget, esriRequest) {
                 // Same protocol, no need to change it
                 return url;
             }
-            else if (protocol === "file:") {
+            if (protocol === "file:") {
                 // file protocol, change it to http. For unit tests
                 return url.replace(protocol, "http:");
             }

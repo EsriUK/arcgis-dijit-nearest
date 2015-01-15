@@ -81,8 +81,8 @@ function (
             this.set("searchRadius", defaults.searchRadius);
             this.set("display", defaults.display);
             this.set("layerOptions", defaults.layerOptions);
-            this.set("showOnMap", defaults.showOnMap)
-            this.set("showCounters", defaults.showCounters)
+            this.set("showOnMap", defaults.showOnMap);
+            this.set("showCounters", defaults.showCounters);
 
             // widget node
             this.domNode = srcRefNode;
@@ -142,7 +142,7 @@ function (
             // Do query and build results
             if (!this._isNullOrEmpty(this.webmapId)) {
                 this._getItemData(this.webmapId, this.token).then(function (webMap) {
-                    var queryTasks = [], lpInd = 0, i = 0, iL = 0, task = null, opLayers, layerOpts;
+                    var queryTasks = [], i = 0, iL = 0, task = null, opLayers, layerOpts;
 
                     if (webMap) {
                         topic.publish("Nearest::data-loaded", _this);
@@ -197,7 +197,7 @@ function (
 
                             // Once all of the find nearest tasks have finished display the results
                             all(nearestTasks).then(function (nearestResults) {
-                                var k = 0, kL = nearestResults.length;
+                                var k = 0, kL = nearestResults.length, lpInd = 0;
 
                                 topic.publish("Nearest::nearest-task-done", _this, nearestResults);
 
