@@ -2,7 +2,7 @@
   "name": "Nearest-widget",
   "version": "0.1.0",
   "description": "",
-  "license": "MIT",
+  "license": "APACHE",
   "repository": "EsriUK/arcgis-dijit-nearest",
   "scripts": {
     "test": "grunt travis --verbose"
