@@ -7,6 +7,8 @@ describe("A set of tests for the Nearest base widget", function () {
                 widget = new _nearestBase({}, 'widgetBase');
                 _NearestBase = _nearestBase;
 
+                widget.itemUrl = "http://www.arcgis.com/sharing/rest/content/items/";
+
                 widget.startup();
                 done();
             });
@@ -71,7 +73,7 @@ describe("A set of tests for the Nearest base widget", function () {
         var url = "http://www.arcgis.com/sharing/rest/content/items/", itemId = "1234567890",
             requestUrl = url + itemId + "?f=pjson";
 
-
+    
         setupSinon();
 
         server.respondWith(requestUrl, [

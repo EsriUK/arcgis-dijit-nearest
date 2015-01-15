@@ -149,7 +149,7 @@ function (
                                 task = new LayerInfoTask({
                                     currentPoint: _this.location,
                                     searchRadius: layerOpts.searchRadius,
-                                    serviceUrl: opLayers[i].url,
+                                    serviceUrl: _this._swapProtocol(opLayers[i].url),
                                     layerId: opLayers[i].id,
                                     itemId: opLayers[i].itemId
                                 });

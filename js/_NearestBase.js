@@ -1,4 +1,4 @@
-﻿/*global define, console*/
+﻿/*global define, console, document */
 
 
 define([
@@ -15,6 +15,65 @@ function (declare, _Widget, esriRequest) {
         //		Base class for the Nearest, NearstLayer and NearestItem widgets.
 
         itemUrl: "//www.arcgis.com/sharing/rest/content/items/",
+        parseUrioptions: {
+            strictMode: false,
+            key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
+            q:   {
+                name:   "queryKey",
+                parser: /(?:^|&)([^&=]*)=?([^&]*)/g
+            },
+            parser: {
+                strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+                loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+            }
+        },
+
+
+        _parseUri: function(str) {
+            // summary:
+            //		Parses a URL into the various parts
+            // tags:
+            //		private
+
+            var o = this.parseUrioptions,
+		        m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+		        uri = {},
+		        i   = 14;
+
+            while (i--) {
+                uri[o.key[i]] = m[i] || "";
+            }
+
+            uri[o.q.name] = {};
+            uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
+                if ($1) {
+                    uri[o.q.name][$1] = $2;
+                }
+            });
+
+            return uri;
+        },
+
+        _swapProtocol: function (url) {
+            // summary:
+            //		Modifies the protocol of a URL if needed
+            // tags:
+            //		private
+
+            var protocol = document.location.protocol,
+                splitUri = this._parseUri(url);
+
+            if (splitUri.protocol + ":" === protocol) {
+                // Same protocol, no need to change it
+                return url;
+            }
+            else if (protocol === "file:") {
+                // file protocol, change it to http. For unit tests
+                return url.replace(protocol, "http:");
+            }
+
+            return url.replace(splitUri.protocol + ":", protocol);
+        },
 
         _getItem: function (itemId, token, isDataItem) {
             // summary:
@@ -31,7 +90,7 @@ function (declare, _Widget, esriRequest) {
             if (isDataItem) {
                 url = url + "/data/";
             }
-
+            console.log(url + "?f=pjson" + tokenPart);
             return esriRequest({
                 url: url + "?f=pjson" + tokenPart
             });

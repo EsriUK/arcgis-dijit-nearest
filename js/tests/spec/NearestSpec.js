@@ -11,20 +11,30 @@ var nearestProps = {
 }
 
 
+
+
 describe("A set of tests for the Nearest widget", function() {
-    var Nearest, Point, SpatialReference, location, widget, server, loadWidget = function (done) {
-        require(["app/Nearest", "esri/geometry/Point", "esri/SpatialReference"], function (_Nearest, _Point, _SpatialReference) {
+    var baseWidget, Nearest, Point, SpatialReference, location, widget, server, loadWidget = function (done) {
+        require(["app/Nearest", "esri/geometry/Point", "esri/SpatialReference", "app/_NearestBase"], function (_Nearest, _Point, _SpatialReference, _NearestBase) {
             widget = new _Nearest({}, 'widgetNode');
+
+            widget.itemUrl = "http://www.arcgis.com/sharing/rest/content/items/";
 
             Point = _Point;
             Nearest = _Nearest;
             SpatialReference = _SpatialReference;
 
-            location = new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 }));
+            baseWidget = new _NearestBase();
+            baseWidget.startup();
 
+            location = new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 }));
+            
             widget.startup();
             done();
         });
+    },
+    swapProtocol = function (url) {
+        return baseWidget._swapProtocol(url);
     },
     createWidget = function (props) {
         if (widget) {
@@ -33,12 +43,14 @@ describe("A set of tests for the Nearest widget", function() {
         }
 
         widget = new Nearest(props, 'widgetNode');
+
+        widget.itemUrl = swapProtocol("http://www.arcgis.com/sharing/rest/content/items/");
         widget.startup();
     };
 
     var setupSinon = function () {
-        var requestUrl = "http://www.arcgis.com/sharing/rest/content/items/12345?f=pjson";
-        var dataurl = "http://www.arcgis.com/sharing/rest/content/items/12345/data/?f=pjson", itemId = "12345";
+        var requestUrl = swapProtocol("http://www.arcgis.com/sharing/rest/content/items/12345?f=pjson");
+        var dataurl = swapProtocol("http://www.arcgis.com/sharing/rest/content/items/12345/data/?f=pjson"), itemId = "12345";
 
         server = sinon.fakeServer.create();
         server.autoRespond = true;
@@ -59,49 +71,49 @@ describe("A set of tests for the Nearest widget", function() {
             JSON.stringify(itemData)
         ]);
 
-        server.respondWith(itemData.operationalLayers[0].url + "?f=json", [
+        server.respondWith(swapProtocol(itemData.operationalLayers[0].url + "?f=json"), [
             200,
             {
                 "Content-Type": "application/json"
             },
             JSON.stringify(itemDetails)
         ]);
-        server.respondWith(itemData.operationalLayers[1].url + "?f=json", [
+        server.respondWith(swapProtocol(itemData.operationalLayers[1].url + "?f=json"), [
             200,
             {
                 "Content-Type": "application/json"
             },
             JSON.stringify(itemDetails)
         ]);
-        server.respondWith(itemData.operationalLayers[2].url + "?f=json", [
+        server.respondWith(swapProtocol(itemData.operationalLayers[2].url + "?f=json"), [
             200,
             {
                 "Content-Type": "application/json"
             },
             JSON.stringify(itemDetails)
         ]);
-        server.respondWith("http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/BorisBikesYP/FeatureServer/0/query", [
+        server.respondWith(swapProtocol("http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/BorisBikesYP/FeatureServer/0/query"), [
             200,
             {
                 "Content-Type": "application/json"
             },
             JSON.stringify(pointFeatureSet)
         ]);
-        server.respondWith("http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/NewhamSchools/FeatureServer/0/query", [
+        server.respondWith(swapProtocol("http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/NewhamSchools/FeatureServer/0/query"), [
             200,
             {
                 "Content-Type": "application/json"
             },
             JSON.stringify(pointFeatureSet)
         ]);
-        server.respondWith("http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/Tube2/FeatureServer/0/query", [
+        server.respondWith(swapProtocol("http://services.arcgis.com/Qo2anKIAMzIEkIJB/arcgis/rest/services/Tube2/FeatureServer/0/query"), [
             200,
             {
                 "Content-Type": "application/json"
             },
             JSON.stringify(lineFeatureSet)
         ]);
-        server.respondWith("http://www.arcgis.com/sharing/rest/content/items/0713c71403f94013a399ab54910ec8bf/data/?f=pjson", [
+        server.respondWith(swapProtocol("http://www.arcgis.com/sharing/rest/content/items/0713c71403f94013a399ab54910ec8bf/data/?f=pjson"), [
             200,
             {
                 "Content-Type": "application/json"
@@ -120,6 +132,7 @@ describe("A set of tests for the Nearest widget", function() {
             widget.destroy();
             widget = null;
         }
+        
     }); 
 
     it("should not be null", function (done) {
