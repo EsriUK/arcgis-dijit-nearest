@@ -105,7 +105,7 @@ function (declare, _Widget, esriRequest) {
             if (isDataItem) {
                 url = url + "/data/";
             }
-            console.log(url + "?f=pjson" + tokenPart);
+           
             return esriRequest({
                 url: url + "?f=pjson" + tokenPart
             });
