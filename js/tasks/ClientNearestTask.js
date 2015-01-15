@@ -4,14 +4,14 @@
 /**
  * Find Nearest Task
  */
-define(["dojo/Deferred"], function (Deferred) {
+define(["dojo/Deferred", "require"], function (Deferred, require) {
     var taskOutput = function ClientNearestTask(props) {
         this.properties = props;
 
         this.findNearest = function (point, featureSet, layerInfo) {
             var _this = this, result = new Deferred();
 
-            require(["app/tasks/FindNearestTask"],
+            require(["./FindNearestTask"],
             function (FindNearestTask) {
                 var task = new FindNearestTask({ maxFeatures: _this.properties.maxResults, mode: "geodesic" }), params = {
                     point: point,
