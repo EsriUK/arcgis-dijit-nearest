@@ -111,8 +111,9 @@
                                 itemId: "51e2ddafa02c4a32bc32c4da978df046",
                                 searchRadius: 1,
                                 maxResults: 1,
-                                showOnMap: false,
-                                showCounters: false
+                                showOnMap: true,
+                                showCounters: false,
+                                showDistance: false
                             }
                         ]
                     }, "singleNearest");
@@ -127,13 +128,18 @@
 
                     topic.subscribe("Nearest::show-feature", function (feature, renderer) {
                         map.graphics.clear();
-                        map.graphics.add(new Graphic(feature.feature.geometry, renderer.symbol, feature.feature.attributes, feature.feature.infoTemplate));
+                        var g = new Graphic(feature.feature.geometry, null, feature.feature.attributes, feature.feature.infoTemplate);
+
+                        var symbol = renderer.getSymbol(g);
+                        g.setSymbol(symbol);
+
+                        map.graphics.add(g);
 
                         if (feature.feature.geometry.type === "point") {
                             map.centerAndZoom(feature.feature.geometry, 11);
                         }
                         else {
-                            map.setExtent(feature.feature.geometry.getExtent().expand(0.75));
+                            map.setExtent(feature.feature.geometry.getExtent().expand(0.75), true);
                         }
                     });
 
@@ -171,13 +177,12 @@
             <!-- Example row of columns -->
             <div class="row">
                 <div class="col-lg-7">
-                    <h2>A map</h2>
                     <div id="map"></div>
                 </div>
 
                 <div class="col-lg-5">
-                    <h2>Single layer</h2>
                     <div id="singleNearest"></div>
+                    <div id="bins"></div>
                 </div>
             </div>
             <div class="row">

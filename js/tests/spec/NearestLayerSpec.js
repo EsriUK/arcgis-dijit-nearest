@@ -19,9 +19,11 @@ var layerProps = {
     maxFeatures: 5,
     distance: 0,
     distanceUnits: "miles",
-    display: "expandable",
-    showOnMap: true,
-    showCounters: true
+    layerOptions: {
+        showOnMap: true,
+        showCounters: true,
+        display: "expandable"
+    }
 };
 
 
@@ -75,7 +77,7 @@ describe("A set of tests for the Nearest Layer widget", function () {
     
     it("should set the layer as expanded", function (done) {
         var props = layerProps;
-        props.display = "fixed";
+        props.layerOptions.display = "fixed";
         createWidget(props);
 
         expect(widget.expanded).toEqual(true);
@@ -84,7 +86,7 @@ describe("A set of tests for the Nearest Layer widget", function () {
 
     it("should hide the counters", function (done) {
         var props = layerProps;
-        props.showCounters = false;
+        props.layerOptions.showCounters = false;
         createWidget(props);
 
         expect(widget.showCountersVisible).toEqual("none");

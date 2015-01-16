@@ -11,18 +11,20 @@ var featureProps = {
             }
         }
     },
+    layerOptions: {
+        showCounters: true,
+        showOnMap: true
+    },
     layerItemId: "asdr34ff4ff4",
     distanceUnits: "miles",
     distance: 1.34,
     featureNumber: 12,
-    showOnMap: true,
     showOnMapLinktext: "Show on map",
     description: "<div>hello there</div>",
     fieldValues: null,
     titleText: "The title",
     titleField: ["LineName"],
-    renderer: { a: "im a renderer" },
-    showCounters: true
+    renderer: { a: "im a renderer" }
 };
 
 
@@ -72,8 +74,7 @@ describe("A set of tests for the Nearest Item widget", function () {
         expect(widget.distance).toEqual(featureProps.distance);
         expect(widget.layerItemId).toEqual(featureProps.layerItemId);
         expect(widget.distanceUnits).toEqual(featureProps.distanceUnits);
-        expect(widget.distance).toEqual(featureProps.distance);
-        expect(widget.showOnMap).toEqual(featureProps.showOnMap);
+        expect(widget.layerOptions.showOnMap).toEqual(featureProps.layerOptions.showOnMap);
         expect(widget.showOnMapLinktext).toEqual(featureProps.showOnMapLinktext);
         expect(widget.description).toEqual(featureProps.description);
         expect(widget.featureNumber).toEqual(featureProps.featureNumber);
@@ -93,7 +94,7 @@ describe("A set of tests for the Nearest Item widget", function () {
 
     it("should show the counters", function (done) {
         var props = featureProps;
-        props.showCounters = true;
+        props.layerOptions.showCounters = true;
 
         createWidget(props);
 
@@ -103,7 +104,7 @@ describe("A set of tests for the Nearest Item widget", function () {
 
     it("should hide the map link", function (done) {
         var props = featureProps;
-        props.showOnMap = false;
+        props.layerOptions.showOnMap = false;
 
         createWidget(props);
 
@@ -114,7 +115,7 @@ describe("A set of tests for the Nearest Item widget", function () {
 
     it("should hide the counters", function (done) {
         var props = featureProps;
-        props.showCounters = false;
+        props.layerOptions.showCounters = false;
 
         createWidget(props);
 
@@ -124,7 +125,7 @@ describe("A set of tests for the Nearest Item widget", function () {
 
     it("should set the featureId", function (done) {
         var props = featureProps;
-        props.showCounters = true;
+        props.layerOptions.showCounters = true;
 
         createWidget(props);
 
@@ -134,7 +135,7 @@ describe("A set of tests for the Nearest Item widget", function () {
 
     it("should create a featureId", function (done) {
         var props = featureProps;
-        props.showCounters = true;
+        props.layerOptions.showCounters = true;
         props.feature.feature.attributes = {};
         createWidget(props);
 

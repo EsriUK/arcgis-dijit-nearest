@@ -61,6 +61,7 @@ Nearest(options, srcNode);
 |display||string|'expandable'|How to display the results. Expandable or fixed.|
 |showOnMap||Boolean|true|Display the 'Show On Map' link.|
 |showCounters||Boolean|true|Show the feature counts.|
+|showDistance||Boolean|true|Show the distance.|
 |layerOptions||Object Array|null|Options for each layer. These override the default options per layer in the web map.|
 
 
@@ -74,7 +75,8 @@ You do not have to include all options, just the options you want to override.
         searchRadius: 29,
         showOnMap: false
         showCounters: false
-        display: 'fixed'
+        display: 'fixed',
+		showDistance: false
 	}, {
 		...
 	}]

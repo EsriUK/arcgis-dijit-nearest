@@ -50,15 +50,12 @@ function (
                 distanceUnits: "miles", // The units the distance is in.
                 distance: 999, // The distance the feature is from the location.
                 featureNumber: 0, // The index or number this feature is in the list
-                showOnMap: false, // Show / hide the link for showing on a map
                 showOnMapLinktext: "Show on map", // The text to use for the link
-                showCounters: true,
                 description: "",
-                fieldValues: null,
                 titleText: "",
                 titleField: "",
                 renderer: null,
-                mediaInfos: null
+                layerOptions: null
             };
 
             // mix in settings and defaults
@@ -70,14 +67,13 @@ function (
             this.set("distanceUnits", defaults.distanceUnits);
             this.set("distance", defaults.distance);
             this.set("featureNumber", defaults.featureNumber);
-            this.set("showOnMap", defaults.showOnMap);
             this.set("showOnMapLinktext", defaults.showOnMapLinktext);
             this.set("description", defaults.description);
             this.set("fieldValues", defaults.fieldValues);
             this.set("titleText", defaults.titleText);
             this.set("titleField", defaults.titleField);
             this.set("renderer", defaults.renderer);
-            this.set("showCounters", defaults.showCounters);
+            this.set("layerOptions", defaults.layerOptions);
 
             // widget node
             this.domNode = srcRefNode;
@@ -102,17 +98,25 @@ function (
             this.set("featureTitle", this._fieldReplace(this.titleText, attributes));
 
             // Show/Hide map link
-            if (this.showOnMap) {
+            if (this.layerOptions.showOnMap) {
                 this.set("showOnMapVisible", "block");
             }
             else {
                 this.set("showOnMapVisible", "none");
             }
-            if (this.showCounters) {
+
+            if (this.layerOptions.showCounters) {
                 this.set("showCountersVisible", "block");
             }
             else {
                 this.set("showCountersVisible", "none");
+            }
+
+            if (this.layerOptions.showDistance) {
+                this.set("showDistanceVisible", "block");
+            }
+            else {
+                this.set("showDistanceVisible", "none");
             }
 
             this.inherited(arguments);

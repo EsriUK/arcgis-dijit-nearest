@@ -55,7 +55,8 @@ function (
                 display: "expandable", // How to display the results. Expandable or fixed.
                 layerOptions: [], // Options for each layer. These override the default radius and max results
                 showOnMap: true, // Display the 'Show On Map' link
-                showCounters: true // Show the feature counts
+                showCounters: true, // Show the feature counts
+                showDistance: true // Show the distance
             };
 
             /*
@@ -83,6 +84,7 @@ function (
             this.set("layerOptions", defaults.layerOptions);
             this.set("showOnMap", defaults.showOnMap);
             this.set("showCounters", defaults.showCounters);
+            this.set("showDistance", defaults.showDistance);
 
             // widget node
             this.domNode = srcRefNode;
@@ -246,7 +248,8 @@ function (
                 searchRadius: this.searchRadius,
                 showOnMap: this.showOnMap,
                 showCounters: this.showCounters,
-                display: this.display
+                display: this.display,
+                showDistance: this.showDistance
             };
                 
 
@@ -289,9 +292,7 @@ function (
                     maxFeatures: layerOpts.maxResults,
                     distance: layerOpts.searchRadius,
                     distanceUnits: "miles",
-                    display: layerOpts.display,
-                    showOnMap: layerOpts.showOnMap,
-                    showCounters: layerOpts.showCounters
+                    layerOptions: layerOpts
                 }, layerDiv);
 
                 layer.startup();
@@ -299,7 +300,7 @@ function (
         },
 
         _getLayerDetails: function (layers) {
-            var i = 0, iL = 0, popupInfo = null, fields = [], j = 0, jL = 0, layerFields = null;
+            var _this = this, i = 0, iL = 0, popupInfo = null, fields = [], j = 0, jL = 0, layerFields = null;
 
             if (!this._isNullOrEmpty(layers)) {
                 // Iterate through any operational layers
@@ -325,6 +326,25 @@ function (
                             "popupInfo": popupInfo
                         };
                         this.layerPopUpFields.push(layerFields);
+
+                    }
+                    else {
+                        // Might not have the popup info saved with the webmap
+                        var _layer = layers[i];
+
+                        (function (l, t) {
+                            t._getItemData(l.itemId).then(function (data) {
+                                if (data && data.layers) {
+                                   var lFields = {
+                                        "layerName": l.title,
+                                        "id": l.id,
+                                        "popupInfo": data.layers[0].popupInfo
+                                    };                                                      
+
+                                    t.layerPopUpFields.push(lFields);
+                                }
+                            });
+                        })(_layer, _this);
                         
                     }
                 }

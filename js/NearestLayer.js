@@ -55,9 +55,7 @@ function (
                 maxFeatures: 5,
                 distance: 0,
                 distanceUnits: "miles",
-                display: "expandable",
-                showOnMap: false,
-                showCounters: true
+                layerOptions: null
             };
 
             // mix in settings and defaults
@@ -69,9 +67,7 @@ function (
             this.set("maxFeatures", defaults.maxFeatures);
             this.set("distance", defaults.distance);
             this.set("distanceUnits", defaults.distanceUnits);
-            this.set("display", defaults.display);
-            this.set("showOnMap", defaults.showOnMap);
-            this.set("showCounters", defaults.showCounters);
+            this.set("layerOptions", defaults.layerOptions);
 
             // widget node
             this.domNode = srcRefNode;
@@ -114,7 +110,7 @@ function (
             this.set("layerId", layerNameEle);
             this.set("numberOfFeatures", result.length);
 
-            if (this.display === "fixed") {
+            if (this.layerOptions.display === "fixed") {
                 this.set("expanded", true);
                 this.set("expandedClass", "in");
                 this.set("collapseClass", "");
@@ -125,7 +121,7 @@ function (
                 this.set("collapseClass", "collapse");
             }
 
-            if (this.showCounters) {
+            if (this.layerOptions.showCounters) {
                 this.set("showCountersVisible", "block");
             }
             else {
@@ -200,7 +196,6 @@ function (
 
                 // Set the info template for the feature
                 this.results.result[featureInd].feature.infoTemplate = template;
-
                 g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
 
                 rend = new PopupRenderer({ template: template, graphic: g });
@@ -219,10 +214,8 @@ function (
                     titleField: this.titleField,
                     featureNumber: 1 + parseInt(featureInd, 10),
                     description: rend.domNode.innerHTML,
-                    fieldVlaues: nameVals,
-                    showOnMap: this.showOnMap,
                     renderer: this.results.layerInfo.renderer,
-                    showCounters: this.showCounters
+                    layerOptions: this.layerOptions
                 }, itemDiv);
 
                 item.startup();
