@@ -20,7 +20,8 @@ The details shown replicate those that are setup in the popup within your webmap
 		maxResults: 5,
 		display: "expandable",
 		showOnMap: true,
-		showCounters: true
+		showCounters: true,
+		showDistance: true
     }, "NearestWidget");
 
     myWidget.startup();

@@ -144,9 +144,9 @@
                     });
 
 
-                    topic.subscribe("Nearest::show-layer", function (features, renderer, layerElem) {
+                    topic.subscribe("Nearest::show-layer", function (features, renderer, expanded) {
                         map.graphics.clear();
-                        if (layerElem.className !== "") {
+                        if (expanded) {
 
                             var i = 0, iL = features.length, geoms = [];
 
