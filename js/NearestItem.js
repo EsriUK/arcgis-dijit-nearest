@@ -132,6 +132,9 @@ function (
 
             if (!this._isNullOrEmpty(this.description)) {
                 domConstruct.place(this.description, this.featureDetails, "last");
+
+                // Remove the header as we added that manually
+                dojo.query(".header", this.featureDetails).forEach(dojo.empty);
             }
                         
             this.setupConnections();

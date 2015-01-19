@@ -14,15 +14,7 @@
  | limitations under the License.
  */
 .nearestLayer {
-    /*border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
-    border-color: #ddd;*/
+
 
 }
 
@@ -39,15 +31,11 @@
 }
 
 .nearestLayer-title {
-    /*margin-top: 0;
-    margin-bottom: 0;
-    font-size: 16px;
-    color: inherit;
-    text-decoration: none;*/
+
 }
 
 .nearestLayer-title a {
-    /*text-decoration: none;*/
+
 }
 
 .nearestLayer-details-container {
@@ -59,9 +47,7 @@
 }
 
 .nearestLayer-results {
-    /*font-style: italic;
-    color: #888;
-    font-size: .85em;*/
+
 }
 
 .nearestLayer-layer-name {

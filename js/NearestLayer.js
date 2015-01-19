@@ -161,12 +161,13 @@ function (
             //
             var _this = this;
 
-            // Fire show on map click event for list of features
-            on(this.showList, "click", function (evt) {
-                _this.expanded = !_this.expanded;
-                topic.publish("Nearest::show-layer", _this.results.result, _this.results.layerInfo.renderer, _this.expanded);
-            });
-
+            // Fire event for clicking on layer name if not using fixed layout
+            if (this.layerOptions.display !== "fixed") {
+                on(this.showList, "click", function (evt) {
+                    _this.expanded = !_this.expanded;
+                    topic.publish("Nearest::show-layer", _this.results.result, _this.results.layerInfo.renderer, _this.expanded);
+                });
+            }
         },
 
 
@@ -179,14 +180,21 @@ function (
         /* Private Functions */
         /* ---------------- */
         _init: function () {
+            // summary:
+            //    If we have any results then display them
+            //
             if (this.results.result) {
                 this._createFeaturesList();
             }
         },
 
         _createFeaturesList: function () {
+            // summary:
+            //    Creates the list of items for this layer from the features list.
+            //
+
             var attributes, item,
-            featureInd = 0, fL = 0, nameVals = [], feature, itemDiv,
+            featureInd = 0, fL = 0, feature, itemDiv,
             template = new PopupTemplate(this.layerInfo.popupInfo), g, rend;
 
             // For each feature and a sub row
@@ -200,6 +208,7 @@ function (
 
                 rend = new PopupRenderer({ template: template, graphic: g });
                 rend.startup();
+         
 
                 // layer node
                 itemDiv = domConstruct.create("div", {});

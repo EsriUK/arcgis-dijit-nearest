@@ -1,15 +1,14 @@
 arcgis-dijit-nearest [![Build Status](https://magnum.travis-ci.com/EsriUK/arcgis-dijit-nearest.svg?token=V92zP6znibt1RDMCNgRd)](https://magnum.travis-ci.com/EsriUK/arcgis-dijit-nearest)
 ====================
 
-Nearest widget for finding features near a location
-
-
 ## Features
 The Nearest widget provides a list of the nearest features around a location.
 
 The widget is driven by a webmap. You configure the distance that you want to search and the maximum number of features you want to list. 
 The widget finds all the features in each layer up to these limits that are in the webmap. The information is presented to the end user as a list view with the details of each feature.  
 The details shown replicate those that are setup in the popup within your webmap.
+
+[View it live](https://appsdev.esriuk.com/app/NearestDemo/2/wmt/view/ecd398cd37f242af8cd31c1619df69ea/index.html)
 
 ## Quickstart
 	
