@@ -8,4 +8,4 @@ install:
 before_script: 
  - grunt travis
 script: 
- - grunt coveralls:dijit_coverage
+ - grunt coveralls:dijit_coverage --verbose
