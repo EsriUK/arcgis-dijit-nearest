@@ -100,7 +100,7 @@ module.exports = function(grunt) {
                 force: true
             },
             dijit_coverage: {
-                src: 'coverage/lcov/lcov'
+                src: 'coverage/lcov/lcov.info'
             }
         }
     };
