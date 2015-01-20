@@ -1,4 +1,4 @@
-arcgis-dijit-nearest [![Build Status](https://magnum.travis-ci.com/EsriUK/arcgis-dijit-nearest.svg?token=V92zP6znibt1RDMCNgRd)](https://magnum.travis-ci.com/EsriUK/arcgis-dijit-nearest)
+arcgis-dijit-nearest [![Build Status](https://travis-ci.org/EsriUK/arcgis-dijit-nearest.png?branch=master)](https://magnum.travis-ci.org/EsriUK/arcgis-dijit-nearest)
 ====================
 
 ## Features
