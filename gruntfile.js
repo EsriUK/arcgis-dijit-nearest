@@ -87,17 +87,17 @@ module.exports = function(grunt) {
                         }
                     }
                 }
-            },
-            coveralls: {
-                options: {
-                    // LCOV coverage file relevant to every target
-                    src: 'coverage/lcov/lcov.info',
+            }
+        },
+        coveralls: {
+            options: {
+                // LCOV coverage file relevant to every target
+                src: 'coverage/lcov/lcov.info',
 
-                    // When true, grunt-coveralls will only print a warning rather than
-                    // an error, to prevent CI builds from failing unnecessarily (e.g. if
-                    // coveralls.io is down). Optional, defaults to false.
-                    force: false
-                }
+                // When true, grunt-coveralls will only print a warning rather than
+                // an error, to prevent CI builds from failing unnecessarily (e.g. if
+                // coveralls.io is down). Optional, defaults to false.
+                force: false
             }
         }
     };
@@ -120,7 +120,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('cover', ['jasmine:coverage']);
 
-    grunt.registerTask('coverci', ['jasmine:coverageci']);
+    grunt.registerTask('coverci', ['jasmine:coverageci', 'coveralls']);
     grunt.registerTask('travis', ['jasmine:test', 'jasmine:coverage']);
 };
 
