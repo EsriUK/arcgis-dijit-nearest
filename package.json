@@ -5,7 +5,7 @@
   "license": "APACHE",
   "repository": "EsriUK/arcgis-dijit-nearest",
   "scripts": {
-    "test": "grunt coverci && grunt coveralls"
+    "test": "grunt coverci"
   },
   "keywords": [
     "esri",
