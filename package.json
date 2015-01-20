@@ -20,10 +20,6 @@
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-template-jasmine-dojo": "0.0.6",
     "grunt-template-jasmine-istanbul": "git+https://github.com/danbatsb/grunt-template-jasmine-istanbul.git",
-    "grunt-debug-task": "*",
-    "sandboxed-module": "*"
-  },
-  "dependencies": {
-    "grunt-coveralls": "^1.0.0"
+	"grunt-coveralls": "^1.0.0"
   }
 }

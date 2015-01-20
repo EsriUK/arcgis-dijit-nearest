@@ -112,16 +112,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-coveralls');
 
-    // Debug task
-    grunt.loadNpmTasks('grunt-debug-task');
-
     // Add default task(s)
     grunt.registerTask('default', ['jasmine:test']);
 
     grunt.registerTask('cover', ['jasmine:coverage']);
 
-    grunt.registerTask('coverci', ['jasmine:coverageci', 'coveralls']);
-    grunt.registerTask('travis', ['jasmine:test', 'jasmine:coverage']);
+ 
+
+    grunt.registerTask('travis', ['jasmine:test', 'jasmine:coverageci']);
 };
 
 
