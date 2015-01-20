@@ -57,6 +57,47 @@ module.exports = function(grunt) {
                         }
                     }
                 }
+            },
+            coverageci: {
+                src: ['js/*.js', 'js/tasks/*.js'],
+
+                options: {
+                    specs: ['./js/tests/spec/*.js'],
+                    helpers: ['./js/tests/helpers/*.js', './js/tests/lib/sinon/sinon.js'],
+                    template: require('grunt-template-jasmine-istanbul'),
+                    templateOptions: {
+                        coverage: 'coverage/coverage.json',
+                        report: {
+                            type: 'lcov',
+                            options: {
+                                dir: 'coverage/lcov'
+                            }
+                        },
+                        srcCopy: ['js/templates/Nearest.html', 'js/templates/NearestItem.html', 'js/templates/NearestLayer.html'],
+                        template: require('grunt-template-jasmine-dojo'),
+                        templateOptions: {
+                            dojoConfig: {
+                                async: true,
+                                has: { 'native-xhr2': false },
+                                paths: {
+                                    app: '/../.grunt/grunt-contrib-jasmine/js'
+                                }
+                            },
+                            dojoFile: 'http://js.arcgis.com/3.11/'
+                        }
+                    }
+                }
+            },
+            coveralls: {
+                options: {
+                    // LCOV coverage file relevant to every target
+                    src: 'coverage/lcov/lcov.info',
+
+                    // When true, grunt-coveralls will only print a warning rather than
+                    // an error, to prevent CI builds from failing unnecessarily (e.g. if
+                    // coveralls.io is down). Optional, defaults to false.
+                    force: false
+                }
             }
         }
     };
@@ -69,6 +110,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-coveralls');
 
     // Debug task
     grunt.loadNpmTasks('grunt-debug-task');
@@ -78,6 +120,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('cover', ['jasmine:coverage']);
 
+    grunt.registerTask('coverci', ['jasmine:coverageci']);
     grunt.registerTask('travis', ['jasmine:test', 'jasmine:coverage']);
 };
 
