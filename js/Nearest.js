@@ -185,7 +185,7 @@ function (
                                 layerOpts = _this._getlayerOptions(queryResults[j].itemId);
 
                                 // Perform find nearest on each set of features
-                                if ((queryResults[j].error === null) && (queryResults[j].results.features.length > 0)) {
+                                if ((queryResults[j].error === null) && (queryResults[j].results) && (queryResults[j].results.features.length > 0)) {
 
                                     nearestTask = new ClientNearestTask({
                                         maxResults: layerOpts.maxResults,
