@@ -53,7 +53,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
                         center: _this.properties.currentPoint,
                         radius: _this.properties.searchRadius,
                         radiusUnit: Units.MILES,
-                        geodesic: true
+                        geodesic: _this.properties.currentPoint.spatialReference.isWebMercator()
                     });
                     query.outFields = ["*"];
                     query.returnGeometry = true;
