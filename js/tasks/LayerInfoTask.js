@@ -57,6 +57,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
                     });
                     query.outFields = ["*"];
                     query.returnGeometry = true;
+                    query.outSpatialReference = _this.properties.currentPoint.spatialReference;
 
                     queryTask.execute(query, function (features) {
                         result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId });
