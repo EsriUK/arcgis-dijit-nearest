@@ -56,7 +56,8 @@ function (
                 layerOptions: [], // Options for each layer. These override the default radius and max results
                 showOnMap: true, // Display the 'Show On Map' link
                 showCounters: true, // Show the feature counts
-                showDistance: true // Show the distance
+                showDistance: true, // Show the distance
+                findNearestMode: "geodesic"
             };
 
             /*
@@ -85,6 +86,7 @@ function (
             this.set("showOnMap", defaults.showOnMap);
             this.set("showCounters", defaults.showCounters);
             this.set("showDistance", defaults.showDistance);
+            this.set("findNearestMode", defaults.findNearestMode);
 
             // widget node
             this.domNode = srcRefNode;
@@ -191,7 +193,7 @@ function (
                                         maxResults: layerOpts.maxResults,
                                         layerId: queryResults[j].id,
                                         itemId: queryResults[j].itemId,
-                                        mode: (_this.location.spatialReference.isWebMercator()) ? "geodesic" : "planar"
+                                        mode: _this.findNearestMode
                                     });
 
                                     nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results, queryResults[j].layerInfo));
