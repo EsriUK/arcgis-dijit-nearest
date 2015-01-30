@@ -28,7 +28,7 @@ define(["dojo/Deferred", "require"], function (Deferred, require) {
 
             require(["./FindNearestTask"],
             function (FindNearestTask) {
-                var task = new FindNearestTask({ maxFeatures: _this.properties.maxResults, mode: "geodesic" }), params = {
+                var task = new FindNearestTask({ maxFeatures: _this.properties.maxResults, mode: _this.properties.mode }), params = {
                     point: point,
                     featureSet: featureSet
                 };
