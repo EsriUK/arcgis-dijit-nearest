@@ -191,7 +191,7 @@ function (
                                         maxResults: layerOpts.maxResults,
                                         layerId: queryResults[j].id,
                                         itemId: queryResults[j].itemId,
-                                        mode: (_this.properties.currentPoint.spatialReference.isWebMercator()) ? "geodesic" : "planar"
+                                        mode: (_this.location.spatialReference.isWebMercator()) ? "geodesic" : "planar"
                                     });
 
                                     nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results, queryResults[j].layerInfo));
