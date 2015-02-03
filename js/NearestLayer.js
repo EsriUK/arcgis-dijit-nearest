@@ -165,7 +165,7 @@ function (
             if (this.layerOptions.display !== "fixed") {
                 on(this.showList, "click", function (evt) {
                     _this.expanded = !_this.expanded;
-                    topic.publish("Nearest::show-layer", _this.results.result, _this.results.layerInfo.renderer, _this.expanded);
+                    topic.publish("Nearest::show-layer", _this.results.result, _this.results.layerInfo.renderer, _this.expanded, _this);
                 });
             }
         },
