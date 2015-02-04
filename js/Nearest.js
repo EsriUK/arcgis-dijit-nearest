@@ -161,7 +161,7 @@ function (
                         // Run a query to get the features
                         // Go through operational layers and query each one
                         for (i = 0, iL = opLayers.length; i < iL; i++) {
-                            layerOpts = _this._getlayerOptions(opLayers[i].itemId);
+                            layerOpts = _this._getlayerOptions(opLayers[i].itemId, opLayers[i].id);
 
                             // check if layer has a url to be able to perform a query
                             if (!_this._isNullOrEmpty(opLayers[i].url)) {
@@ -184,7 +184,7 @@ function (
                             topic.publish("Nearest::query-done", _this, queryResults);
 
                             for (j = 0; j < jL; j++) {
-                                layerOpts = _this._getlayerOptions(queryResults[j].itemId);
+                                layerOpts = _this._getlayerOptions(queryResults[j].itemId, queryResults[j].id);
 
                                 // Perform find nearest on each set of features
                                 if ((queryResults[j].error === null) && (queryResults[j].results) && (queryResults[j].results.features.length > 0)) {
@@ -292,7 +292,7 @@ function (
                 });
                 domConstruct.place(layerDiv, this._layers, "last");
 
-                layerOpts = this._getlayerOptions(results.itemId);
+                layerOpts = this._getlayerOptions(results.itemId, results.id);
 
                 layer = new NearestLayer({
                     results: results,
