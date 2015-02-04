@@ -244,7 +244,7 @@ function (
             // Output events
         },
 
-        _getlayerOptions: function(itemId) {
+        _getlayerOptions: function(itemId, id) {
             var i = 0, iL = 0, layerOpts = {
                 webmapId: this.webmapId,
                 maxResults: this.maxResults,
@@ -253,12 +253,17 @@ function (
                 showCounters: this.showCounters,
                 display: this.display,
                 showDistance: this.showDistance
-            };
+            },
+            field = "itemId", value = itemId;
                 
 
-            if(this.layerOptions) {
+            if (this.layerOptions) {
+                // If we have an id then use that, otherwise use the item id. Item id could be the same for all items.
+                field = (!this._isNullOrEmpty(id) && !this._isNullOrEmpty(this.layerOptions[0].id)) ? "id" : "itemId";
+                value = (field === "id") ? id : itemId;
+
                 for (i = 0, iL = this.layerOptions.length; i < iL; i++) {
-                    if (this.layerOptions[i].itemId === itemId) {
+                    if (this.layerOptions[i][field] === value) {
                         return lang.mixin({}, layerOpts, this.layerOptions[i]);
                     }
                 }
@@ -347,7 +352,7 @@ function (
                                     t.layerPopUpFields.push(lFields);
                                 }
                             });
-                        })(_layer, _this);
+                        }(_layer, _this));
                         
                     }
                 }
