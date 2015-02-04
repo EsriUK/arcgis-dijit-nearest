@@ -257,7 +257,7 @@ function (
             field = "itemId", value = itemId;
                 
 
-            if (this.layerOptions) {
+            if ((this.layerOptions) && (this.layerOptions.length > 0)) {
                 // If we have an id then use that, otherwise use the item id. Item id could be the same for all items.
                 field = (!this._isNullOrEmpty(id) && !this._isNullOrEmpty(this.layerOptions[0].id)) ? "id" : "itemId";
                 value = (field === "id") ? id : itemId;
