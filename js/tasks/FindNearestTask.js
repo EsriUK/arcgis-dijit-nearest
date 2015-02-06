@@ -151,7 +151,7 @@ define([
 			    }
 			    else {
 				    // Not supported
-				    result = null;
+				    result = [];
 			    }
 
 			    return result;
