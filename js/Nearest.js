@@ -57,7 +57,8 @@ function (
                 showOnMap: true, // Display the 'Show On Map' link
                 showCounters: true, // Show the feature counts
                 showDistance: true, // Show the distance
-                findNearestMode: "geodesic"
+                findNearestMode: "geodesic", // Set the mode for the find nearest calculation
+                showEmptyLayers: true // Should layers show with no results
             };
 
             /*
@@ -87,6 +88,7 @@ function (
             this.set("showCounters", defaults.showCounters);
             this.set("showDistance", defaults.showDistance);
             this.set("findNearestMode", defaults.findNearestMode);
+            this.set("showEmptyLayers", defaults.showEmptyLayers);
 
             // widget node
             this.domNode = srcRefNode;
@@ -206,12 +208,10 @@ function (
 
                                 topic.publish("Nearest::nearest-task-done", _this, nearestResults);
 
-                                // nearestResults is an array of arrays of the results
-                                // So an array of layers, each layer has a set of results
-
                                 for (k = 0; k < kL; k++) {
                                     if (nearestResults[k].error === null && nearestResults[k].result !== null) {
                                         if (nearestResults[k].result.limitExceeded) {
+                                            // Limit exceeded so no features to show
 
                                             //layerName = "";
                                             //for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
@@ -223,6 +223,10 @@ function (
 
                                             //break;
                                         }
+
+                                        //if (nearestResults[k].result.length === 0) {
+                                        //    // Nothing found for this layer
+                                        //}
                                         _this._displayResults(nearestResults[k]);
                                     }
                                 }
@@ -275,7 +279,7 @@ function (
             var lpInd = 0, currentLayerInd, layerInfo, layerDiv, layer, layerOpts;
          
             // Make sure there are some results
-            if (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result)) {
+            if ((this.showEmptyLayers) || (!this._isNullOrEmpty(results) && !this._isNullOrEmpty(results.result))) {
 
                 for (lpInd = 0; lpInd < this.layerPopUpFields.length; lpInd++) {
                     if (this.layerPopUpFields[lpInd].id === results.id) {
