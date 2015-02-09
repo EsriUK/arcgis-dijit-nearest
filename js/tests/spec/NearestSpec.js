@@ -120,7 +120,35 @@ describe("A set of tests for the Nearest widget", function() {
             },
             JSON.stringify(itemData)
         ]);
-
+        server.respondWith(swapProtocol("http://www.arcgis.com/sharing/rest/content/items/000/data/?f=pjson"), [
+            200,
+            {
+                "Content-Type": "application/json"
+            },
+            JSON.stringify(emptyItemData)
+        ]);
+        server.respondWith(swapProtocol("http://www.arcgis.com/sharing/rest/content/items/12345678901234567890/data/?f=pjson"), [
+            200,
+            {
+                "Content-Type": "application/json"
+            },
+            JSON.stringify(popupData)            
+        ]);
+        server.respondWith(swapProtocol("http://services.arcgis.com/111/arcgis/rest/services/BorisBikesYP/FeatureServer/0/query"), [
+            200,
+            {
+                "Content-Type": "application/json"
+            },
+            JSON.stringify(emptyFeatureSet)
+        ]);
+        server.respondWith(swapProtocol("http://services.arcgis.com/111/arcgis/rest/services/BorisBikesYP/FeatureServer/0?f=json"), [
+            200,
+            {
+                "Content-Type": "application/json"
+            },
+            JSON.stringify(itemDetails)
+        ]);
+    
     };
 
     beforeEach(function (done) {
@@ -145,6 +173,11 @@ describe("A set of tests for the Nearest widget", function() {
         expect(widget.searchRadius).toEqual(5);
         expect(widget.display).toEqual("expandable");
         expect(widget.webmapId).toEqual("");
+        expect(widget.showOnMap).toEqual(true);
+        expect(widget.showCounters).toEqual(true);
+        expect(widget.showDistance).toEqual(true);
+        expect(widget.findNearestMode).toEqual("geodesic");
+        expect(widget.showEmptyLayers).toEqual(true);
 
         done();
     });
@@ -222,6 +255,35 @@ describe("A set of tests for the Nearest widget", function() {
                 nearestWidget._getLayerDetails([itemData.operationalLayers[0]]);
                 expect(nearestWidget.layerPopUpFields[0].fields.length).toEqual(14);
                 connect.unsubscribe(handle);
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
+
+    it("should load the data for popupinfo if its not in the webmap", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.location = location;
+        props.webmapId = "";
+        props.layerOptions = [{
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+            var handle = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+
+                nearestWidget._getLayerDetails([{ itemId: "12345678901234567890", id: "BorisBikesYP_2466", title: "TfL Cycle Hire Locations" }]);
+
+                expect(nearestWidget.layerPopUpFields[0].fields.length).toEqual(14);
+
+                connect.unsubscribe(handle);
+
                 done();
             });
 
@@ -360,5 +422,33 @@ describe("A set of tests for the Nearest widget", function() {
         });
     });
 
-    
+    it("should handle layers with no results", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.webmapId = "000";
+        props.location = location;
+        props.showEmptyLayers = true
+        props.layerOptions = [{
+            itemId: "123",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+            var handleTaskDone = topic.subscribe("Nearest::nearest-task-done", function (nearestWidget, nearestResults) {
+                expect(nearestResults[0].result.length).toEqual(0);
+                connect.unsubscribe(handleTaskDone);
+            });
+
+            var handleLoaded = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                expect(nearestWidget.webmapId).toEqual("000");
+                connect.unsubscribe(handleLoaded);
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
 });

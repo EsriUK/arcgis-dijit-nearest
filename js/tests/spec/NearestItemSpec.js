@@ -66,7 +66,6 @@ describe("A set of tests for the Nearest Item widget", function () {
     });
 
 
-
     it("should set the properties when passed in via the constructor", function (done) {
         createWidget(featureProps);
 
@@ -91,7 +90,6 @@ describe("A set of tests for the Nearest Item widget", function () {
         done();
     });
 
-
     it("should show the counters", function (done) {
         var props = featureProps;
         props.layerOptions.showCounters = true;
@@ -111,7 +109,6 @@ describe("A set of tests for the Nearest Item widget", function () {
         expect(widget.showOnMapVisible).toEqual("none");
         done();
     });
-
 
     it("should hide the counters", function (done) {
         var props = featureProps;

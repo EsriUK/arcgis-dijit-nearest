@@ -64,7 +64,6 @@ describe("A set of tests for the Nearest Layer widget", function () {
         done();
     });
 
-
     it("should generate a title if not set", function (done) {
         var props = layerProps;
         props.layerInfo.popupInfo.title = "";
