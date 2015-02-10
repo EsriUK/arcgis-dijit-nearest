@@ -214,18 +214,7 @@ describe("A set of tests for the FindNearest task", function () {
         done();
     });
 
-    it("should return limit exceeded error", function (done) {
-        var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
-            results = null;
 
-        createTask({ maxFeatures: 1, mode: "geodesic" });
-
-        results = task._getNearestResult(a, errorFeatureSet);
-
-        expect(results.limitExceeded).toEqual(true);
-
-        done();
-    });
 
     it("should return a deferred", function (done) {
         var a = new Point({ "x": "-0.8055515", "y": "51.8003171", "spatialReference": { "wkid": "4326" } }),
