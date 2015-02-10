@@ -210,25 +210,6 @@ function (
 
                                 for (k = 0; k < kL; k++) {
                                     if (nearestResults[k].error === null && nearestResults[k].result !== null) {
-                                        if (nearestResults[k].result.limitExceeded) {
-                                            // Limit exceeded so no features to show
-
-                                            nearestResults[k].result = [];
-
-                                            //layerName = "";
-                                            //for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
-                                            //    if (_this.layerPopUpFields[lpInd].id === nearestResults[k].id) {
-                                            //        layerName = _this.layerPopUpFields[lpInd].layerName;
-                                            //        break;
-                                            //    }
-                                            //}
-
-                                            //break;
-                                        }
-
-                                        //if (nearestResults[k].result.length === 0) {
-                                        //    // Nothing found for this layer
-                                        //}
                                         _this._displayResults(nearestResults[k]);
                                     }
                                 }
