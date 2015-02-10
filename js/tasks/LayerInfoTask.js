@@ -32,7 +32,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
                 result.resolve({ id: _this.properties.layerId, layerInfo: null, results:null, error: err, itemId: _this.properties.itemId });
             });
             featureLayer.on("load", function (data) {
-                _this.queryLayer().then(function (res) {
+                _this.queryLayer(data.layer.maxRecordCount).then(function (res) {
                     result.resolve({ id: _this.properties.layerId, layerInfo: data.layer, results: res.results, error: null, itemId: _this.properties.itemId });
                 });
             });
@@ -40,7 +40,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
             return result.promise;
         };
 
-        this.queryLayer = function () {
+        this.queryLayer = function (maxRecords) {
             var _this = this, result = new Deferred();
 
             require(["esri/tasks/query", "esri/tasks/QueryTask", "esri/geometry/Circle", "esri/units"],
@@ -58,6 +58,8 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
                     query.outFields = ["*"];
                     query.returnGeometry = true;
                     query.outSpatialReference = _this.properties.currentPoint.spatialReference;
+                    query.num = maxRecords || 1000;
+
 
                     queryTask.execute(query, function (features) {
                         result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId });
