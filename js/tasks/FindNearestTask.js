@@ -60,12 +60,12 @@ define([
 				    distance = this._mode === "geodesic" ? this._greatCircleDistance : this._euclidianDistance,
 				    candidates = [], geometry, result, _this = this, polyCandidates = [], multiPCandidates = [];
 
-			    // Supported in 10.1 or greater
-			    if (featureSet.exceededTransferLimit && featureSet.exceededTransferLimit === true) {
-			        console.warn("Feature limit reached, the result may not be accurate.");
-			        result = { "limitExceeded": true };
-			        return result;
-			    }
+			    //// Supported in 10.1 or greater
+			    //if (featureSet.exceededTransferLimit && featureSet.exceededTransferLimit === true) {
+			    //    console.warn("Feature limit reached, the result may not be accurate.");
+			    //    result = { "limitExceeded": true };
+			    //    return result;
+			    //}
 
 			    // Calculate distance for each feature
 			    if (featureSet.geometryType === "esriGeometryPoint") {

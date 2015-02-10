@@ -34,7 +34,7 @@ define(["dojo/Deferred", "require"], function (Deferred, require) {
                 };
 
                 task.execute(params).then(function (results) {
-                    result.resolve({ id: _this.properties.layerId, result: results, layerInfo: layerInfo, error: null, itemId: _this.properties.itemId });
+                    result.resolve({ id: _this.properties.layerId, result: results, layerInfo: layerInfo, error: null, itemId: _this.properties.itemId, limitExceeded: featureSet.exceededTransferLimit });
                 }, function (err) {
                     result.resolve({ id: _this.properties.layerId, result: null, layerInfo: null, error: err, itemId: _this.properties.itemId });
                 }).otherwise(function (err) {
