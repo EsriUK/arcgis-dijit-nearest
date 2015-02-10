@@ -213,6 +213,8 @@ function (
                                         if (nearestResults[k].result.limitExceeded) {
                                             // Limit exceeded so no features to show
 
+                                            nearestResults[k].result = [];
+
                                             //layerName = "";
                                             //for (lpInd = 0; lpInd < _this.layerPopUpFields.length; lpInd++) {
                                             //    if (_this.layerPopUpFields[lpInd].id === nearestResults[k].id) {
