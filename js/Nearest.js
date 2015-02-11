@@ -324,23 +324,38 @@ function (
 
                     }
                     else {
-                        // Might not have the popup info saved with the webmap
-                        var _layer = layers[i];
+                        // Might not have the popup info saved with the webmap or it could be a feature collection
 
-                        (function (l, t) {
-                            t._getItemData(l.itemId).then(function (data) {
-                                if (data && data.layers) {
-                                   var lFields = {
-                                        "layerName": l.title,
-                                        "id": l.id,
-                                        "popupInfo": data.layers[0].popupInfo
-                                    };                                                      
+                        if (!this._isNullOrEmpty(layers[i].itemId)) {
+                            var _layer = layers[i];
 
-                                    t.layerPopUpFields.push(lFields);
-                                }
-                            });
-                        }(_layer, _this));
-                        
+                            (function (l, t) {
+                                t._getItemData(l.itemId).then(function (data) {
+                                    if (data && data.layers) {
+                                        var lFields = {
+                                            "layerName": l.title,
+                                            "id": l.id,
+                                            "popupInfo": data.layers[0].popupInfo
+                                        };
+
+                                        t.layerPopUpFields.push(lFields);
+                                    }
+                                });
+                            }(_layer, _this));
+                        }
+                        else if (!this._isNullOrEmpty(layers[i].featureCollection)) {
+                            var _layers = layers[i].featureCollection.layers;
+
+                            for (var k = 0; k < _layers.length; k++) {
+                                var lyFields = {
+                                    "layerName": _layers[k].popupInfo.title,
+                                    "id": _layers[k].id,
+                                    "popupInfo": _layers[k].popupInfo
+                                };
+
+                                t.layerPopUpFields.push(lyFields);
+                            }
+                        }                        
                     }
                 }
             }
