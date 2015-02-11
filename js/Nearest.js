@@ -353,7 +353,7 @@ function (
                                     "popupInfo": _layers[k].popupInfo
                                 };
 
-                                t.layerPopUpFields.push(lyFields);
+                                _this.layerPopUpFields.push(lyFields);
                             }
                         }                        
                     }
