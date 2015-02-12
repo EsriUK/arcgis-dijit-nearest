@@ -168,6 +168,7 @@ function (
 
             if(item) {
                 on(item, "click", function (evt) {
+                    dojo.stopEvent(evt);
                     topic.publish("Nearest::show-feature-detail", _this.feature, _this.featureId + "-field-values");
                 });
             }
