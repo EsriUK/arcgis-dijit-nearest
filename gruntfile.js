@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                     templateOptions: {
                         coverage: 'coverage/coverage.json',
                         report: 'coverage',
-                        srcCopy: ['js/templates/Nearest.html', 'js/templates/NearestItem.html', 'js/templates/NearestLayer.html'],
+                        srcCopy: ['js/templates/Nearest.html', 'js/templates/NearestItem.html', 'js/templates/NearestLayer.html', 'js/nls/Nearest.js', 'js/nls/en-gb/Nearest.js'],
                         template: require('grunt-template-jasmine-dojo'),
                         templateOptions: {
                             dojoConfig: {
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
                                 dir: 'coverage/lcov'
                             }
                         },
-                        srcCopy: ['js/templates/Nearest.html', 'js/templates/NearestItem.html', 'js/templates/NearestLayer.html'],
+                        srcCopy: ['js/templates/Nearest.html', 'js/templates/NearestItem.html', 'js/templates/NearestLayer.html', 'js/nls/Nearest.js', 'js/nls/en-gb/Nearest.js'],
                         template: require('grunt-template-jasmine-dojo'),
                         templateOptions: {
                             dojoConfig: {
