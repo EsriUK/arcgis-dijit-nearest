@@ -29,10 +29,12 @@ define([
     "./tasks/ClientNearestTask",
     "./tasks/LayerInfoTask",
     "./NearestLayer",
-    'dojo/topic'
+    'dojo/topic',
+    'dojo/i18n',
+    'dojo/i18n!./nls/Nearest'
 ],
 function (
-    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer, topic) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer, topic, i18n) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -89,6 +91,9 @@ function (
             this.set("showDistance", defaults.showDistance);
             this.set("findNearestMode", defaults.findNearestMode);
             this.set("showEmptyLayers", defaults.showEmptyLayers);
+
+            // language
+            this._i18n = i18n;
 
             // widget node
             this.domNode = srcRefNode;

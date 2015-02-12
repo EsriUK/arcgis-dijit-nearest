@@ -30,10 +30,11 @@ define([
     'dojo/topic',
     'dojo/on',
     'esri/dijit/PopupRenderer',
-    'esri/graphic'
+    'esri/graphic',
+    'dojo/i18n!./nls/Nearest'
 ],
 function (
-    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic, i18n) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -126,6 +127,13 @@ function (
             }
             else {
                 this.set("showCountersVisible","none");
+            }
+
+            if (this.numberOfFeatures === 0) {
+                this.set("counterWording", i18n.noresults +" "+ this.distance + " " + this.distanceUnits);
+            }
+            else {
+                this.set("counterWording", i18n.showingclosest +" "+ this.numberOfFeatures + " "+ i18n.within +" " + this.distance + " " + this.distanceUnits);
             }
 
             this.inherited(arguments);

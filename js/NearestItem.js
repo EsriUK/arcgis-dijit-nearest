@@ -27,11 +27,12 @@ define([
     'dojo/dom-construct',
     'dojo/topic',
     'dojo/on',
-    './_NearestBase'
+    './_NearestBase',
+    'dojo/i18n!./nls/Nearest'
 ],
 function (
     dojo, template, declare, lang, 
-    _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, topic, on, _NearestBase) {
+    _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, topic, on, _NearestBase, i18n) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -47,10 +48,8 @@ function (
             this.options = {
                 feature: null,
                 layerItemId: "",
-                distanceUnits: "miles", // The units the distance is in.
                 distance: 999, // The distance the feature is from the location.
                 featureNumber: 0, // The index or number this feature is in the list
-                showOnMapLinktext: "Show on map", // The text to use for the link
                 description: "",
                 titleText: "",
                 titleField: "",
@@ -64,16 +63,17 @@ function (
             // Set properties
             this.set("feature", defaults.feature);
             this.set("layerItemId", defaults.layerItemId);
-            this.set("distanceUnits", defaults.distanceUnits);
+            this.set("distanceUnits", i18n.distanceUnits);
             this.set("distance", defaults.distance);
             this.set("featureNumber", defaults.featureNumber);
-            this.set("showOnMapLinktext", defaults.showOnMapLinktext);
+            this.set("showOnMapLinktext", i18n.showOnMapLinktext);
             this.set("description", defaults.description);
             this.set("fieldValues", defaults.fieldValues);
             this.set("titleText", defaults.titleText);
             this.set("titleField", defaults.titleField);
             this.set("renderer", defaults.renderer);
             this.set("layerOptions", defaults.layerOptions);
+            this.set("summaryDetailsTitle", i18n.summaryDetailsTitle);
 
             // widget node
             this.domNode = srcRefNode;
