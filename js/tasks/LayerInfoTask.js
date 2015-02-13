@@ -34,7 +34,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
             featureLayer.on("load", function (data) {
                 var layerInf = { renderer: null };
 
-                if (props.layerRenderer !== null) {
+                if (props.layerRenderer !== undefined && props.layerRenderer !== null) {
                     layerInf.renderer = props.layerRenderer;
                 }
                 else {
