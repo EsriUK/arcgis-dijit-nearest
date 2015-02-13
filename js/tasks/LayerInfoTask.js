@@ -35,8 +35,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils"]
                 var layerInf = { renderer: null };
 
                 if (props.layerRenderer !== undefined && props.layerRenderer !== null) {
-                    var jsonRend = props.layerRenderer.toJson();
-                    layerInf.renderer = jsonUtils.fromJson(jsonRend);
+                    layerInf.renderer = jsonUtils.fromJson(props.layerRenderer);
                 }
                 else {
                     layerInf.renderer = data.layer.renderer;
