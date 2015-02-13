@@ -99,7 +99,7 @@ function (
 
             // Show/Hide map link
             if (this.layerOptions.showOnMap) {
-                this.set("showOnMapVisible", "block");
+                this.set("showOnMapVisible", "inline-block");
             }
             else {
                 this.set("showOnMapVisible", "none");
@@ -113,7 +113,7 @@ function (
             }
 
             if (this.layerOptions.showDistance) {
-                this.set("showDistanceVisible", "block");
+                this.set("showDistanceVisible", "inline-block");
             }
             else {
                 this.set("showDistanceVisible", "none");
