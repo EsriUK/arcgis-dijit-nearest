@@ -86,7 +86,7 @@ describe("A set of tests for the Nearest Item widget", function () {
     });
 
     it("should show the map link", function (done) {
-        expect(widget.showOnMapVisible).toEqual("block");
+        expect(widget.showOnMapVisible).toEqual("inline-block");
         done();
     });
 
