@@ -18,7 +18,7 @@
 /**
  * Execute the Query Task to a Layer
  */
-define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, FeatureLayer) {
+define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils"], function (Deferred, FeatureLayer, jsonUtils) {
     var taskOutput = function LayerInfoTask(props) {
         this.properties = props;
 
@@ -35,7 +35,8 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
                 var layerInf = { renderer: null };
 
                 if (props.layerRenderer !== undefined && props.layerRenderer !== null) {
-                    layerInf.renderer = props.layerRenderer;
+                    var jsonRend = props.layerRenderer.toJson();
+                    layerInf.renderer = jsonUtils.fromJson(jsonRend);
                 }
                 else {
                     layerInf.renderer = data.layer.renderer;
