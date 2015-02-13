@@ -153,7 +153,7 @@ function (
             // Do query and build results
             if (!this._isNullOrEmpty(this.webmapId)) {
                 this._getItemData(this.webmapId, this.token).then(function (webMap) {
-                    var queryTasks = [], i = 0, iL = 0, task = null, opLayers, layerOpts;
+                    var queryTasks = [], i = 0, iL = 0, task = null, opLayers, layerOpts, layerRend;
 
                     if (webMap) {
                         topic.publish("Nearest::data-loaded", _this);
@@ -170,6 +170,10 @@ function (
                         for (i = 0, iL = opLayers.length; i < iL; i++) {
                             layerOpts = _this._getlayerOptions(opLayers[i].itemId, opLayers[i].id);
 
+                            if(!_this._isNullOrEmpty(opLayers[i].layerDefinition) && !_this._isNullOrEmpty(opLayers[i].layerDefinition.drawingInfo)) {
+                                layerRend = opLayers[i].layerDefinition.drawingInfo.renderer;
+                            }
+
                             // check if layer has a url to be able to perform a query
                             if (!_this._isNullOrEmpty(opLayers[i].url)) {
                                 task = new LayerInfoTask({
@@ -177,10 +181,12 @@ function (
                                     searchRadius: layerOpts.searchRadius,
                                     serviceUrl: _this._swapProtocol(opLayers[i].url),
                                     layerId: opLayers[i].id,
-                                    itemId: opLayers[i].itemId
+                                    itemId: opLayers[i].itemId,
+                                    layerRenderer: layerRend
                                 });
 
                                 queryTasks.push(task.execute());
+                                layerRend = null;
                             }
                         }
 

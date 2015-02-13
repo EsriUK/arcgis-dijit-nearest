@@ -32,8 +32,17 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer"], function (Deferred, Featur
                 result.resolve({ id: _this.properties.layerId, layerInfo: null, results:null, error: err, itemId: _this.properties.itemId });
             });
             featureLayer.on("load", function (data) {
+                var layerInf = { renderer: null };
+
+                if (props.layerRenderer !== null) {
+                    layerInf.renderer = props.layerRenderer;
+                }
+                else {
+                    layerInf.renderer = data.layer.renderer;
+                }
+
                 _this.queryLayer(data.layer.maxRecordCount).then(function (res) {
-                    result.resolve({ id: _this.properties.layerId, layerInfo: data.layer, results: res.results, error: null, itemId: _this.properties.itemId });
+                    result.resolve({ id: _this.properties.layerId, layerInfo: layerInf, results: res.results, error: null, itemId: _this.properties.itemId });
                 });
             });
 
