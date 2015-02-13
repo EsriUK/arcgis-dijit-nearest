@@ -20,7 +20,8 @@ The details shown replicate those that are setup in the popup within your webmap
 		display: "expandable",
 		showOnMap: true,
 		showCounters: true,
-		showDistance: true
+		showDistance: true,
+		showEmptyLayers: true
     }, "NearestWidget");
 
     myWidget.startup();
@@ -62,6 +63,8 @@ Nearest(options, srcNode);
 |showOnMap||Boolean|true|Display the 'Show On Map' link.|
 |showCounters||Boolean|true|Show the feature counts.|
 |showDistance||Boolean|true|Show the distance.|
+|showEmptyLayers||Boolean|true|Show layers with no results|
+|findNearestMode||String|geodesic|Set the mode used by the find nearest task.|
 |layerOptions||Object Array|null|Options for each layer. These override the default options per layer in the web map.|
 
 
@@ -108,6 +111,9 @@ The widget publishes events at various stages of its lifecycle.
 ### show-feature
 	topic.subscribe("Nearest::show-feature", function (feature, renderer) {});
 
+
+### show-feature-detail
+	topic.subscribe("Nearest::show-feature", function (feature, detailsPanelId) {});
 
 
 ## Issues
