@@ -232,6 +232,7 @@ function (
                     featureNumber: 1 + parseInt(featureInd, 10),
                     description: rend.domNode.innerHTML,
                     renderer: this.results.layerInfo.renderer,
+                    opacity: this.results.layerInfo.opacity,
                     layerOptions: this.layerOptions
                 }, itemDiv);
 

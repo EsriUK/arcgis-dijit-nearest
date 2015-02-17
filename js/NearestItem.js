@@ -54,7 +54,8 @@ function (
                 titleText: "",
                 titleField: "",
                 renderer: null,
-                layerOptions: null
+                layerOptions: null,
+                opacity: 1
             };
 
             // mix in settings and defaults
@@ -74,6 +75,7 @@ function (
             this.set("renderer", defaults.renderer);
             this.set("layerOptions", defaults.layerOptions);
             this.set("summaryDetailsTitle", i18n.summaryDetailsTitle);
+            this.set("opacity", deafults.opacity);
 
             // widget node
             this.domNode = srcRefNode;
@@ -160,7 +162,7 @@ function (
 
             // Fire show on map click event
             on(this.mapButton, "click", function (evt) {
-                topic.publish("Nearest::show-feature", _this.feature, _this.renderer);
+                topic.publish("Nearest::show-feature", _this.feature, _this.renderer, _this.opacity);
             });
 
             // Fire show item details click event
