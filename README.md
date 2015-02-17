@@ -109,7 +109,7 @@ The widget publishes events at various stages of its lifecycle.
 
 
 ### show-layer
-	topic.subscribe("Nearest::show-layer", function (results, renderer, expanded) {});
+	topic.subscribe("Nearest::show-layer", function (results, layerInfo, expanded) {});
 
 
 ### show-feature
