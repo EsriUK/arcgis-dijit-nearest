@@ -75,18 +75,19 @@ Nearest(options, srcNode);
 This is an array of objects that contain overridden options per layer. You can override one or all layers in the webmap. Any layers not overridden will use the default options.
 You do not have to include all options, just the options you want to override.
 
-	layerOptions: [{
-		itemId: '1234567'
-        maxResults: 3
-        searchRadius: 29,
-        showOnMap: false
-        showCounters: false
-        display: 'fixed',
-		showDistance: false
-	}, {
-		...
-	}]
-
+```javascript
+layerOptions: [{
+	itemId: '1234567'
+    maxResults: 3
+    searchRadius: 29,
+    showOnMap: false
+    showCounters: false
+    display: 'fixed',
+	showDistance: false
+}, {
+	...
+}]
+```
 
 ## Events
 The widget publishes events at various stages of its lifecycle.
