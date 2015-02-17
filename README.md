@@ -13,19 +13,19 @@ The details shown replicate those that are setup in the popup within your webmap
 ## Quickstart
 
 ```javascript	
-    myWidget = new Nearest({
-		webmapId: "987654321123456789",
-		location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
-        searchRadius: 50,
-		maxResults: 5,
-		display: "expandable",
-		showOnMap: true,
-		showCounters: true,
-		showDistance: true,
-		showEmptyLayers: true
-    }, "NearestWidget");
+myWidget = new Nearest({
+	webmapId: "987654321123456789",
+	location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
+    searchRadius: 50,
+	maxResults: 5,
+	display: "expandable",
+	showOnMap: true,
+	showCounters: true,
+	showDistance: true,
+	showEmptyLayers: true
+}, "NearestWidget");
 
-    myWidget.startup();
+myWidget.startup();
 ```
 
  [New to Github? Get started here.](https://github.com/)
@@ -35,15 +35,15 @@ The details shown replicate those that are setup in the popup within your webmap
 Set your dojo config to load the module.
 
 ```javascript
-	var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-	var dojoConfig = {
-		// The locationPath logic below may look confusing but all its doing is
-		// enabling us to load the api from a CDN and load local modules from the correct location.
-		packages: [{
-			name: "application",
-			location: package_path + '/js'
-		}]
-	};
+var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+var dojoConfig = {
+	// The locationPath logic below may look confusing but all its doing is
+	// enabling us to load the api from a CDN and load local modules from the correct location.
+	packages: [{
+		name: "application",
+		location: package_path + '/js'
+	}]
+};
 ```
 
 ## Require module
