@@ -182,7 +182,8 @@ function (
                                     serviceUrl: _this._swapProtocol(opLayers[i].url),
                                     layerId: opLayers[i].id,
                                     itemId: opLayers[i].itemId,
-                                    layerRenderer: layerRend
+                                    layerRenderer: layerRend,
+                                    layerOpacity: opLayers[i].opacity
                                 });
 
                                 queryTasks.push(task.execute());

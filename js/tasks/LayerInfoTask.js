@@ -32,7 +32,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils"]
                 result.resolve({ id: _this.properties.layerId, layerInfo: null, results:null, error: err, itemId: _this.properties.itemId });
             });
             featureLayer.on("load", function (data) {
-                var layerInf = { renderer: null };
+                var layerInf = { renderer: null, id: _this.properties.layerId, itemId: _this.properties.itemId, opacity: _this.properties.layerOpacity };
 
                 if (props.layerRenderer !== undefined && props.layerRenderer !== null) {
                     layerInf.renderer = jsonUtils.fromJson(props.layerRenderer);
