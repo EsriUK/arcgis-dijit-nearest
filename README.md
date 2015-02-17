@@ -11,7 +11,8 @@ The details shown replicate those that are setup in the popup within your webmap
 [View it live](https://apps.esriuk.com/app/NearestWidgetDemo/1/wmt/view/8b1ed9f9a2a24048ac25766264f333cb/index.html)
 
 ## Quickstart
-	
+
+```javascript	
     myWidget = new Nearest({
 		webmapId: "987654321123456789",
 		location: new Point("-0.8055515", "51.8003171", new SpatialReference({ wkid: 4326 })),
@@ -25,6 +26,7 @@ The details shown replicate those that are setup in the popup within your webmap
     }, "NearestWidget");
 
     myWidget.startup();
+```
 
  [New to Github? Get started here.](https://github.com/)
 
@@ -32,6 +34,7 @@ The details shown replicate those that are setup in the popup within your webmap
 ## Setup
 Set your dojo config to load the module.
 
+```javascript
 	var package_path = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
 	var dojoConfig = {
 		// The locationPath logic below may look confusing but all its doing is
@@ -41,7 +44,7 @@ Set your dojo config to load the module.
 			location: package_path + '/js'
 		}]
 	};
-
+```
 
 ## Require module
 Include the module for the Nearest.
