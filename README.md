@@ -1,4 +1,4 @@
-arcgis-dijit-nearest [![Build Status](https://travis-ci.org/EsriUK/arcgis-dijit-nearest.png?branch=master)](https://magnum.travis-ci.org/EsriUK/arcgis-dijit-nearest) [![Coverage Status](https://coveralls.io/repos/EsriUK/arcgis-dijit-nearest/badge.svg?branch=master)](https://coveralls.io/r/EsriUK/arcgis-dijit-nearest?branch=master)
+arcgis-dijit-nearest [![Build Status](https://travis-ci.org/EsriUK/arcgis-dijit-nearest.svg?branch=master)](https://travis-ci.org/EsriUK/arcgis-dijit-nearest) [![Coverage Status](https://coveralls.io/repos/EsriUK/arcgis-dijit-nearest/badge.svg?branch=master)](https://coveralls.io/r/EsriUK/arcgis-dijit-nearest?branch=master)
 ====================
 
 ## Features
