@@ -115,11 +115,13 @@ function (
                 this.set("expanded", true);
                 this.set("expandedClass", "in");
                 this.set("collapseClass", "");
+                this.set("layerHref", "#");
             }
             else {
                 this.set("expanded", false);
                 this.set("expandedClass", "");
                 this.set("collapseClass", "collapse");
+                this.set("layerHref", "#" + layerNameEle);
             }
 
             if (this.layerOptions.showCounters) {
