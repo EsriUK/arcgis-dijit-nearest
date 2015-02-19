@@ -115,7 +115,7 @@ function (
                 this.set("expanded", true);
                 this.set("expandedClass", "in");
                 this.set("collapseClass", "");
-                this.set("layerHref", "#");
+                this.set("layerHref", "#/");
             }
             else {
                 this.set("expanded", false);
