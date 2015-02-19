@@ -75,7 +75,7 @@ Nearest(options, srcNode);
 This is an array of objects that contain overridden options per layer. You can override one or all layers in the webmap. Any layers not overridden will use the default options.
 You do not have to include all options, just the options you want to override.
 
-### LAyer Specific Options (Object)
+### Layer Specific Options (Object)
 |property|required|type|value|description|
 |---|---|---|---|---|
 |usage|x|string|'query'|Allow the layer to be used either for querying or just for display. Values are 'query' or 'display'|
