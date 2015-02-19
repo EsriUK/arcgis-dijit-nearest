@@ -451,4 +451,42 @@ describe("A set of tests for the Nearest widget", function() {
             createWidget(props);
         });
     });
+
+    it("should get only the layers used for queries", function (done) {
+        var props = nearestProps;
+        setupSinon();
+
+        props.location = location;
+        props.webmapId = "";
+        props.layerOptions = [{
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false
+        }, {
+            itemId: "fe37166bf13143d19a91d6e9bf96c8c4",
+            searchRadius: 50,
+            showOnMap: false,
+            showCounters: false,
+            usage: "display"
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+
+            var handle = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                //var opts = nearestWidget._getlayerOptions("fe37166bf13143d19a91d6e9bf96c8c5");
+
+                var layers = nearestWidget._filterOperationalLayers([{ id: "1", itemId: "fe37166bf13143d19a91d6e9bf96c8c5" }, { id: "2", itemId: "fe37166bf13143d19a91d6e9bf96c8c4" }]);
+
+                expect(layers.length).toEqual(1);
+               
+
+                connect.unsubscribe(handle);
+
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
 });

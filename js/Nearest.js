@@ -160,7 +160,7 @@ function (
 
 
                         _this.webMap = webMap;
-                        opLayers = webMap.operationalLayers;
+                        opLayers = _this._filterOperationalLayers(webMap.operationalLayers);
 
                         // Get the details and pop up information for each layer
                         _this._getLayerDetails(opLayers);
@@ -251,7 +251,8 @@ function (
                 showOnMap: this.showOnMap,
                 showCounters: this.showCounters,
                 display: this.display,
-                showDistance: this.showDistance
+                showDistance: this.showDistance,
+                usage: "query"
             },
             field = "itemId", value = itemId;
                 
@@ -268,6 +269,20 @@ function (
                 }
             }
             return layerOpts;
+        },
+
+        _filterOperationalLayers: function(layers) {
+            var newLayersList = [], i = 0, iL = layers.length, layerOpts;
+
+            for (i = 0; i < iL; i++) {
+                layerOpts = this._getlayerOptions(layers[i].itemId, layers[i].id);
+
+                if ((!this._isNullOrEmpty(layerOpts.usage)) && (layerOpts.usage === "query")) {
+                    newLayersList.push(layers[i]);
+                }
+            }
+
+            return newLayersList;
         },
 
         _displayResults: function(results) {
