@@ -374,13 +374,16 @@ function (
                             var _layers = layers[i].featureCollection.layers;
 
                             for (var k = 0; k < _layers.length; k++) {
-                                var lyFields = {
-                                    "layerName": _layers[k].popupInfo.title,
-                                    "id": _layers[k].id,
-                                    "popupInfo": _layers[k].popupInfo
-                                };
+                                if (!_this._isNullOrEmpty(_layers[k].popupInfo)) {
 
-                                _this.layerPopUpFields.push(lyFields);
+                                    var lyFields = {
+                                        "layerName": _layers[k].popupInfo.title,
+                                        "id": _layers[k].id,
+                                        "popupInfo": _layers[k].popupInfo
+                                    };
+
+                                    _this.layerPopUpFields.push(lyFields);
+                                }
                             }
                         }                        
                     }
