@@ -116,12 +116,14 @@ function (
                 this.set("expandedClass", "in");
                 this.set("collapseClass", "");
                 this.set("layerHref", "#/");
+                this.set("fixedClass", "nearestLayer-fixed");
             }
             else {
                 this.set("expanded", false);
                 this.set("expandedClass", "");
                 this.set("collapseClass", "collapse");
                 this.set("layerHref", "#" + layerNameEle);
+                this.set("fixedClass", "nearestLayer-expandable");
             }
 
             if (this.layerOptions.showCounters) {
