@@ -314,7 +314,8 @@ function (
                     maxFeatures: layerOpts.maxResults,
                     distance: layerOpts.searchRadius,
                     distanceUnits: "miles",
-                    layerOptions: layerOpts
+                    layerOptions: layerOpts,
+                    parentId: this.id
                 }, layerDiv);
 
                 layer.startup();

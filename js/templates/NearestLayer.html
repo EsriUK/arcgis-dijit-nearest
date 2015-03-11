@@ -1,8 +1,8 @@
 ﻿
 <div class="panel panel-default">
     <!--Header row-->
-    <div class="${baseClass}-heading-container panel-heading" data-dojo-attach-point="showList">
-        <a data-toggle="${collapseClass}" href="${layerHref}" aria-expanded="${expanded}" class="${fixedClass}" >
+    <div class="${baseClass}-heading-container panel-heading" data-dojo-attach-point="showList" role="tab">
+        <a data-toggle="${collapseClass}" href="${layerHref}" data-parent="#${parentId}_layers" aria-expanded="${expanded}" class="${fixedClass}" aria-controls="${layerId}">
             <!--Number of features-->
             <span class="${baseClass}-feature-count label pull-left" style="margin-right: 6px; display: ${showCountersVisible}">${numberOfFeatures}</span>
             <!--Header-->

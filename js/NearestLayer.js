@@ -56,7 +56,8 @@ function (
                 maxFeatures: 5,
                 distance: 0,
                 distanceUnits: "miles",
-                layerOptions: null
+                layerOptions: null,
+                parentId: ""
             };
 
             // mix in settings and defaults
@@ -69,6 +70,7 @@ function (
             this.set("distance", defaults.distance);
             this.set("distanceUnits", defaults.distanceUnits);
             this.set("layerOptions", defaults.layerOptions);
+            this.set("parentId", defaults.parentId);
 
             // widget node
             this.domNode = srcRefNode;
