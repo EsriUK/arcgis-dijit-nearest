@@ -75,6 +75,7 @@ function (
             this.set("renderer", defaults.renderer);
             this.set("layerOptions", defaults.layerOptions);
             this.set("summaryDetailsTitle", i18n.summaryDetailsTitle);
+            this.set("showOnMapTitleText", i18n.showOnMapTitleText);
             this.set("opacity", defaults.opacity);
 
             // widget node
