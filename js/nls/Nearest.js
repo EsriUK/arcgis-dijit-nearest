@@ -9,6 +9,6 @@
         showOnMapTitleText: "Show this feature on the map"
     }),
 
-    "en-gb": true
-
+    "en-gb": true,
+    "es": true
 });
