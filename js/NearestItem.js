@@ -64,7 +64,7 @@ function (
             // Set properties
             this.set("feature", defaults.feature);
             this.set("layerItemId", defaults.layerItemId);
-            this.set("distanceUnits", i18n.distanceUnits);
+            this.set("units", i18n.distanceUnits);
             this.set("distance", defaults.distance);
             this.set("featureNumber", defaults.featureNumber);
             this.set("showOnMapLinktext", i18n.showOnMapLinktext);

@@ -136,10 +136,10 @@ function (
             }
 
             if (this.numberOfFeatures === 0) {
-                this.set("counterWording", i18n.noresults +" "+ this.distance + " " + this.distanceUnits);
+                this.set("counterWording", i18n.noresults + " " + this.distance + " " + i18n.distanceUnits);
             }
             else {
-                this.set("counterWording", i18n.showingclosest +" "+ this.numberOfFeatures + " "+ i18n.within +" " + this.distance + " " + this.distanceUnits);
+                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this.distance + " " + i18n.distanceUnits);
             }
 
             this.inherited(arguments);
