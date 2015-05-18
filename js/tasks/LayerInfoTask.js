@@ -18,7 +18,8 @@
 /**
  * Execute the Query Task to a Layer
  */
-define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils"], function (Deferred, FeatureLayer, jsonUtils) {
+define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils", "esri/tasks/query", "esri/tasks/QueryTask", "esri/geometry/Circle", "esri/units"],
+    function (Deferred, FeatureLayer, jsonUtils, Query, QueryTask, Circle, Units) {
     var taskOutput = function LayerInfoTask(props) {
         this.properties = props;
 
@@ -50,34 +51,31 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils"]
         };
 
         this.queryLayer = function (maxRecords) {
-            var _this = this, result = new Deferred();
+            var _this = this, result = new Deferred(), query, queryTask;
 
-            require(["esri/tasks/query", "esri/tasks/QueryTask", "esri/geometry/Circle", "esri/units"],
-                function (Query, QueryTask, Circle, Units) {
-                    // Use the current location and buffer the point to create a search radius
-                    var query = new Query(), queryTask = new QueryTask(_this.properties.serviceUrl);
+            // Use the current location and buffer the point to create a search radius
+            query = new Query();
+            queryTask = new QueryTask(_this.properties.serviceUrl);
 
-                    query.where = "1=1"; // Get everything 
-                    query.geometry = new Circle({
-                        center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
-                        radius: _this.properties.searchRadius,
-                        radiusUnit: Units.MILES,
-                        geodesic: _this.properties.currentPoint.spatialReference.isWebMercator()
-                    });
-                    query.outFields = ["*"];
-                    query.returnGeometry = true;
-                    query.outSpatialReference = _this.properties.currentPoint.spatialReference;
-                    query.num = maxRecords || 1000;
+            query.where = "1=1"; // Get everything 
+            query.geometry = new Circle({
+                center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
+                radius: _this.properties.searchRadius,
+                radiusUnit: Units.MILES,
+                geodesic: _this.properties.currentPoint.spatialReference.isWebMercator()
+            });
+            query.outFields = ["*"];
+            query.returnGeometry = true;
+            query.outSpatialReference = _this.properties.currentPoint.spatialReference;
+            query.num = maxRecords || 1000;
 
 
-                    queryTask.execute(query, function (features) {
-                        result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId });
-                    },
-                    function (error) {
-                        result.resolve({ error: error, id: _this.properties.layerId, results: null, itemId: _this.properties.itemId });
-                    });
-                });
-
+            queryTask.execute(query, function (features) {
+                result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId });
+            },
+            function (error) {
+                result.resolve({ error: error, id: _this.properties.layerId, results: null, itemId: _this.properties.itemId });
+            });
 
             return result.promise;
         };
