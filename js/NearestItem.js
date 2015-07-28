@@ -64,7 +64,7 @@ function (
             // Set properties
             this.set("feature", defaults.feature);
             this.set("layerItemId", defaults.layerItemId);
-            this.set("units", i18n.distanceUnits);
+            this.set("units", this._getDistanceUnits());
             this.set("distance", defaults.distance);
             this.set("featureNumber", defaults.featureNumber);
             this.set("showOnMapLinktext", i18n.showOnMapLinktext);
@@ -175,7 +175,7 @@ function (
                     topic.publish("Nearest::show-feature-detail", _this.feature, _this.featureId + "-field-values");
                 });
             }
-        }
+        },
 
 
         /* ---------------- */
@@ -186,7 +186,18 @@ function (
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
-       
+        _getDistanceUnits: function() {
+            switch (this.distanceUnits) {
+                case "m":
+                    return i18n.distanceUnitsMiles;
+
+                case "km":
+                    return i18n.distanceUnitsKm;
+
+                default:
+                    return i18n.distanceUnitsMiles;
+            }
+        }
         
     });
 });
