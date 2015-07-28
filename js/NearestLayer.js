@@ -136,10 +136,10 @@ function (
             }
 
             if (this.numberOfFeatures === 0) {
-                this.set("counterWording", i18n.noresults + " " + this._getDistance() + " " + this._getDistanceUnits());
+                this.set("counterWording", i18n.noresults + " " + this._getDistance(this.distanceUnits, this.distance) + " " + this._getDistanceUnits(this.distanceUnits));
             }
             else {
-                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this._getDistance() + " " + this._getDistanceUnits());
+                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this._getDistance(this.distanceUnits, this.distance) + " " + this._getDistanceUnits(this.distanceUnits));
             }
 
             this.inherited(arguments);
@@ -193,32 +193,7 @@ function (
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
-        _getDistanceUnits: function() {
-            switch (this.distanceUnits) {
-                case "m":
-                    return i18n.distanceUnitsMiles;
-
-                case "km":
-                    return i18n.distanceUnitsKm;
-
-                default:
-                    return i18n.distanceUnitsMiles;
-            }
-        },
-
-        _getDistance: function() {
-            switch (this.distanceUnits) {
-                case "m":
-                    return this.distance;
-
-                case "km":
-                    return this.distance * 1.609344;
-
-                default:
-                    return this.distance;
-            }
-        },
-
+        
         _init: function () {
             // summary:
             //    If we have any results then display them

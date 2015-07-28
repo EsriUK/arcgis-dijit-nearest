@@ -145,6 +145,43 @@ function (declare, _Widget, esriRequest) {
             }
 
             return desc;
+        },
+
+        _getDistanceUnits: function (distanceUnits) {
+            // summary:
+            //		Returns the correct distance unit text.
+            // tags:
+            //		private
+
+            switch (distanceUnits) {
+                case "m":
+                    return i18n.distanceUnitsMiles;
+
+                case "km":
+                    return i18n.distanceUnitsKm;
+
+                case "me":
+                    return i18n.distanceUnitsMetres;
+
+                default:
+                    return i18n.distanceUnitsMiles;
+            }
+        },
+
+        _getDistance: function (distanceUnits, distance) {
+            switch (distanceUnits) {
+                case "m":
+                    return distance;
+
+                case "km":
+                    return distance * 1.609344;
+
+                case "me":
+                    return (distance * 1.609344) * 1000;
+
+                default:
+                    return distance;
+            }
         }
     });
 });

@@ -64,7 +64,7 @@ function (
             // Set properties
             this.set("feature", defaults.feature);
             this.set("layerItemId", defaults.layerItemId);
-            this.set("units", this._getDistanceUnits());
+            this.set("units", "");
             this.set("distance", defaults.distance);
             this.set("featureNumber", defaults.featureNumber);
             this.set("showOnMapLinktext", i18n.showOnMapLinktext);
@@ -85,7 +85,7 @@ function (
         postMixInProperties: function () {
             var featureNameEle, attributes = this.feature.feature.attributes;
 
-            this.set("units", this._getDistanceUnits());
+            this.set("units", this._getDistanceUnits(this.distanceUnits));
 
             if (!this._isNullOrEmpty(attributes[this.titleField[0]])) {
                 featureNameEle = attributes[this.titleField[0]];
@@ -177,7 +177,7 @@ function (
                     topic.publish("Nearest::show-feature-detail", _this.feature, _this.featureId + "-field-values");
                 });
             }
-        },
+        }
 
 
         /* ---------------- */
@@ -188,18 +188,7 @@ function (
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
-        _getDistanceUnits: function() {
-            switch (this.distanceUnits) {
-                case "m":
-                    return i18n.distanceUnitsMiles;
-
-                case "km":
-                    return i18n.distanceUnitsKm;
-
-                default:
-                    return i18n.distanceUnitsMiles;
-            }
-        }
+        
         
     });
 });

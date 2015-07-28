@@ -294,6 +294,10 @@ define([
 		                convertedDistance = distance;
 		                break;
 
+		            case "me":
+		                convertedDistance = distance * 1000;
+		                break;
+
 		            default:
 		                convertedDistance = distance;
 		                break;
