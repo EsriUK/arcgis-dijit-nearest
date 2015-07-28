@@ -85,6 +85,8 @@ function (
         postMixInProperties: function () {
             var featureNameEle, attributes = this.feature.feature.attributes;
 
+            this.set("units", this._getDistanceUnits());
+
             if (!this._isNullOrEmpty(attributes[this.titleField[0]])) {
                 featureNameEle = attributes[this.titleField[0]];
                 featureNameEle = featureNameEle.toString().replace(/ /g, '-');
