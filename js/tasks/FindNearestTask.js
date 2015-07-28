@@ -38,6 +38,7 @@ define([
 		    constructor : function(options) {
 			    this._maxFeature = options.maxFeatures || 10;
 			    this._mode = options.mode || "planar"; // planar or geodesic
+			    this._distanceUnits = options.distanceUnits || "m";
 		    },
 
 		    execute : function(params) {
@@ -66,7 +67,7 @@ define([
 					    candidates.push({
 						    point: feature.geometry,
 						    feature: feature,
-						    distance: _this._convertDistanceTo("m", distance.call(_this, point, feature.geometry))
+						    distance: _this._convertDistanceTo(_this._distanceUnits, distance.call(_this, point, feature.geometry))
 					    });
 				    });
 
@@ -84,7 +85,7 @@ define([
 
 			        // The coordinate based distance must be converted into a standard distance measurement i.e. Km or Miles
 				    array.forEach(polyCandidates, function (candidate) {
-				        candidate.distance = _this._convertDistanceTo("m", distance.call(_this, point, candidate.point));
+				        candidate.distance = _this._convertDistanceTo(_this._distanceUnits, distance.call(_this, point, candidate.point));
 				        // Once the final distance has been calculated check if the Point is inside the Polygon
 				        var polyToCheck = new Polygon(candidate.feature.geometry);
 				        if (polyToCheck.contains(point)) {
@@ -108,7 +109,7 @@ define([
 
 			        // The coordinate based distance must be converted into a standard distance measurement i.e. Km or Miles
 				    array.forEach(polyCandidates, function (candidate) {
-				        candidate.distance = _this._convertDistanceTo("m", distance.call(_this, point, candidate.point));
+				        candidate.distance = _this._convertDistanceTo(_this._distanceUnits, distance.call(_this, point, candidate.point));
 				        candidates.push(candidate);
 				    });
 
@@ -124,7 +125,7 @@ define([
 			                multiPCandidates.push({
 			                    point: geometry.points[0],
 			                    feature: feature,
-			                    distance: _this._convertDistanceTo("m", distance.call(_this, point, new Point(geometry.points[0][0], geometry.points[0][1], new SpatialReference(4326))))
+			                    distance: _this._convertDistanceTo(_this._distanceUnits, distance.call(_this, point, new Point(geometry.points[0][0], geometry.points[0][1], new SpatialReference(4326))))
 			                });
 			            }
 			            else {
@@ -135,7 +136,7 @@ define([
 		            // The coordinate based distance must be converted into a standard distance measurement i.e. Km or Miles
 			        array.forEach(multiPCandidates, function (candidate) {
 			            if (candidate.feature.geometry.points.length > 1) {
-			                candidate.distance = _this._convertDistanceTo("m", distance.call(_this, point, candidate.point));
+			                candidate.distance = _this._convertDistanceTo(_this._distanceUnits, distance.call(_this, point, candidate.point));
 			            }
 			            candidates.push(candidate);
 			        });
@@ -287,6 +288,10 @@ define([
 		        switch (distanceUnits) {
 		            case "m":
 		                convertedDistance = distance * 0.621371;
+		                break;
+
+		            case "km":
+		                convertedDistance = distance;
 		                break;
 
 		            default:
