@@ -27,7 +27,6 @@ define([
     "./_NearestBase",
     "dojo/dom-construct",
     "./tasks/ClientNearestTask",
-    "./tasks/ClosestTask",
     "./tasks/LayerInfoTask",
     "./NearestLayer",
     "dojo/topic",
@@ -35,7 +34,7 @@ define([
     "dojo/i18n!./nls/Nearest"
 ],
 function (
-    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, ClosestTask, LayerInfoTask, NearestLayer, topic, i18n) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer, topic, i18n) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
