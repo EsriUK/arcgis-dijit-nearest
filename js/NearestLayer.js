@@ -31,10 +31,11 @@ define([
     'dojo/on',
     'esri/dijit/PopupRenderer',
     'esri/graphic',
-    'dojo/i18n!./nls/Nearest'
+    'dojo/i18n!./nls/Nearest',
+    'esri/layers/GraphicsLayer'
 ],
 function (
-    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic, i18n) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic, i18n, GraphicsLayer) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -220,6 +221,10 @@ function (
                 // Set the info template for the feature
                 this.results.result[featureInd].feature.infoTemplate = template;
                 g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
+
+                // Add graphic to layer, graphicslayer?
+                layer = new GraphicsLayer();
+                layer.add(g);
 
                 rend = new PopupRenderer({ template: template, graphic: g });
                 rend.startup();
