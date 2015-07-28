@@ -69,6 +69,7 @@ Nearest(options, srcNode);
 |showEmptyLayers||Boolean|true|Show layers with no results|
 |findNearestMode||String|geodesic|Set the mode used by the find nearest task.|
 |layerOptions||Object Array|null|Options for each layer. These override the default options per layer in the web map.|
+|distanceUnits|x|String|'miles'|What units to display the distances as.|
 
 
 ### layerOptions

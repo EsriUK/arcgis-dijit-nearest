@@ -66,8 +66,10 @@
 
         <script type="text/javascript">
             require([
-                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/graphic", "dojo/fx/Toggler", "esri/graphicsUtils"],
-                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, Graphic, Toggler, graphicsUtils) {
+                "esri/geometry/Point", "esri/SpatialReference", "app/Nearest", "esri/map", "dojo/topic", "esri/InfoTemplate", "esri/graphic", "dojo/fx/Toggler", "esri/graphicsUtils", "esri/config"],
+                function (Point, SpatialReference, Nearest, Map, topic, InfoTemplate, Graphic, Toggler, graphicsUtils, esriConfig) {
+                    esriConfig.defaults.io.corsEnabledServers.push("route.arcgis.com");
+
                     var location = new Point(-0.8065892, 51.801983199999995, new SpatialReference({ wkid: 4326 })),
                         nearest = new Nearest({
                         webmapId: "0713c71403f94013a399ab54910ec8bf",
@@ -108,6 +110,7 @@
                         maxResults: 1,
                         display: "fixed",
                         findNearestMode: "geodesic",
+                        nearestTaskType: "closest",
                         layerOptions: [
                             {
                                 itemId: "51e2ddafa02c4a32bc32c4da978df046",
