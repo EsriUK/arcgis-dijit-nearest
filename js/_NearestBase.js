@@ -19,9 +19,10 @@
 define([
     'dojo/_base/declare',
     'dijit/_WidgetBase',
-    "esri/request"
+    'esri/request',
+    'dojo/i18n!./nls/Nearest'
 ],
-function (declare, _Widget, esriRequest) {
+function (declare, _Widget, esriRequest, i18n) {
     // module:
     //      _NearestBase
 
