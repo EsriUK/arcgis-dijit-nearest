@@ -17,24 +17,25 @@
  */
 
 define([
-    'dojo/text!./templates/Nearest.html',
-    'dojo/_base/declare',
+    "dojo/text!./templates/Nearest.html",
+    "dojo/_base/declare",
     "dojo/_base/lang",
     "dojo/promise/all",
-    'dijit/_Widget',
-    'dijit/_TemplatedMixin',
-    'dijit/_WidgetsInTemplateMixin',
-    './_NearestBase',
+    "dijit/_Widget",
+    "dijit/_TemplatedMixin",
+    "dijit/_WidgetsInTemplateMixin",
+    "./_NearestBase",
     "dojo/dom-construct",
     "./tasks/ClientNearestTask",
+    "./tasks/ClosestTask",
     "./tasks/LayerInfoTask",
     "./NearestLayer",
-    'dojo/topic',
-    'dojo/i18n',
-    'dojo/i18n!./nls/Nearest'
+    "dojo/topic",
+    "dojo/i18n",
+    "dojo/i18n!./nls/Nearest"
 ],
 function (
-    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, LayerInfoTask, NearestLayer, topic, i18n) {
+    template, declare, lang, all, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, _NearestBase, domConstruct, ClientNearestTask, ClosestTask, LayerInfoTask, NearestLayer, topic, i18n) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -60,7 +61,9 @@ function (
                 showCounters: true, // Show the feature counts
                 showDistance: true, // Show the distance
                 findNearestMode: "geodesic", // Set the mode for the find nearest calculation
-                showEmptyLayers: true // Should layers show with no results
+                showEmptyLayers: true, // Should layers show with no results
+                distanceUnits: "miles",
+                nearestTaskType: "client"
             };
 
             /*
@@ -91,6 +94,8 @@ function (
             this.set("showDistance", defaults.showDistance);
             this.set("findNearestMode", defaults.findNearestMode);
             this.set("showEmptyLayers", defaults.showEmptyLayers);
+            this.set("nearestTaskType", defaults.nearestTaskType);
+            this.set("distanceUnits", defaults.distanceUnits)
 
             // language
             this._i18n = i18n;
@@ -203,12 +208,17 @@ function (
                                 // Perform find nearest on each set of features
                                 if (((queryResults[j].error === null) && (queryResults[j].results) && (queryResults[j].results.features.length > 0)) || (_this.showEmptyLayers && queryResults[j].error === null)) {
 
-                                    nearestTask = new ClientNearestTask({
-                                        maxResults: layerOpts.maxResults,
-                                        layerId: queryResults[j].id,
-                                        itemId: queryResults[j].itemId,
-                                        mode: _this.findNearestMode
-                                    });
+                                    switch(_this.nearestTaskType) {
+                                        case "client":
+                                            nearestTask = new ClientNearestTask({
+                                                maxResults: layerOpts.maxResults,
+                                                layerId: queryResults[j].id,
+                                                itemId: queryResults[j].itemId,
+                                                mode: _this.findNearestMode,
+                                                distanceUnits: _this.distanceUnits
+                                            });
+                                            break;
+                                    }
 
                                     nearestTasks.push(nearestTask.execute(_this.location, queryResults[j].results, queryResults[j].layerInfo));
                                 }
@@ -313,7 +323,7 @@ function (
                     layerInfo: layerInfo,
                     maxFeatures: layerOpts.maxResults,
                     distance: layerOpts.searchRadius,
-                    distanceUnits: "miles",
+                    distanceUnits: this.distanceUnits,
                     layerOptions: layerOpts,
                     parentId: this.id
                 }, layerDiv);
