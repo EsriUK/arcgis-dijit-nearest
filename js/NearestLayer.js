@@ -136,10 +136,10 @@ function (
             }
 
             if (this.numberOfFeatures === 0) {
-                this.set("counterWording", i18n.noresults + " " + this.distance + " " + this._getDistanceUnits());
+                this.set("counterWording", i18n.noresults + " " + this._getDistance() + " " + this._getDistanceUnits());
             }
             else {
-                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this.distance + " " + this._getDistanceUnits());
+                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this._getDistance() + " " + this._getDistanceUnits());
             }
 
             this.inherited(arguments);
@@ -203,6 +203,19 @@ function (
 
                 default:
                     return i18n.distanceUnitsMiles;
+            }
+        },
+
+        _getDistance: function() {
+            switch (this.distanceUnits) {
+                case "m":
+                    return this.distance;
+
+                case "km":
+                    return this.distance * 1.609344;
+
+                default:
+                    return this.distance;
             }
         },
 
