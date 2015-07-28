@@ -244,7 +244,7 @@ function (
                 item = new NearestItem({
                     feature: feature,
                     layerItemId: this.layerId,
-                    distanceUnits: "miles",
+                    distanceUnits: this.distanceUnits,
                     distance: this.results.result[featureInd].distance.toFixed(2),
                     titleText: this.titleText,
                     titleField: this.titleField,
