@@ -187,7 +187,8 @@ function (
                                     layerId: opLayers[i].id,
                                     itemId: opLayers[i].itemId,
                                     layerRenderer: layerRend,
-                                    layerOpacity: opLayers[i].opacity
+                                    layerOpacity: opLayers[i].opacity,
+                                    distanceUnits: _this.distanceUnits
                                 });
 
                                 queryTasks.push(task.execute());

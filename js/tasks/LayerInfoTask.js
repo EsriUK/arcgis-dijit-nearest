@@ -50,6 +50,22 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
             return result.promise;
         };
 
+        this.getUnits = function (distanceUnits) {
+            switch (distanceUnits) {
+                case "m":
+                    return Units.MILES;
+
+                case "km":
+                    return Units.KILOMETERS
+
+                case "me":
+                    return Units.METERS
+
+                default:
+                    return Units.MILES;
+            }
+        };
+
         this.queryLayer = function (maxRecords) {
             var _this = this, result = new Deferred(), query, queryTask;
 
@@ -61,7 +77,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
             query.geometry = new Circle({
                 center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
                 radius: _this.properties.searchRadius,
-                radiusUnit: Units.MILES,
+                radiusUnit: _this.getUnits(_this.properties.distanceUnits),
                 geodesic: _this.properties.currentPoint.spatialReference.isWebMercator()
             });
             query.outFields = ["*"];
