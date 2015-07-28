@@ -55,7 +55,7 @@ function (
                 layerInfo: null,
                 maxFeatures: 5,
                 distance: 0,
-                distanceUnits: "miles",
+                distanceUnits: "m",
                 layerOptions: null,
                 parentId: ""
             };
@@ -136,10 +136,10 @@ function (
             }
 
             if (this.numberOfFeatures === 0) {
-                this.set("counterWording", i18n.noresults + " " + this.distance + " " + i18n.distanceUnits);
+                this.set("counterWording", i18n.noresults + " " + this.distance + " " + this._getDistanceUnits());
             }
             else {
-                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this.distance + " " + i18n.distanceUnits);
+                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this.distance + " " + this._getDistanceUnits());
             }
 
             this.inherited(arguments);
@@ -193,6 +193,19 @@ function (
         /* ---------------- */
         /* Private Functions */
         /* ---------------- */
+        _getDistanceUnits: function() {
+            switch (this.distanceUnits) {
+                case "m":
+                    return i18n.distanceUnitsMiles;
+
+                case "km":
+                    return i18n.distanceUnitsKm;
+
+                default:
+                    return i18n.distanceUnitsMiles;
+            }
+        },
+
         _init: function () {
             // summary:
             //    If we have any results then display them

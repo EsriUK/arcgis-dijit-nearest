@@ -261,7 +261,8 @@ function (
                 showCounters: this.showCounters,
                 display: this.display,
                 showDistance: this.showDistance,
-                usage: "query"
+                usage: "query",
+                distanceUnits: this.distanceUnits
             },
             field = "itemId", value = itemId;
                 
@@ -322,7 +323,7 @@ function (
                     layerInfo: layerInfo,
                     maxFeatures: layerOpts.maxResults,
                     distance: layerOpts.searchRadius,
-                    distanceUnits: this.distanceUnits,
+                    distanceUnits: layerOpts.distanceUnits,
                     layerOptions: layerOpts,
                     parentId: this.id
                 }, layerDiv);
