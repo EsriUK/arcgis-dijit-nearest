@@ -136,10 +136,10 @@ function (
             }
 
             if (this.numberOfFeatures === 0) {
-                this.set("counterWording", i18n.noresults + " " + this._getDistance(this.distanceUnits, this.distance) + " " + this._getDistanceUnits(this.distanceUnits));
+                this.set("counterWording", i18n.noresults + " " + this.distance + " " + this._getDistanceUnits(this.distanceUnits));
             }
             else {
-                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this._getDistance(this.distanceUnits, this.distance) + " " + this._getDistanceUnits(this.distanceUnits));
+                this.set("counterWording", i18n.showingclosest + " " + this.numberOfFeatures + " " + i18n.within + " " + this.distance + " " + this._getDistanceUnits(this.distanceUnits));
             }
 
             this.inherited(arguments);
