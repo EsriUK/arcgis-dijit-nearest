@@ -43,7 +43,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
                 }
 
                 _this.queryLayer(data.layer.maxRecordCount).then(function (res) {
-                    result.resolve({ id: _this.properties.layerId, layerInfo: layerInf, results: res.results, error: null, itemId: _this.properties.itemId });
+                    result.resolve({ id: _this.properties.layerId, layerInfo: layerInf, results: res.results, error: null, itemId: _this.properties.itemId, url: _this.properties.serviceUrl });
                 });
             });
 
@@ -87,7 +87,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
 
 
             queryTask.execute(query, function (features) {
-                result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId });
+                result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId});
             },
             function (error) {
                 result.resolve({ error: error, id: _this.properties.layerId, results: null, itemId: _this.properties.itemId });

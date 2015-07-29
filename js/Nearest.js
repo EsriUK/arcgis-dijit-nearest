@@ -215,7 +215,8 @@ function (
                                                 layerId: queryResults[j].id,
                                                 itemId: queryResults[j].itemId,
                                                 mode: _this.findNearestMode,
-                                                distanceUnits: _this.distanceUnits
+                                                distanceUnits: _this.distanceUnits,
+                                                url: queryResults[j].url
                                             });
                                             break;
                                     }

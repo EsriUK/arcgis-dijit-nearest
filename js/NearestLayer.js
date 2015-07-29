@@ -32,10 +32,10 @@ define([
     'esri/dijit/PopupRenderer',
     'esri/graphic',
     'dojo/i18n!./nls/Nearest',
-    'esri/layers/GraphicsLayer'
+    'esri/layers/FeatureLayer'
 ],
 function (
-    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic, i18n, GraphicsLayer) {
+    template, declare, lang, _Widget, _TemplatedMixin, _WidgetsInTemplateMixin, domConstruct, _NearestBase, NearestItem, PopupTemplate, topic, on, PopupRenderer, Graphic, i18n, FeatureLayer) {
 
     return declare([_Widget, _NearestBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         // description:
@@ -222,8 +222,8 @@ function (
                 this.results.result[featureInd].feature.infoTemplate = template;
                 g = new Graphic(this.results.result[featureInd].feature.geometry, this.results.layerInfo.renderer, feature.feature.attributes, template);
 
-                // Add graphic to layer, graphicslayer?
-                layer = new GraphicsLayer();
+                // Add graphic to graphics layer. Related info needs to get a layer for some reason or it will break.
+                layer = new FeatureLayer(this.results.url);
                 layer.add(g);
 
                 rend = new PopupRenderer({ template: template, graphic: g });
