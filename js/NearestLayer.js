@@ -226,7 +226,7 @@ function (
                 layer = new FeatureLayer(this.results.url);
 
                 layer.on("load", function (data) {
-                    //layer.add(g);
+                    data.layer.add(g);
 
                     rend = new PopupRenderer({ template: template, graphic: g });
                     rend.startup();
