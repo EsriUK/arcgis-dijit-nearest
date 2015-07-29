@@ -209,7 +209,7 @@ function (
             //    Creates the list of items for this layer from the features list.
             //
 
-            var attributes, item,
+            var attributes, item, _this = this, layer,
             featureInd = 0, fL = 0, feature, itemDiv,
             template = new PopupTemplate(this.layerInfo.popupInfo), g, rend;
 
@@ -224,31 +224,36 @@ function (
 
                 // Add graphic to graphics layer. Related info needs to get a layer for some reason or it will break.
                 layer = new FeatureLayer(this.results.url);
-                layer.add(g);
 
-                rend = new PopupRenderer({ template: template, graphic: g });
-                rend.startup();
-         
+                layer.on("load", function (data) {
+                    //layer.add(g);
 
-                // layer node
-                itemDiv = domConstruct.create("div", {});
-                domConstruct.place(itemDiv, this._features, "last");
+                    rend = new PopupRenderer({ template: template, graphic: g });
+                    rend.startup();
 
-                item = new NearestItem({
-                    feature: feature,
-                    layerItemId: this.layerId,
-                    distanceUnits: this.distanceUnits,
-                    distance: this.results.result[featureInd].distance.toFixed(2),
-                    titleText: this.titleText,
-                    titleField: this.titleField,
-                    featureNumber: 1 + parseInt(featureInd, 10),
-                    description: rend.domNode.innerHTML,
-                    renderer: this.results.layerInfo.renderer,
-                    opacity: this.results.layerInfo.opacity,
-                    layerOptions: this.layerOptions
-                }, itemDiv);
 
-                item.startup();
+                    // layer node
+                    itemDiv = domConstruct.create("div", {});
+                    domConstruct.place(itemDiv, _this._features, "last");
+
+                    item = new NearestItem({
+                        feature: feature,
+                        layerItemId: _this.layerId,
+                        distanceUnits: _this.distanceUnits,
+                        distance: _this.results.result[featureInd].distance.toFixed(2),
+                        titleText: _this.titleText,
+                        titleField: _this.titleField,
+                        featureNumber: 1 + parseInt(featureInd, 10),
+                        description: rend.domNode.innerHTML,
+                        renderer: _this.results.layerInfo.renderer,
+                        opacity: _this.results.layerInfo.opacity,
+                        layerOptions: _this.layerOptions
+                    }, itemDiv);
+
+                    item.startup();
+                });
+
+                
 
             }
         }
