@@ -31,14 +31,14 @@ var layerProps = {
 describe("A set of tests for the Nearest Layer widget", function () {
     var NearestLayer, widget, server, baseWidget, loadWidget = function (done) {
         require(["app/NearestLayer", "app/_NearestBase"], function (nearestLayer, _NearestBase) {
-            widget = new nearestLayer(layerProps, 'widgetLayer');
-            NearestLayer = nearestLayer;
-
+            
             baseWidget = new _NearestBase();
             baseWidget.startup();
 
             setupSinon();
 
+            widget = new nearestLayer(layerProps, 'widgetLayer');
+            NearestLayer = nearestLayer;
             widget.startup();
             done();
         });
@@ -63,6 +63,7 @@ describe("A set of tests for the Nearest Layer widget", function () {
         server = sinon.fakeServer.create();
         server.autoRespond = true;
         server.autoRespondAfter = 257;
+        server.respondImmediately = true;
 
         server.respondWith(requestUrl, [
             200,
@@ -82,6 +83,9 @@ describe("A set of tests for the Nearest Layer widget", function () {
             widget.destroy();
             widget = null;
         }
+        if (server) {
+            server.restore();
+        }
     });
 
     it("should not be null", function (done) {
@@ -90,7 +94,7 @@ describe("A set of tests for the Nearest Layer widget", function () {
     });
 
     it("should generate a title if not set", function (done) {
-       
+     
         var props = layerProps;
         props.layerInfo.popupInfo.title = "";
         props.results.layerInfo.popupInfo.title = "";
@@ -111,7 +115,7 @@ describe("A set of tests for the Nearest Layer widget", function () {
     });
 
     it("should hide the counters", function (done) {
-       
+      
         var props = layerProps;
         props.layerOptions.showCounters = false;
         createWidget(props);

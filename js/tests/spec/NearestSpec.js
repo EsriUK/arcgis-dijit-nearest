@@ -51,10 +51,20 @@ describe("A set of tests for the Nearest widget", function() {
     var setupSinon = function () {
         var requestUrl = swapProtocol("http://www.arcgis.com/sharing/rest/content/items/12345?f=pjson");
         var dataurl = swapProtocol("http://www.arcgis.com/sharing/rest/content/items/12345/data/?f=pjson"), itemId = "12345";
+        var featureServiceUrl = swapProtocol("http://services1.arcgis.com/blah/arcgis/rest/services/MyRelatedData/FeatureServer/1?f=json");
 
         server = sinon.fakeServer.create();
         server.autoRespond = true;
         server.autoRespondAfter = 257;
+        server.respondImmediately = true;
+
+        server.respondWith(featureServiceUrl, [
+            200,
+            {
+                "Content-Type": "application/json"
+            },
+            JSON.stringify(featureLayer)
+        ]);
 
         server.respondWith(requestUrl, [
             200,
@@ -160,7 +170,9 @@ describe("A set of tests for the Nearest widget", function() {
             widget.destroy();
             widget = null;
         }
-        
+        if (server) {
+            server.restore();
+        }
     }); 
 
     it("should not be null", function (done) {
