@@ -76,7 +76,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
             query.where = "1=1"; // Get everything 
             query.geometry = new Circle({
                 center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
-                geodesic: _this.properties.currentPoint.spatialReference.isWebMercator(),
+                geodesic: true,
                 radius: _this.properties.searchRadius,
                 radiusUnit: _this.getUnits(_this.properties.distanceUnits) 
             });
