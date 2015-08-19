@@ -84,7 +84,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
             query.returnGeometry = true;
             query.outSpatialReference = _this.properties.currentPoint.spatialReference;
             query.num = maxRecords || 1000;
-            query.spatialRelationship = Query.SPATIAL_REL_CONTAINS;
+           // query.spatialRelationship = Query.SPATIAL_REL_CONTAINS;
 
             queryTask.execute(query, function (features) {
                 result.resolve({ error: null, id: _this.properties.layerId, results: features, itemId: _this.properties.itemId});
