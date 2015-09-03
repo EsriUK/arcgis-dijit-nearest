@@ -143,4 +143,23 @@ describe("A set of tests for the Nearest base widget", function () {
 
     });
 
+    it("should return the correct distance units", function (done) {
+        expect(widget._getDistanceUnits("m")).toEqual("miles");
+        expect(widget._getDistanceUnits("km")).toEqual("kilometres");
+        expect(widget._getDistanceUnits("me")).toEqual("metres");
+        done();
+    });
+
+    it("should return the correct distance for the units", function (done) {
+        expect(widget._getDistance("m", 10)).toEqual(10);
+        expect(widget._getDistance("km", 10)).toEqual(16.09344);
+        expect(widget._getDistance("me", 10)).toEqual(16093.44);
+        expect(widget._getDistance("", 10)).toEqual(10);
+        done();
+    });
+
+    it("should return the correct URL with the correct protocol", function (done) {
+        expect(widget._swapProtocol("http://www.atest.com/url")).toEqual("http://www.atest.com/url");
+        done();
+    });
 });

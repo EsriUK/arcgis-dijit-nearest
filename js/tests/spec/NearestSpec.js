@@ -158,7 +158,34 @@ describe("A set of tests for the Nearest widget", function() {
             },
             JSON.stringify(itemDetails)
         ]);
-    
+        server.respondWith(swapProtocol("http://services.arcgis.com/QQQQQQQ/arcgis/rest/services/BorisBikesYP/FeatureServer/0/query?f=json&where=1%3D1&returnGeometry=true&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A%22-0.8055515%22%2C%22y%22%3A%2251.8003171%22%2C%22spatialReference%22%3A%7B%22wkid%22%3A4326%7D%7D&geometryType=esriGeometryPoint&inSR=4326&outFields=*&outSR=4326&resultRecordCount=2000"), [
+                200,
+                {
+                    "Content-Type": "application/json"
+                },
+                JSON.stringify(pointFeatureSet)
+        ]);
+        server.respondWith(swapProtocol("http://services.arcgis.com/QQQQQQQ/arcgis/rest/services/BorisBikesYP/FeatureServer/0/query"), [
+                200,
+                {
+                    "Content-Type": "application/json"
+                },
+                JSON.stringify(pointFeatureSet)
+        ]);
+        server.respondWith(swapProtocol("http://services.arcgis.com/QQQQQQQ/arcgis/rest/services/BorisBikesYP/FeatureServer/0?f=json"), [
+            200,
+            {
+                "Content-Type": "application/json"
+            },
+            JSON.stringify(itemDetails)
+        ]);
+        server.respondWith(swapProtocol("http://www.arcgis.com/sharing/rest/content/items/222/data/?f=pjson"), [
+           200,
+           {
+               "Content-Type": "application/json"
+           },
+           JSON.stringify(emptyItemDataLocation)
+        ]);
     };
 
     beforeEach(function (done) {
@@ -190,6 +217,7 @@ describe("A set of tests for the Nearest widget", function() {
         expect(widget.showDistance).toEqual(true);
         expect(widget.findNearestMode).toEqual("geodesic");
         expect(widget.showEmptyLayers).toEqual(true);
+        expect(widget.distanceUnits).toEqual("miles");
 
         done();
     });
@@ -384,6 +412,7 @@ describe("A set of tests for the Nearest widget", function() {
 
         props.webmapId = "0713c71403f94013a399ab54910ec8bf";
         props.location = location;
+        props.distanceUnits = "km";
         props.layerOptions = [{
             itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
             searchRadius: 50,
@@ -412,6 +441,7 @@ describe("A set of tests for the Nearest widget", function() {
 
         props.webmapId = "0713c71403f94013a399ab54910ec8bf";
         props.location = location;
+        props.distanceUnits = "me";
         props.layerOptions = [{
             itemId: "fe37166bf13143d19a91d6e9bf96c8c5",
             searchRadius: 50,
@@ -441,6 +471,7 @@ describe("A set of tests for the Nearest widget", function() {
         props.webmapId = "000";
         props.location = location;
         props.showEmptyLayers = true
+        props.distanceUnits = "m";
         props.layerOptions = [{
             itemId: "123",
             searchRadius: 50,
@@ -495,6 +526,37 @@ describe("A set of tests for the Nearest widget", function() {
 
                 connect.unsubscribe(handle);
 
+                done();
+            });
+
+            createWidget(props);
+        });
+    });
+
+    it("should use the current location for the query geometry", function (done) {
+        
+        var props = nearestProps;
+        setupSinon();
+
+        props.webmapId = "222";
+        props.location = location;
+        props.showEmptyLayers = true
+        props.distanceUnits = "km";
+        props.layerOptions = [{
+            itemId: "9999",
+            searchRadius: 0,
+            showOnMap: false,
+            showCounters: false
+        }];
+
+        require(['dojo/topic', 'dojo/_base/connect'], function (topic, connect) {
+
+            var handleQueryDone = topic.subscribe("Nearest::query-done", function (nearestWidget, queryResults) {
+                expect(queryResults.length).toEqual(1);
+                connect.unsubscribe(handleQueryDone);
+            });
+            var handleLoaded = topic.subscribe("Nearest::loaded", function (nearestWidget) {
+                connect.unsubscribe(handleLoaded);
                 done();
             });
 
