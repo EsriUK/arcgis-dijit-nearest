@@ -69,7 +69,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
         this.queryLayer = function (maxRecords) {
             var _this = this, result = new Deferred(), query, queryTask, geom;
 
-            if (_this.properties.searchRadius > 0) {
+            if (parseFloat(_this.properties.searchRadius) > 0) {
                 geom = new Circle({
                     center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
                     geodesic: true,
