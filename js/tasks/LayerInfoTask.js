@@ -56,10 +56,10 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
                     return Units.MILES;
 
                 case "km":
-                    return Units.KILOMETERS
+                    return Units.KILOMETERS;
 
                 case "me":
-                    return Units.METERS
+                    return Units.METERS;
 
                 default:
                     return Units.MILES;
@@ -67,19 +67,26 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
         };
 
         this.queryLayer = function (maxRecords) {
-            var _this = this, result = new Deferred(), query, queryTask;
+            var _this = this, result = new Deferred(), query, queryTask, geom;
+
+            if (_this.properties.searchRadius > 0) {
+                geom = new Circle({
+                    center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
+                    geodesic: true,
+                    radius: _this.properties.searchRadius,
+                    radiusUnit: _this.getUnits(_this.properties.distanceUnits)
+                });
+            }
+            else {
+                geom = _this.properties.currentPoint;
+            }
 
             // Use the current location and buffer the point to create a search radius
             query = new Query();
             queryTask = new QueryTask(_this.properties.serviceUrl);
 
             query.where = "1=1"; // Get everything 
-            query.geometry = new Circle({
-                center: [_this.properties.currentPoint.x, _this.properties.currentPoint.y],
-                geodesic: true,
-                radius: _this.properties.searchRadius,
-                radiusUnit: _this.getUnits(_this.properties.distanceUnits) 
-            });
+            query.geometry = geom;
             query.outFields = ["*"];
             query.returnGeometry = true;
             query.outSpatialReference = _this.properties.currentPoint.spatialReference;
