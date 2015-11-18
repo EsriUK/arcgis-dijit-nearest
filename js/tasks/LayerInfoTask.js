@@ -33,7 +33,8 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
                 result.resolve({ id: _this.properties.layerId, layerInfo: null, results:null, error: err, itemId: _this.properties.itemId });
             });
             featureLayer.on("load", function (data) {
-                var layerInf = { renderer: null, id: _this.properties.layerId, itemId: _this.properties.itemId, opacity: _this.properties.layerOpacity };
+                var layerInf = { renderer: null, id: _this.properties.layerId, itemId: _this.properties.itemId, opacity: _this.properties.layerOpacity },
+                    maxRecordCount;
 
                 if (props.layerRenderer !== undefined && props.layerRenderer !== null) {
                     layerInf.renderer = jsonUtils.fromJson(props.layerRenderer);
@@ -42,12 +43,32 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
                     layerInf.renderer = data.layer.renderer;
                 }
 
+                // Check if layer supports pagination
+                if (_this._supportsPagination(data.layer)) {
+                    maxRecordCount = data.layer.maxRecordCount;
+                }
+                else {
+                    maxRecordCount = "foo";
+                }
+
                 _this.queryLayer(data.layer.maxRecordCount).then(function (res) {
                     result.resolve({ id: _this.properties.layerId, layerInfo: layerInf, results: res.results, error: null, itemId: _this.properties.itemId, url: _this.properties.serviceUrl });
                 });
             });
 
             return result.promise;
+        };
+
+        this. _supportsPagination = function (source) {  
+            // check if featurelayer supports pagination remove at 3.14  
+            var supported = false;  
+            if (source.featureLayer) {  
+                // supports pagination  
+                if (source.advancedQueryCapabilities && source.advancedQueryCapabilities.supportsPagination) {  
+                    supported = true;  
+                }  
+            }  
+            return supported;  
         };
 
         this.getUnits = function (distanceUnits) {
