@@ -51,7 +51,7 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
                     maxRecordCount = "foo";
                 }
 
-                _this.queryLayer(data.layer.maxRecordCount).then(function (res) {
+                _this.queryLayer(maxRecordCount).then(function (res) {
                     result.resolve({ id: _this.properties.layerId, layerInfo: layerInf, results: res.results, error: null, itemId: _this.properties.itemId, url: _this.properties.serviceUrl });
                 });
             });
