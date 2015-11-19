@@ -62,12 +62,12 @@ define(["dojo/Deferred", "esri/layers/FeatureLayer", "esri/renderers/jsonUtils",
         this. _supportsPagination = function (source) {  
             // check if featurelayer supports pagination remove at 3.14  
             var supported = false;  
-            if (source.featureLayer) {  
-                // supports pagination  
-                if (source.advancedQueryCapabilities && source.advancedQueryCapabilities.supportsPagination) {  
-                    supported = true;  
-                }  
+            
+            // supports pagination  
+            if (source.advancedQueryCapabilities && source.advancedQueryCapabilities.supportsPagination) {  
+                supported = true;  
             }  
+            
             return supported;  
         };
 
