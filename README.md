@@ -131,6 +131,10 @@ The widget publishes events at various stages of its lifecycle.
 
 Find a bug or want to request a new feature?  Please let us know by submitting an issue.
 
+## Support
+
+Use of this widget is covered by [Esri UK Developer Support](http://www.esriuk.com/support/support-services)
+
 ## Contributing
 
 Anyone and everyone is welcome to contribute.
