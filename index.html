@@ -110,7 +110,7 @@
                         maxResults: 1,
                         display: "fixed",
                         findNearestMode: "geodesic",
-                        nearestTaskType: "closest",
+                        nearestTaskType: "client",
                         layerOptions: [
                             {
                                 itemId: "51e2ddafa02c4a32bc32c4da978df046",
@@ -156,7 +156,7 @@
                             var i = 0, iL = features.length, geoms = [];
 
                             for (i = 0; i < iL; i++) {
-                                map.graphics.add(new Graphic(features[i].feature.geometry, renderer.symbol, features[i].feature.attributes, features[i].feature.infoTemplate));
+                                map.graphics.add(new Graphic(features[i].feature.geometry, renderer.renderer.symbol, features[i].feature.attributes, features[i].feature.infoTemplate));
                                 geoms.push(features[i].feature);
                             }
 
