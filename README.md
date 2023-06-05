@@ -8,7 +8,6 @@ The widget is driven by a webmap. You configure the distance that you want to se
 The widget finds all the features in each layer up to these limits that are in the webmap. The information is presented to the end user as a list view with the details of each feature.  
 The details shown replicate those that are setup in the popup within your webmap.
 
-[View it live](https://apps.esriuk.com/app/NearestWidgetDemo/1/wmt/view/8b1ed9f9a2a24048ac25766264f333cb/index.html)
 
 ## Quickstart
 
